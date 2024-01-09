@@ -2,7 +2,6 @@ import helmet from 'helmet';
 import * as session from 'express-session';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { RequestMethod } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from './filters/global-exception.filter';
@@ -38,9 +37,7 @@ async function bootstrap() {
     }),
   );
 
-  app.setGlobalPrefix('api', {
-    exclude: [{ path: '/', method: RequestMethod.GET }],
-  });
+  app.setGlobalPrefix('api');
 
   app.useGlobalFilters(new HttpExceptionFilter());
 
