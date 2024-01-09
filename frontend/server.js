@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-const PORT = 20188;
+const PORT = process.env.APP_PORT || 8080;
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
@@ -11,4 +11,4 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-app.listen(PORT);
+app.listen(PORT, ()=> console.info(`Server running on port ${PORT}`));

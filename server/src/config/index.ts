@@ -1,13 +1,10 @@
-const TEST_ENVIRONMENTS = ['test'];
-const DEV_ENVIRONMENTS = ['dev', 'development'];
 const PROD_ENVIRONMENTS = ['prod', 'production'];
 const currentEnvironment = process.env.NODE_ENV;
 
 export default () => ({
-  isDev: DEV_ENVIRONMENTS.includes(currentEnvironment),
-  isTest: TEST_ENVIRONMENTS.includes(currentEnvironment),
   isProduction: PROD_ENVIRONMENTS.includes(currentEnvironment),
   appUrl: process.env.APP_URL,
+  appPort: process.env.APP_PORT,
   databaseUrl: process.env.DATABASE_URL,
   frontendUrl: process.env.FRONTEND_URL,
   redisUrl: process.env.REDIS_URL,
