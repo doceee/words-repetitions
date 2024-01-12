@@ -2,7 +2,7 @@
   <div class="bg-primary flex h-full">
     <div class="flex flex-1 flex-col overflow-hidden">
       <div
-        class="flex h-[55px] w-full border-b-[1px] border-gray-300 bg-white transition-[width] ease-in-out dark:border-gray-700 dark:bg-gray-900 sm:grid sm:grid-cols-[90px_auto_90px]"
+        class="flex h-[55px] w-full border-b-[1px] border-gray-300 bg-white transition-[width] ease-in-out sm:grid sm:grid-cols-[90px_auto_90px]"
       >
         <div class="hidden sm:block" />
 

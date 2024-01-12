@@ -1,13 +1,11 @@
 <template>
   <div class="my-[20px] w-full">
     <div v-if="currentIndex < words.length">
-      <h3
-        class="mb-2 mt-10 text-center text-lg font-medium text-gray-900 dark:text-white"
-      >
+      <h3 class="mb-2 mt-10 text-center text-lg font-medium text-gray-900">
         Słówko {{ currentIndex + 1 + '/' + words.length }}
       </h3>
       <p
-        class="mx-auto my-5 max-w-fit rounded-lg border-2 border-gray-200 bg-white p-5 font-bold text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+        class="mx-auto my-5 max-w-fit rounded-lg border-2 border-gray-200 bg-white p-5 font-bold text-gray-800"
       >
         {{ displayedText }}
       </p>
@@ -59,16 +57,24 @@ const handleInput = (e: Event) => {
 
   inputClass.value;
   for (let i = 0; i < val.length; i++) {
-    if (val[i] === wordList.value[currentIndex.value].word[i]) {
+    if (
+      val[i].toLowerCase() ===
+      wordList.value[currentIndex.value].word[i].toLowerCase()
+    ) {
       inputClass.value =
         'shadow-[0px_0px_30px_0px_rgba(0,0,0,1)] ' + correctValueClass;
-    } else if (val[i] !== wordList.value[currentIndex.value].word[i]) {
+    } else if (
+      val[i].toLowerCase() !==
+      wordList.value[currentIndex.value].word[i].toLowerCase()
+    ) {
       inputClass.value =
         'shadow-[0px_0px_30px_0px_rgba(0,0,0,1)] ' + incorrectValueClass;
     }
   }
 
-  if (wordList.value[currentIndex.value].word === val) {
+  if (
+    wordList.value[currentIndex.value].word.toLowerCase() === val.toLowerCase()
+  ) {
     currentIndex.value++;
     currentValue.value = '';
     inputClass.value = '';

@@ -3,7 +3,7 @@
     class="mx-auto mb-[24px] mt-[30px] max-w-[267px] sm:mt-[32px] sm:w-full sm:max-w-full"
   >
     <h2
-      class="mt-[16px] text-center text-2xl font-semibold leading-8 text-gray-700 dark:text-gray-200 sm:mt-5 sm:text-4xl sm:font-medium"
+      class="mt-[16px] text-center text-2xl font-semibold leading-8 text-gray-700 sm:mt-5 sm:text-4xl sm:font-medium"
     >
       Rejestracja
     </h2>
@@ -50,7 +50,7 @@
     >
   </form>
 
-  <p class="mb-8 mt-[16px] text-right text-sm text-gray-600 dark:text-gray-300">
+  <p class="mb-8 mt-[16px] text-right text-sm text-gray-600">
     Masz konto?
     <the-button to="/login" link>Logowanie</the-button>
   </p>
