@@ -15,7 +15,7 @@
       <input
         :id="id"
         v-model="model"
-        class="w-full appearance-none rounded-md border px-3 py-2 text-sm focus-within:z-10 focus:outline-none disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 dark:bg-gray-900 dark:disabled:bg-gray-800 dark:disabled:text-gray-300 lg:text-base"
+        class="w-full appearance-none rounded-md border px-3 py-2 text-sm focus-within:z-10 focus:outline-none disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 lg:text-base"
         :class="inputClass"
         :autocomplete="autocomplete"
         :type="type"
@@ -31,12 +31,12 @@
         class="pointer-events-none absolute inset-y-0 right-[5px] flex items-center"
       >
         <exclamation-circle-icon
-          class="h-5 w-5 text-red-400 dark:text-red-500"
+          class="h-5 w-5 text-red-400"
           aria-hidden="true"
         />
       </div>
     </div>
-    <p v-if="error" class="text-xs leading-5 text-red-400 dark:text-red-500">
+    <p v-if="error" class="text-xs leading-5 text-red-400">
       {{ error }}
     </p>
   </div>
@@ -89,9 +89,9 @@ const autocomplete = computed(() => (type.value === 'password' ? 'on' : 'off'));
 
 const inputClass = computed(() => {
   const classes = {
-    'border-red-300 text-red-900 placeholder:text-red-300 focus:ring-red-500 focus:border-red-500 dark:border-red-400 dark:focus:border-red-500 dark:!text-red-500':
+    'border-red-300 text-red-900 placeholder:text-red-300 focus:ring-red-500 focus:border-red-500':
       isRedBorder.value,
-    'border-gray-300 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:ring-blue-600 focus:border-blue-600 dark:border-gray-700 dark:focus:border-blue-500 dark:focus:ring-blue-500':
+    'border-gray-300 placeholder:text-gray-500 focus:ring-blue-600 focus:border-blue-600':
       !isRedBorder.value
   };
 

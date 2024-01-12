@@ -34,6 +34,7 @@ import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import TheButton from '@/components/TheButton.vue';
 import { useWordsStore } from '@/store/modules/words';
+import { shuffleArray } from '@/helpers/shuffleArray';
 
 const currentValue = ref('');
 const inputClass = ref('');
@@ -45,6 +46,7 @@ const incorrectValueClass = 'shadow-red-500';
 
 const wordsStore = useWordsStore();
 const { words } = storeToRefs(wordsStore);
+const wordList = ref(shuffleArray(words.value));
 
 const handleInput = (e: Event) => {
   const val = (e.target as HTMLInputElement).value;
@@ -57,16 +59,16 @@ const handleInput = (e: Event) => {
 
   inputClass.value;
   for (let i = 0; i < val.length; i++) {
-    if (val[i] === words.value[currentIndex.value].word[i]) {
+    if (val[i] === wordList.value[currentIndex.value].word[i]) {
       inputClass.value =
         'shadow-[0px_0px_30px_0px_rgba(0,0,0,1)] ' + correctValueClass;
-    } else if (val[i] !== words.value[currentIndex.value].word[i]) {
+    } else if (val[i] !== wordList.value[currentIndex.value].word[i]) {
       inputClass.value =
         'shadow-[0px_0px_30px_0px_rgba(0,0,0,1)] ' + incorrectValueClass;
     }
   }
 
-  if (words.value[currentIndex.value].word === val) {
+  if (wordList.value[currentIndex.value].word === val) {
     currentIndex.value++;
     currentValue.value = '';
     inputClass.value = '';
@@ -74,12 +76,13 @@ const handleInput = (e: Event) => {
 };
 
 const displayedText = computed(
-  () => words.value[currentIndex.value].translation
+  () => wordList.value[currentIndex.value].translation
 );
 
 const reset = () => {
   currentIndex.value = 0;
   score.value = 0;
   userResponseArray.value = [];
+  wordList.value = shuffleArray(wordList.value);
 };
 </script>

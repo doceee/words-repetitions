@@ -2,15 +2,20 @@
   <div class="bg-primary flex h-full">
     <div class="flex flex-1 flex-col overflow-hidden">
       <div
-        class="grid h-[55px] w-full grid-cols-[90px_auto_90px] border-b-[1px] border-gray-300 bg-white transition-[width] ease-in-out dark:border-gray-700 dark:bg-gray-900"
+        class="flex h-[55px] w-full border-b-[1px] border-gray-300 bg-white transition-[width] ease-in-out dark:border-gray-700 dark:bg-gray-900 sm:grid sm:grid-cols-[90px_auto_90px]"
       >
-        <div />
+        <div class="hidden sm:block" />
 
-        <div class="relative mr-6 flex items-center justify-center">
-          <form class="h-[35px]" @submit.prevent="submitSearch">
+        <div
+          class="relative mx-[10px] flex flex-1 items-center justify-center sm:ml-0"
+        >
+          <form
+            class="h-[35px] w-full sm:w-[219px]"
+            @submit.prevent="submitSearch"
+          >
             <input
               v-model="text"
-              class="bg-purple-white h-[35px] rounded border-0 border-gray-300 shadow-md focus:outline-none focus:ring-blue-600"
+              class="bg-purple-white h-[35px] w-full rounded border-0 border-gray-300 shadow-md focus:outline-none focus:ring-blue-600"
             />
             <magnifying-glass-icon
               class="text-purple-lighter absolute right-0 top-[6px] mr-4 h-[20px] hover:cursor-pointer"
@@ -23,7 +28,8 @@
           class="mr-[8px] block h-[35px] self-center"
           @click="handleLogout"
         >
-          Wyloguj
+          <span class="hidden sm:inline">Wyloguj</span>
+          <arrow-right-on-rectangle-icon class="block h-[20px] sm:hidden" />
         </the-button>
       </div>
 
@@ -44,7 +50,11 @@
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
-import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
+import {
+  MagnifyingGlassIcon,
+  ArrowRightOnRectangleIcon
+} from '@heroicons/vue/20/solid';
+
 import TheButton from '@/components/TheButton.vue';
 import { useAuthStore } from '@/store/modules/auth';
 import { useWordsStore } from '@/store/modules/words';

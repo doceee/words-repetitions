@@ -33,6 +33,7 @@ import TrueFalseSwitch from './TrueFalseSwitch.vue';
 import TheButton from '@/components/TheButton.vue';
 import { useWordsStore } from '@/store/modules/words';
 import { storeToRefs } from 'pinia';
+import { shuffleArray } from '@/helpers/shuffleArray';
 
 const currentValue = ref(false);
 const currentIndex = ref(0);
@@ -42,12 +43,13 @@ const score = ref(0);
 
 const wordsStore = useWordsStore();
 const { words } = storeToRefs(wordsStore);
+const wordList = ref(shuffleArray(words.value));
 
 const handleIncrement = () => {
   currentIndex.value++;
   responseArray.value.push(currentValue.value);
 
-  if (currentIndex.value < words.value.length) {
+  if (currentIndex.value < wordList.value.length) {
     return;
   }
 
@@ -85,9 +87,9 @@ const changeWord = (word: string) => {
 
 const displayedText = computed(
   () =>
-    midifyWord(words.value[currentIndex.value].word) +
+    midifyWord(wordList.value[currentIndex.value].word) +
     ' - ' +
-    words.value[currentIndex.value].translation
+    wordList.value[currentIndex.value].translation
 );
 
 const reset = () => {
@@ -95,5 +97,6 @@ const reset = () => {
   score.value = 0;
   responseArray.value = [];
   answerArray.value = [];
+  wordList.value = shuffleArray(wordList.value);
 };
 </script>
