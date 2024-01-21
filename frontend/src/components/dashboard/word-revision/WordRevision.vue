@@ -62,7 +62,10 @@ const handleIncrement = () => {
   }
 
   wordList.value.map((item, index) => {
-    if (item.word === userResponseArray.value[index]) score.value++;
+    if (
+      item.word.toLowerCase() === userResponseArray.value[index].toLowerCase()
+    )
+      score.value++;
   });
 };
 
