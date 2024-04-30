@@ -6,7 +6,7 @@ import { LoggedInGuard } from '../auth/guard';
 import { UserRepository } from '../user/user.repository';
 
 @Module({
-  controllers: [WordController],
-  providers: [WordRepository, WordService, LoggedInGuard, UserRepository],
+    controllers: [WordController],
+    providers: [WordRepository, WordService, LoggedInGuard, UserRepository]
 })
 export class WordModule {}

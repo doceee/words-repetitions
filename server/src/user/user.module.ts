@@ -3,7 +3,8 @@ import { UserController } from './user.controller';
 import { UserRepository } from './user.repository';
 import { LoggedInGuard } from '../auth/guard';
 @Module({
-  controllers: [UserController],
-  providers: [UserRepository, LoggedInGuard],
+    controllers: [UserController],
+    providers: [UserRepository, LoggedInGuard],
+    exports: [UserRepository]
 })
 export class UserModule {}

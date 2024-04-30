@@ -10,54 +10,48 @@ import { RedisStoreService } from './redis/redis-store.factory';
 import { useContainer } from 'class-validator';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  useContainer(app.select(AppModule), { fallbackOnErrors: true });
-  const configService = app.get(ConfigService);
-  const redisStoreService = app.get(RedisStoreService);
-  const redisClientService = app.get(RedisClientService);
+    const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  const redisClient = await redisClientService.create(
-    configService.get('redisSession.url'),
-  );
+    useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  app.use(
-    session({
-      store: redisStoreService.create(redisClient),
-      secret: configService.get('sessionSecret'),
-      name: 'sid',
-      resave: false,
-      saveUninitialized: false,
-      rolling: true,
-      cookie: {
-        maxAge: 3600 * 1000,
-        secure:
-          configService.get('isProduction') &&
-          configService.get('appUrl').startsWith('https'),
-      },
-    }),
-  );
+    const configService = app.get(ConfigService);
+    const redisStoreService = app.get(RedisStoreService);
+    const redisClientService = app.get(RedisClientService);
+    const redisClient = await redisClientService.create(
+        configService.get('redisSession.port'),
+        configService.get('redisSession.host')
+    );
 
-  app.setGlobalPrefix('api');
+    app.use(
+        session({
+            store: redisStoreService.create(redisClient),
+            secret: configService.get('sessionSecret'),
+            name: 'sid',
+            resave: false,
+            saveUninitialized: false,
+            rolling: true,
+            cookie: {
+                maxAge: 3600 * 1000,
+                secure:
+                    configService.get('isProduction') &&
+                    configService.get('appUrl').startsWith('https')
+            }
+        })
+    );
 
-  app.useGlobalFilters(new HttpExceptionFilter());
+    app.setGlobalPrefix('api');
 
-  app.set('trust proxy', true);
-  app.use(
-    helmet({
-      contentSecurityPolicy: {
-        directives: {
-          'frame-ancestors': ["'self'", configService.get('frontendUrl')],
-        },
-      },
-    }),
-  );
+    app.useGlobalFilters(new HttpExceptionFilter());
 
-  app.enableCors({
-    origin: [configService.get('frontendUrl')],
-    credentials: true,
-  });
+    app.set('trust proxy', true);
+    app.use(helmet());
 
-  await app.listen(configService.get('appPort'));
+    app.enableCors({
+        origin: [configService.get('frontendUrl'), configService.get('cmsUrl')],
+        credentials: true
+    });
+
+    await app.listen(configService.get('appPort'));
 }
 
 bootstrap();

@@ -4,24 +4,24 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as pactum from 'pactum';
 
 describe('App e2e', () => {
-  let app: INestApplication;
+    let app: INestApplication;
 
-  beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+    beforeAll(async () => {
+        const moduleRef = await Test.createTestingModule({
+            imports: [AppModule]
+        }).compile();
 
-    app = moduleRef.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-    await app.init();
-    await app.listen(3000);
+        app = moduleRef.createNestApplication();
+        app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+        await app.init();
+        await app.listen(3000);
 
-    pactum.request.setBaseUrl('http://localhost:3000');
-  });
+        pactum.request.setBaseUrl('http://localhost:3000');
+    });
 
-  afterAll(() => {
-    app.close();
-  });
+    afterAll(() => {
+        app.close();
+    });
 
-  it.todo('should pass');
+    it.todo('should pass');
 });

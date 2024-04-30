@@ -7,10 +7,10 @@ axios.defaults.baseURL = apiUrl;
 axios.defaults.withCredentials = true;
 
 axios.interceptors.response.use(
-  ({ data }) => data,
-  error => {
-    throw error;
-  }
+    ({ data }) => data,
+    error => {
+        throw error;
+    }
 );
 
 export default axios;

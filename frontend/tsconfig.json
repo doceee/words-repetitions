@@ -1,26 +1,26 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "compilerOptions": {
-    "paths": {
-      "@/*": ["./src/*"]
+    "extends": "@vue/tsconfig/tsconfig.dom.json",
+    "compilerOptions": {
+        "paths": {
+            "@/*": ["src/*"]
+        },
+        "rootDir": "src",
+        "baseUrl": ".",
+        "types": ["node", "vite/client"],
+        "target": "esnext",
+        "useDefineForClassFields": true,
+        "module": "esnext",
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "esModuleInterop": true
     },
-    "rootDir": "./src",
-    "baseUrl": ".",
-    "types": ["node", "vite/client"],
-    "target": "esnext",
-    "useDefineForClassFields": true,
-    "module": "esnext",
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "esModuleInterop": true
-  },
-  "include": ["src/**/*.ts", "env.d.ts", "src/**/*", "src/**/*.vue"],
-  "exclude": ["node_modules"],
-  "references": [
-    {
-      "path": "./tsconfig.config.json"
-    }
-  ]
+    "include": ["src/**/*.ts", "src/**/*", "src/**/*.vue"],
+    "exclude": ["node_modules"],
+    "references": [
+        {
+            "path": "./tsconfig.config.json"
+        }
+    ]
 }

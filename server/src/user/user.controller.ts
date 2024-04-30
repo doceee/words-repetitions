@@ -7,16 +7,16 @@ import { User } from '@prisma/client';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userRepository: UserRepository) {}
+    constructor(private readonly userRepository: UserRepository) {}
 
-  @Get('me')
-  getMe(@GetUser() user: User) {
-    return user;
-  }
+    @Get('me')
+    getMe(@GetUser() user: User) {
+        return user;
+    }
 
-  @UseGuards(LoggedInGuard)
-  @Patch()
-  editUser(@GetUser('id') userId: string, @Body() dto: EditUserDto) {
-    return this.userRepository.editUser(userId, dto);
-  }
+    @UseGuards(LoggedInGuard)
+    @Patch()
+    editUser(@GetUser('id') userId: string, @Body() dto: EditUserDto) {
+        return this.userRepository.editUser(userId, dto);
+    }
 }

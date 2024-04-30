@@ -9,16 +9,16 @@ import { RedisClientModule } from './redis/redis-client.module';
 import config from './config';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [config],
-    }),
-    AuthModule,
-    UserModule,
-    WordModule,
-    PrismaModule,
-    RedisClientModule,
-  ],
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            load: [config]
+        }),
+        AuthModule,
+        UserModule,
+        WordModule,
+        PrismaModule,
+        RedisClientModule
+    ]
 })
 export class AppModule {}

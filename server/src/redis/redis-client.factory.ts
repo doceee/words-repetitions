@@ -3,14 +3,17 @@ import { createClient } from 'redis';
 
 @Injectable()
 export class RedisClientService {
-  async create(url: string) {
-    const client = createClient({
-      url,
-      legacyMode: true,
-    });
+    async create(port: number, host: string) {
+        const client = createClient({
+            socket: {
+                port,
+                host
+            },
+            legacyMode: true
+        });
 
-    await client.connect();
+        await client.connect();
 
-    return client;
-  }
+        return client;
+    }
 }

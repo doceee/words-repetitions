@@ -10,11 +10,11 @@ import { createApp } from 'vue';
 import VueToast, { POSITION, type PluginOptions } from 'vue-toastification';
 
 export const options: PluginOptions = {
-  position: POSITION.BOTTOM_RIGHT,
-  hideProgressBar: true,
-  maxToasts: 3,
-  icon: false,
-  timeout: 3000
+    position: POSITION.BOTTOM_RIGHT,
+    hideProgressBar: true,
+    maxToasts: 3,
+    icon: false,
+    timeout: 3000
 };
 
 const app = createApp(App);

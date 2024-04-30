@@ -1,7 +1,7 @@
 <template>
-  <the-spinner />
+    <v-spinner />
 </template>
 
 <script lang="ts" setup>
-import TheSpinner from '@/components/TheSpinner.vue';
+import VSpinner from '@/components/atoms/VSpinner.vue';
 </script>
