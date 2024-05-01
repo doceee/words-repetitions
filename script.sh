@@ -1,17 +1,28 @@
 #!/bin/bash
 
-TARGET="/var/www/words-repetitions"
+git pull
 
 buildFrontend() {
+FRONTEND_BUILD="/home/deploy/apps/words-repetitions/frontend/dist/*"
+TARGET="/var/www/words-repetitions"
+
 cd frontend
+
+if [ "$1" == "true" ]; then
+    npm install
+fi
 
 npm run build-only
 
-rsync -a --remove-source-files ./frontend/dist* $TARGET
+rsync -a --remove-source-files $FRONTEND_BUILD $TARGET
 }
 
 buildBackend() {
 cd backend
+
+if [ "$1" == "true" ]; then
+    npm install
+fi
 
 npm run build
 }
@@ -32,9 +43,7 @@ case "$opt" in
 		break
 		;;
 	"build frontend and install dependencies")
-		cd frontend;
-		npm install;
-		buildFrontend;
+		buildFrontend "true";
 		break
 		;;
 	"build backend")
@@ -42,9 +51,7 @@ case "$opt" in
 		break
 		;;
 	"build backend and install dependencies")
-		cd backend;
-		npm install;
-		buildBackend;
+		buildBackend "true";
 		break
 		;;
 esac
