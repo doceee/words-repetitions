@@ -57,7 +57,9 @@ export class WordService {
 
             return translations;
         } catch (error) {
-            throw error;
+            console.error(error);
+
+            return [];
         }
     }
 }

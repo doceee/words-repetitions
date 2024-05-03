@@ -10,11 +10,12 @@
                     class="relative mx-[10px] flex flex-1 items-center justify-center sm:ml-0"
                 >
                     <form
-                        class="h-[35px] w-full sm:w-[219px]"
+                        class="h-[35px] w-[219px] sm:w-[260px]"
                         @submit.prevent="submitSearch"
                     >
                         <input
                             v-model="text"
+                            placeholder="Wyszukaj po angielsku..."
                             class="bg-purple-white h-[35px] w-full rounded border-0 border-gray-300 shadow-md focus:outline-none focus:ring-blue-600"
                         />
                         <magnifying-glass-icon
@@ -56,7 +57,6 @@ import {
     MagnifyingGlassIcon,
     ArrowRightOnRectangleIcon
 } from '@heroicons/vue/20/solid';
-
 import VButton from '@/components/atoms/VButton.vue';
 import { useAuthStore } from '@/store/modules/auth';
 import { useWordsStore } from '@/store/modules/words';
