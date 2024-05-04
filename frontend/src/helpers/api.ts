@@ -16,6 +16,12 @@ axios.interceptors.response.use(
         }
 
         if (error.response && error.response.status === 401) {
+            const { responseURL = '' } = error.response.request;
+
+            if (responseURL.includes('login')) {
+                throw error;
+            }
+
             window.location.href = `${publicPath}login`;
         }
 
