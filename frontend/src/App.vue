@@ -28,7 +28,7 @@ const checkLayout = () => {
         meta: { layout = 'default', authRequired = false }
     } = route;
 
-    if (!isValidated.value || (authRequired && !isLoggedIn)) {
+    if (!isValidated.value || (authRequired && !isLoggedIn.value)) {
         return;
     }
 
