@@ -20,9 +20,9 @@ axios.interceptors.response.use(
 
             if (responseURL.includes('login')) {
                 throw error;
+            } else {
+                window.location.href = `${publicPath}login`;
             }
-
-            window.location.href = `${publicPath}login`;
         }
 
         throw error;
