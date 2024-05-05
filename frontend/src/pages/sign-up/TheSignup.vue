@@ -1,59 +1,59 @@
 <template>
-  <div
-    class="mx-auto mb-[24px] mt-[30px] max-w-[267px] sm:mt-[32px] sm:w-full sm:max-w-full"
-  >
-    <h2
-      class="mt-[16px] text-center text-2xl font-semibold leading-8 text-gray-700 dark:text-gray-200 sm:mt-5 sm:text-4xl sm:font-medium"
+    <div
+        class="mx-auto mb-[24px] mt-[30px] max-w-[267px] sm:mt-[32px] sm:w-full sm:max-w-full"
     >
-      Rejestracja
-    </h2>
-  </div>
-  <form
-    class="mx-auto flex max-w-[400px] flex-col gap-4"
-    @submit.prevent="onSubmit"
-  >
-    <div class="mt-[4px]">
-      <the-input
-        id="email"
-        v-model="email"
-        label="Email"
-        placeholder="jan.kowalski@gmail.com"
-        required
-        type="email"
-        :error="getError('email')"
-        @input="clearError('email')"
-      />
-      <the-input
-        id="password"
-        v-model="password"
-        placeholder="************"
-        required
-        label="Hasło"
-        type="password"
-        :error="getError('password')"
-        @input="clearError('password')"
-      />
-      <the-input
-        id="passwordRepeat"
-        v-model="passwordRepeat"
-        placeholder="************"
-        required
-        label="Powtórz hasło"
-        type="password"
-        :error="getError('passwordRepeat')"
-        @input="clearError('passwordRepeat')"
-      />
+        <h2
+            class="mt-[16px] text-center text-2xl font-semibold leading-8 text-gray-700 sm:mt-5 sm:text-4xl sm:font-medium"
+        >
+            Rejestracja
+        </h2>
     </div>
-
-    <the-button type="submit" class="mt-1" :is-disabled="isProcessing"
-      >Zarejestruj</the-button
+    <form
+        class="mx-auto flex max-w-[400px] flex-col gap-4"
+        @submit.prevent="onSubmit"
     >
-  </form>
+        <div class="mt-[4px]">
+            <v-input
+                id="email"
+                v-model="email"
+                label="Email"
+                placeholder="jan.kowalski@gmail.com"
+                required
+                type="email"
+                :error="getError('email')"
+                @input="clearError('email')"
+            />
+            <v-input
+                id="password"
+                v-model="password"
+                placeholder="************"
+                required
+                label="Hasło"
+                type="password"
+                :error="getError('password')"
+                @input="clearError('password')"
+            />
+            <v-input
+                id="passwordRepeat"
+                v-model="passwordRepeat"
+                placeholder="************"
+                required
+                label="Powtórz hasło"
+                type="password"
+                :error="getError('passwordRepeat')"
+                @input="clearError('passwordRepeat')"
+            />
+        </div>
 
-  <p class="mb-8 mt-[16px] text-right text-sm text-gray-600 dark:text-gray-300">
-    Masz konto?
-    <the-button to="/login" link>Logowanie</the-button>
-  </p>
+        <v-button type="submit" class="mt-1" :is-disabled="isProcessing"
+            >Zarejestruj</v-button
+        >
+    </form>
+
+    <p class="mb-8 mt-[16px] text-right text-sm text-gray-600">
+        Masz konto?
+        <v-button to="/login" link>Logowanie</v-button>
+    </p>
 </template>
 
 <script lang="ts" setup>
@@ -62,12 +62,12 @@ import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useVuelidate } from '@vuelidate/core';
 import { sameAs, helpers } from '@vuelidate/validators';
-import TheInput from '@/components/TheInput.vue';
-import TheButton from '@/components/TheButton.vue';
+import VInput from '@/components/atoms/VInput.vue';
+import VButton from '@/components/atoms/VButton.vue';
 import { useAuthStore } from '@/store/modules/auth';
 import {
-  password as passwordRules,
-  email as emailRules
+    password as passwordRules,
+    email as emailRules
 } from '@/helpers/validationRules';
 import type { ServerError } from '@/types/auth';
 
@@ -77,78 +77,82 @@ const passwordRepeat = ref('');
 const isProcessing = ref(false);
 const serverErrors = ref<ServerError[]>([]);
 const rules = computed(() => ({
-  email: emailRules,
-  password: passwordRules,
-  passwordRepeat: {
-    sameAsPassword: helpers.withMessage(
-      `Hasła różnią się od siebie.`,
-      sameAs(password)
-    )
-  }
+    email: emailRules,
+    password: passwordRules,
+    passwordRepeat: {
+        sameAsPassword: helpers.withMessage(
+            `Hasła różnią się od siebie.`,
+            sameAs(password)
+        )
+    }
 }));
 const authStore = useAuthStore();
 const v$ = useVuelidate(rules, { email, password, passwordRepeat });
 const router = useRouter();
 
 const onSubmit = async () => {
-  v$.value.$validate();
-  clearError();
+    v$.value.$validate();
+    clearError();
 
-  if (v$.value.$invalid) {
-    return;
-  }
-
-  isProcessing.value = true;
-
-  try {
-    await authStore.register({
-      email: email.value,
-      password: password.value,
-      passwordRepeat: passwordRepeat.value
-    });
-
-    router.push({
-      name: 'dashboard'
-    });
-  } catch (error) {
-    console.error(error);
-
-    if (error instanceof AxiosError) {
-      const { response } = error;
-
-      if (response) {
-        const {
-          status,
-          data: { errors }
-        } = response;
-
-        if (status === 400 && errors) {
-          serverErrors.value = errors;
-
-          return;
-        }
-      }
+    if (v$.value.$invalid) {
+        return;
     }
-  } finally {
-    isProcessing.value = false;
-  }
+
+    isProcessing.value = true;
+
+    try {
+        await authStore.register({
+            email: email.value,
+            password: password.value,
+            passwordRepeat: passwordRepeat.value
+        });
+
+        router.push({
+            name: 'dashboard'
+        });
+    } catch (error) {
+        console.error(error);
+
+        if (error instanceof AxiosError) {
+            const { response } = error;
+
+            if (response) {
+                const {
+                    status,
+                    data: { errors }
+                } = response;
+
+                if (status === 400 && errors) {
+                    serverErrors.value = errors;
+
+                    return;
+                }
+            }
+        }
+    } finally {
+        isProcessing.value = false;
+    }
 };
 
 const getError = (key: string) => {
-  if (serverErrors.value.some(item => item.param === key)) {
-    return serverErrors.value.find(item => item.param === key)?.msg;
-  }
+    if (serverErrors.value.some(item => item.param === key)) {
+        return serverErrors.value.find(item => item.param === key)?.msg;
+    }
 
-  return v$.value[key].$errors.length ? v$.value[key].$errors[0].$message : '';
+    return v$.value[key].$errors.length
+        ? v$.value[key].$errors[0].$message
+        : '';
 };
 
 const clearError = (key?: string) => {
-  if (key && serverErrors.value.some(item => item.param === key)) {
-    serverErrors.value = serverErrors.value.filter(item => item.param !== key);
+    if (key && serverErrors.value.some(item => item.param === key)) {
+        serverErrors.value = serverErrors.value.filter(
+            item => item.param !== key
+        );
 
-    return;
-  }
+        return;
+    }
 
-  serverErrors.value = [];
+    serverErrors.value = [];
 };
 </script>

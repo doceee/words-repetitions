@@ -3,67 +3,70 @@ import { defineStore } from 'pinia';
 import type { IWord, IWordState } from '@/types/word';
 
 export const useWordsStore = defineStore('words', {
-  state: (): IWordState => {
-    return {
-      words: [],
-      isProcessing: false,
-      searchResults: [],
-      searchText: ''
-    };
-  },
-
-  actions: {
-    async getWords(): Promise<IWord[]> {
-      this.words = await axios.get(`/words`);
-
-      return this.words;
+    state: (): IWordState => {
+        return {
+            words: [],
+            isProcessing: false,
+            searchResults: [],
+            searchText: ''
+        };
     },
 
-    async destroy(wordId: string) {
-      const wordIndex = this.words.findIndex(item => item.id === wordId);
+    actions: {
+        async getWords(): Promise<IWord[]> {
+            this.words = await axios.get(`/words`);
 
-      await axios.delete(`/words/${wordId}`);
+            return this.words;
+        },
 
-      this.words.splice(wordIndex, 1);
-    },
+        async destroy(wordId: string) {
+            const wordIndex = this.words.findIndex(item => item.id === wordId);
 
-    async addWord(word: string, translation: string): Promise<IWord> {
-      const data: IWord = await axios.post(`/words`, { word, translation });
+            await axios.delete(`/words/${wordId}`);
 
-      this.words.push(data);
+            this.words.splice(wordIndex, 1);
+        },
 
-      return data;
-    },
+        async addWord(word: string, translation: string): Promise<IWord> {
+            const data: IWord = await axios.post(`/words`, {
+                word,
+                translation
+            });
 
-    async editWord(
-      word: string,
-      translation: string,
-      id: string
-    ): Promise<void> {
-      const data: IWord = await axios.put(`/words/${id}`, {
-        word,
-        translation
-      });
+            this.words.push(data);
 
-      const wordId = this.words.findIndex(item => item.id === id);
+            return data;
+        },
 
-      this.words.splice(wordId, 1, data);
-    },
+        async editWord(
+            word: string,
+            translation: string,
+            id: string
+        ): Promise<void> {
+            const data: IWord = await axios.put(`/words/${id}`, {
+                word,
+                translation
+            });
 
-    async searchWords(): Promise<void> {
-      this.isProcessing = true;
+            const wordId = this.words.findIndex(item => item.id === id);
 
-      try {
-        this.searchResults = await axios.get(
-          `/words/search/${this.searchText}`
-        );
-      } finally {
-        this.isProcessing = false;
-      }
-    },
+            this.words.splice(wordId, 1, data);
+        },
 
-    setSearchText(text: string) {
-      this.searchText = text;
+        async searchWords(): Promise<void> {
+            this.isProcessing = true;
+
+            try {
+                this.searchResults = await axios.get(
+                    `/words/search/${this.searchText}`
+                );
+            } finally {
+                this.isProcessing = false;
+            }
+        },
+
+        setSearchText(text: string) {
+            this.searchText = text;
+        }
     }
-  }
 });

@@ -4,41 +4,41 @@ import { routes } from './routes';
 import { useAuthStore } from '@/store/modules/auth';
 
 const router = createRouter({
-  history: createWebHistory(config.publicPath),
-  routes
+    history: createWebHistory(config.publicPath),
+    routes
 });
 
 router.beforeEach(async (routeTo, routeFrom, next) => {
-  const authRequired = routeTo.matched.some(route => route.meta.authRequired);
-  const guestOnly = routeTo.matched.some(route => route.meta.guestOnly);
+    const authRequired = routeTo.matched.some(route => route.meta.authRequired);
+    const guestOnly = routeTo.matched.some(route => route.meta.guestOnly);
 
-  if (!authRequired && !guestOnly) {
+    if (!authRequired && !guestOnly) {
+        return next();
+    }
+
+    const { isLoggedIn } = useAuthStore();
+
+    if (authRequired && !isLoggedIn) {
+        return redirectToLogin();
+    }
+
+    if (guestOnly) {
+        return isLoggedIn ? redirectToDashboard() : next();
+    }
+
     return next();
-  }
 
-  const { isLoggedIn } = useAuthStore();
+    function redirectToLogin() {
+        next({ name: 'login' });
+    }
 
-  if (authRequired && !isLoggedIn) {
-    return redirectToLogin();
-  }
-
-  if (guestOnly) {
-    return isLoggedIn ? redirectToDashboard() : next();
-  }
-
-  return next();
-
-  function redirectToLogin() {
-    next({ name: 'login' });
-  }
-
-  function redirectToDashboard() {
-    next({ name: 'dashboard' });
-  }
+    function redirectToDashboard() {
+        next({ name: 'dashboard' });
+    }
 });
 
 router.afterEach(to => {
-  document.title = `${to?.meta?.title || 'Powtórki słówek'}`;
+    document.title = `${to?.meta?.title || 'Powtórki słówek'}`;
 });
 
 export default router;

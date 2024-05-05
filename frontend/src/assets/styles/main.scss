@@ -1,37 +1,37 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
-  position: relative;
-  font-weight: normal;
+    box-sizing: border-box;
+    position: relative;
+    font-weight: normal;
 }
 
 @font-face {
-  font-family: 'Lato', sans-serif;
-  src: url('../fonts/Lato-Font.ttf') format('truetype');
+    font-family: 'Lato', sans-serif;
+    src: url('../fonts/Lato-Font.ttf') format('truetype');
 }
 
 html {
-  font-family: 'Lato', sans-serif;
+    font-family: 'Lato', sans-serif;
 }
 
 body {
-  background-color: #f5f5f5;
-  color-scheme: light;
+    background-color: #f5f5f5;
+    color-scheme: light;
 
-  &.dark {
-    background-color: #111827;
-    color-scheme: dark;
-    color: white;
-  }
+    &.dark {
+        background-color: #111827;
+        color-scheme: dark;
+        color: white;
+    }
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 input[type='number'] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }
