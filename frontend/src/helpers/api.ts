@@ -1,7 +1,9 @@
 import axios, { AxiosError } from 'axios';
 import { config } from '@/config';
 
-const { apiUrl, publicPath } = config;xios.defaults.baseURL = apiUrl;
+const { apiUrl, publicPath } = config;
+
+axios.defaults.baseURL = apiUrl;
 axios.defaults.withCredentials = true;
 
 axios.interceptors.response.use(
