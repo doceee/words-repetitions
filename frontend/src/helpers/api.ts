@@ -10,8 +10,10 @@ axios.interceptors.response.use(
     ({ data }) => data,
     error => {
         console.error(error);
+        console.error('!start');
 
         if (!(error instanceof AxiosError)) {
+            console.error('!AxiosError');
             throw error;
         }
 
@@ -27,6 +29,7 @@ axios.interceptors.response.use(
             }
         }
 
+        console.error('!end');
         throw error;
     }
 );
