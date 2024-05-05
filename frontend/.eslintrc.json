@@ -1,10 +1,14 @@
 {
-    "plugins": ["@typescript-eslint"],
+    "plugins": [
+        "@typescript-eslint"
+    ],
     "root": true,
     "parserOptions": {
         "ecmaVersion": "latest",
         "parser": "@typescript-eslint/parser",
-        "extraFileExtensions": [".vue"],
+        "extraFileExtensions": [
+            ".vue"
+        ],
         "requireConfigFile": false
     },
     "extends": [
@@ -16,11 +20,24 @@
         "plugin:import/typescript",
         "prettier"
     ],
-    "ignorePatterns": ["src/types/**/*"],
+    "ignorePatterns": [
+        "src/types/**/*"
+    ],
+    "prettier/prettier": [
+        "error",
+        {
+            "endOfLine": "auto"
+        }
+    ],
     "rules": {
         "no-plusplus": "off",
-        "import/order": ["off"],
-        "vue/component-name-in-template-casing": ["error", "kebab-case"],
+        "import/order": [
+            "off"
+        ],
+        "vue/component-name-in-template-casing": [
+            "error",
+            "kebab-case"
+        ],
         "no-unused-vars": [
             "error",
             {
@@ -29,23 +46,38 @@
                 "ignoreRestSiblings": true
             }
         ],
-        "vue/max-attributes-per-line": ["off"],
-        "vue/html-self-closing": ["off"],
-        "vue/no-v-html": ["off"],
+        "vue/max-attributes-per-line": [
+            "off"
+        ],
+        "vue/html-self-closing": [
+            "off"
+        ],
+        "vue/no-v-html": [
+            "off"
+        ],
         "vue/order-in-components": 2,
         "vue/singleline-html-element-content-newline": "off",
         "vue/multiline-html-element-content-newline": "off",
-        "vue/custom-event-name-casing": ["error", "kebab-case"],
+        "vue/custom-event-name-casing": [
+            "error",
+            "kebab-case"
+        ],
         "no-console": [
             "error",
             {
-                "allow": ["error", "warn", "info"]
+                "allow": [
+                    "error",
+                    "warn",
+                    "info"
+                ]
             }
         ]
     },
     "overrides": [
         {
-            "files": ["src/**/*"],
+            "files": [
+                "src/**/*"
+            ],
             "parserOptions": {
                 "parser": "@typescript-eslint/parser",
                 "sourceType": "module"

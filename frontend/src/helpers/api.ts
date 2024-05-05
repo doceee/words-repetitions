@@ -19,8 +19,10 @@ axios.interceptors.response.use(
             const { responseURL = '' } = error.response.request;
 
             if (responseURL.slice(config.apiUrl.length + 1).includes('login')) {
+                console.error('includes');
                 throw error;
             } else {
+                console.error('window location');
                 window.location.href = `${publicPath}login`;
             }
         }
