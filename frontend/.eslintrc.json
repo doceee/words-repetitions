@@ -4,6 +4,8 @@
     ],
     "root": true,
     "parserOptions": {
+        "project": "tsconfig.json",
+        "tsconfigRootDir": "./",
         "ecmaVersion": "latest",
         "parser": "@typescript-eslint/parser",
         "extraFileExtensions": [
@@ -23,13 +25,13 @@
     "ignorePatterns": [
         "src/types/**/*"
     ],
-    "prettier/prettier": [
-        "error",
-        {
-            "endOfLine": "auto"
-        }
-    ],
     "rules": {
+        "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "auto"
+            }
+        ],
         "no-plusplus": "off",
         "import/order": [
             "off"
@@ -79,6 +81,7 @@
                 "src/**/*"
             ],
             "parserOptions": {
+                "project": "**/tsconfig.json",
                 "parser": "@typescript-eslint/parser",
                 "sourceType": "module"
             },

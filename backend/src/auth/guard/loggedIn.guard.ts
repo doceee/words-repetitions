@@ -13,15 +13,15 @@ export class LoggedInGuard {
         const request = context.switchToHttp().getRequest();
 
         const {
-            session: { user },
+            session: { user: userId },
             headers: { uid }
         } = request;
 
-        if (!user || !uid || uid !== user) {
+        if (!userId || !uid || uid !== userId) {
             throw new UnauthorizedException();
         }
 
-        const loggedUser = await this.userRepository.getById(user);
+        const loggedUser = await this.userRepository.getById(userId);
 
         if (!loggedUser) {
             throw new UnauthorizedException();

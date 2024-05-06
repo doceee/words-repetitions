@@ -1,16 +1,11 @@
 <template>
     <div class="my-[20px] w-full">
         <div v-if="currentIndex < words.length">
-            <h3
-                class="mb-2 mt-10 text-center text-lg font-medium text-gray-900"
-            >
-                Słówko {{ `${currentIndex + 1}/${words.length}` }}
-            </h3>
-            <p
-                class="mx-auto my-5 max-w-fit rounded-lg border-2 border-gray-200 bg-white p-5 font-bold text-gray-800"
-            >
-                {{ displayedText }}
-            </p>
+            <displayed-word
+                :current-index="currentIndex"
+                :displayed-text="displayedText"
+                :words-length="wordList.length"
+            />
 
             <form @submit.prevent="handleIncrement">
                 <v-input
@@ -41,11 +36,11 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { ref, computed } from 'vue';
-
 import VInput from '@/components/atoms/VInput.vue';
 import VButton from '@/components/atoms/VButton.vue';
 import { useWordsStore } from '@/store/modules/words';
 import { shuffleArray } from '@/helpers/shuffleArray';
+import DisplayedWord from '@/components/atoms/DisplayedWord.vue';
 
 const currentIndex = ref(0);
 const currentValue = ref('');

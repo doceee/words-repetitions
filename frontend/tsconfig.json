@@ -2,11 +2,16 @@
     "extends": "@vue/tsconfig/tsconfig.dom.json",
     "compilerOptions": {
         "paths": {
-            "@/*": ["src/*"]
+            "@/*": [
+                "src/*"
+            ]
         },
         "rootDir": "src",
         "baseUrl": ".",
-        "types": ["node", "vite/client"],
+        "types": [
+            "node",
+            "vite/client"
+        ],
         "target": "esnext",
         "useDefineForClassFields": true,
         "module": "esnext",
@@ -16,8 +21,14 @@
         "sourceMap": true,
         "esModuleInterop": true
     },
-    "include": ["src/**/*.ts", "src/**/*", "src/**/*.vue"],
-    "exclude": ["node_modules"],
+    "include": [
+        "src/**/*.ts",
+        "src/**/*",
+        "src/**/*.vue"
+    ],
+    "exclude": [
+        "node_modules"
+    ],
     "references": [
         {
             "path": "./tsconfig.config.json"

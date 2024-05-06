@@ -6,7 +6,7 @@
                 <button
                     class="inline-block rounded-[10px] border-[3px] bg-blue-500 px-3 py-1 text-white disabled:opacity-50"
                     :class="{
-                        'bg-blue-700': pill.text === activePill
+                        underline: pill.text === activePill
                     }"
                     :disabled="isPillDisabled(pill.text)"
                     @click="setPill(pill.text)"
@@ -26,13 +26,13 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { onMounted, ref } from 'vue';
+import { toast } from '@/helpers/toast';
 import VSpinner from '@/components/atoms/VSpinner.vue';
 import { useWordsStore } from '@/store/modules/words';
 import WordList from '@/components/molecules/dashboard/WordList.vue';
 import TrueFalse from '@/components/molecules/dashboard/TrueFalse.vue';
 import WordRevision from '@/components/molecules/dashboard/WordRevision.vue';
 import FillWord from '@/components/molecules/dashboard/FillWord.vue';
-import { toast } from '@/helpers/toast';
 
 const isProcessing = ref(false);
 const wordsStore = useWordsStore();
