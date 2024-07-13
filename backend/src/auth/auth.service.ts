@@ -19,6 +19,8 @@ export class AuthService {
 
             return user;
         } catch (error) {
+            console.error(error);
+
             throw new UnauthorizedException();
         }
     }
