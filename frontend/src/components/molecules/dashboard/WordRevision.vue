@@ -1,35 +1,29 @@
 <template>
-    <div class="my-[20px] w-full">
-        <div v-if="currentIndex < words.length">
-            <displayed-word
-                :current-index="currentIndex"
-                :displayed-text="displayedText"
-                :words-length="wordList.length"
+    <div v-if="currentIndex < words.length">
+        <displayed-word
+            :current-index="currentIndex"
+            :displayed-text="displayedText"
+            :words-length="wordList.length"
+        />
+
+        <form @submit.prevent="handleIncrement">
+            <v-input
+                v-model="currentValue"
+                class="mx-auto w-full max-w-[400px]"
             />
 
-            <form @submit.prevent="handleIncrement">
-                <v-input
-                    v-model="currentValue"
-                    class="mx-auto w-full max-w-[400px]"
-                />
-
-                <v-button type="submit" class="mx-auto">
-                    {{
-                        currentIndex === words.length - 1
-                            ? 'Zakończ'
-                            : 'Następne'
-                    }}
-                </v-button>
-            </form>
-        </div>
-        <div v-else>
-            <h2
-                class="mx-auto mb-3 mt-14 max-w-fit rounded-lg border-2 border-gray-800 bg-white p-5 font-bold text-gray-800"
-            >
-                Wynik: {{ `${score}/${words.length}` }}
-            </h2>
-            <v-button class="mx-auto" @click="reset"> Jeszcze raz? </v-button>
-        </div>
+            <v-button type="submit" class="mx-auto">
+                {{ currentIndex === words.length - 1 ? 'Zakończ' : 'Następne' }}
+            </v-button>
+        </form>
+    </div>
+    <div v-else>
+        <h2
+            class="mx-auto mb-3 mt-14 max-w-fit rounded-lg border-2 border-gray-800 bg-white p-5 font-bold text-gray-800"
+        >
+            Wynik: {{ `${score}/${words.length}` }}
+        </h2>
+        <v-button class="mx-auto" @click="reset"> Jeszcze raz? </v-button>
     </div>
 </template>
 
