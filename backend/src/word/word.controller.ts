@@ -15,7 +15,7 @@ import { LoggedInGuard } from '../auth/guard';
 import { WordRepository } from './word.repository';
 import { GetUser } from '../auth/decorator';
 import { CreateWordDto, EditWordDto } from './dto';
-import { WordService } from './word.service';
+import { GoogleSearchWordService } from './google.search.word.service';
 import { ValidationError } from 'class-validator';
 import { BadRequestException } from '../exceptions/bad.request.exception';
 
@@ -24,7 +24,7 @@ import { BadRequestException } from '../exceptions/bad.request.exception';
 export class WordController {
     constructor(
         private wordRepository: WordRepository,
-        private wordService: WordService
+        private googleSearchWordService: GoogleSearchWordService
     ) {}
 
     @Get()
@@ -39,7 +39,7 @@ export class WordController {
 
     @Get('search/:text')
     searchWord(@GetUser('id') userId: string, @Param('text') text: string) {
-        return this.wordService.searchWord(text, userId);
+        return this.googleSearchWordService.handle(text, userId);
     }
 
     @Post()

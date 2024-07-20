@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { PrismaService } from '../database/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateWordDto, EditWordDto } from './dto';
 
 @Injectable()
@@ -59,7 +59,7 @@ export class WordRepository {
         });
 
         if (!word || word.userId !== userId)
-            throw new ForbiddenException('Access to resources denied');
+            throw new ForbiddenException('Dostęp zabroniony');
 
         return this.prisma.word.update({
             where: {

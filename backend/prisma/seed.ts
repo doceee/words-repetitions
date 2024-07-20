@@ -12,7 +12,7 @@ const seedDb = async () => {
         await prisma.user.deleteMany();
 
         const password = 'test1234';
-        const assignedWords = 10;
+        const assignedWords = 5;
 
         const hash = await argon.hash(password);
         const user = await prisma.user.create({
@@ -20,9 +20,6 @@ const seedDb = async () => {
         });
         const user2 = await prisma.user.create({
             data: { hash, email: 'user2@gmail.com' }
-        });
-        await prisma.user.create({
-            data: { hash, email: 'admin@admin.com.test' }
         });
         const promise = [user, user2].map(async item => {
             for (let i = 0; i < assignedWords; i++) {

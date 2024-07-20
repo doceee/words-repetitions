@@ -1,13 +1,12 @@
 import helmet from 'helmet';
-import * as session from 'express-session';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from './filters/global-exception.filter';
-import { RedisClientService } from './redis/redis-client.factory';
-import { RedisStoreService } from './redis/redis-store.factory';
 import { useContainer } from 'class-validator';
+import { useSession } from './plugins/session';
+import { useCors } from './plugins/cors';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -15,29 +14,8 @@ async function bootstrap() {
     useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
     const configService = app.get(ConfigService);
-    const redisStoreService = app.get(RedisStoreService);
-    const redisClientService = app.get(RedisClientService);
-    const redisClient = await redisClientService.create(
-        configService.get('redisSession.port'),
-        configService.get('redisSession.host')
-    );
 
-    app.use(
-        session({
-            store: redisStoreService.create(redisClient),
-            secret: configService.get('sessionSecret'),
-            name: 'sid',
-            resave: false,
-            saveUninitialized: false,
-            rolling: true,
-            cookie: {
-                maxAge: 3600 * 1000,
-                secure:
-                    configService.get('isProduction') &&
-                    configService.get('appUrl').startsWith('https')
-            }
-        })
-    );
+    await useSession(app);
 
     app.setGlobalPrefix('api');
 
@@ -46,10 +24,7 @@ async function bootstrap() {
     app.set('trust proxy', true);
     app.use(helmet());
 
-    app.enableCors({
-        origin: [configService.get('frontendUrl'), configService.get('cmsUrl')],
-        credentials: true
-    });
+    useCors(app);
 
     await app.listen(configService.get('appPort'));
 }

@@ -60,7 +60,7 @@ export class AuthService {
         );
 
         if (!isPasswordMatching) {
-            throw new Error('Credentials incorrect');
+            throw new Error('Nieprawidłowe dane uwierzytelniające');
         }
     }
 }

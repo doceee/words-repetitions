@@ -3,9 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { WordModule } from './word/word.module';
-import { PrismaModule } from './database/prisma.module';
-import { RedisClientModule } from './redis/redis-client.module';
-
+import { PrismaModule } from './prisma/prisma.module';
 import config from './config';
 
 @Module({
@@ -17,8 +15,7 @@ import config from './config';
         AuthModule,
         UserModule,
         WordModule,
-        PrismaModule,
-        RedisClientModule
+        PrismaModule
     ]
 })
 export class AppModule {}

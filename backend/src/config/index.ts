@@ -11,6 +11,6 @@ export default () => ({
     redisSession: {
         port: process.env.REDIS_SESSION_PORT,
         host: process.env.REDIS_SESSION_HOST,
-        user: process.env.REDIS_SESSION_USER
+        password: process.env.REDIS_SESSION_PASS
     }
 });
