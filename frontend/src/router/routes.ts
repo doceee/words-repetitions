@@ -38,5 +38,14 @@ export const routes: RouteRecordRaw[] = [
             title: 'Wyszukiwanie',
             authRequired: true
         }
+    },
+    {
+        path: '/profile',
+        name: 'profile',
+        component: () => import('@/pages/profile/TheProfile.vue'),
+        meta: {
+            title: 'Profil',
+            authRequired: true
+        }
     }
 ];

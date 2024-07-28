@@ -1,36 +1,61 @@
 <template>
-    <div
-        class="flex h-[55px] w-full border-b-[1px] border-gray-300 bg-white transition-[width] ease-in-out sm:grid sm:grid-cols-[90px_auto_90px]"
-    >
-        <div class="hidden sm:block" />
-
+    <div class="h-[55px] w-full bg-white">
         <div
-            class="relative mx-[10px] flex flex-1 items-center justify-center sm:ml-0"
+            class="h-full w-full transition-[width] ease-in-out sm:grid sm:grid-cols-[90px_auto_90px] mx-auto max-w-4xl"
         >
-            <form
-                class="h-[35px] w-[219px] sm:w-[260px]"
-                @submit.prevent="submitSearch"
-            >
-                <input
-                    v-model="text"
-                    type="text"
-                    placeholder="Wyszukaj po angielsku..."
-                    class="h-[35px] w-full rounded border border-gray-300 focus:outline-none focus:ring-blue-600"
-                />
-                <magnifying-glass-icon
-                    class="text-purple-lighter absolute right-0 top-[6px] mr-4 h-[20px] hover:cursor-pointer"
-                    @click="submitSearch"
-                />
-            </form>
-        </div>
+            <div class="hidden sm:block" />
 
-        <v-button
-            class="mr-[8px] block h-[35px] self-center"
-            @click="handleLogout"
-        >
-            <span class="hidden sm:inline">Wyloguj</span>
-            <arrow-right-on-rectangle-icon class="block h-[20px] sm:hidden" />
-        </v-button>
+            <div
+                class="relative mx-[10px] flex flex-1 items-center justify-center sm:ml-0"
+            >
+                <form
+                    class="h-[35px] w-[219px] sm:w-[260px]"
+                    @submit.prevent="submitSearch"
+                >
+                    <input
+                        v-model="text"
+                        type="text"
+                        placeholder="Wyszukaj po angielsku..."
+                        class="h-[35px] w-full rounded border border-gray-300 focus:outline-none focus:ring-blue-600"
+                    />
+                    <magnifying-glass-icon
+                        class="absolute right-0 top-[6px] mr-4 h-[20px] hover:cursor-pointer"
+                        @click="submitSearch"
+                    />
+                </form>
+            </div>
+
+            <popover class="relative mr-[8px] grid h-[35px] self-center">
+                <popover-button
+                    class="justify-self-end hover:bg-gray-200 p-1 rounded-md"
+                >
+                    <user-circle-icon class="h-[25px] hover:cursor-pointer" />
+                </popover-button>
+                <popover-panel
+                    class="absolute shadow-md border-[1px] rounded-md bg-white p-2 top-[40px] right-0 z-10"
+                    v-slot="{ close }"
+                >
+                    <ul class="flex-wrap justify-center" @click="close">
+                        <li
+                            class="w-full font-normal hover:bg-gray-200 cursor-pointer rounded-md"
+                        >
+                            <router-link
+                                class="w-full h-full block px-2 py-[3px]"
+                                to="/profile"
+                            >
+                                Profil
+                            </router-link>
+                        </li>
+                        <button
+                            class="w-full px-2 py-[3px] font-normal hover:bg-gray-200 cursor-pointer rounded-md"
+                            @click="handleLogout"
+                        >
+                            Wyloguj
+                        </button>
+                    </ul>
+                </popover-panel>
+            </popover>
+        </div>
     </div>
 </template>
 
@@ -38,13 +63,16 @@
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
-import {
-    MagnifyingGlassIcon,
-    ArrowRightOnRectangleIcon
-} from '@heroicons/vue/20/solid';
-import VButton from '@/components/atoms/VButton.vue';
+import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
+import { UserCircleIcon } from '@heroicons/vue/24/outline';
 import { useAuthStore } from '@/store/modules/auth';
 import { useWordsStore } from '@/store/modules/words';
+import {
+    Popover,
+    PopoverButton,
+    PopoverOverlay,
+    PopoverPanel
+} from '@headlessui/vue';
 
 const wordsStore = useWordsStore();
 const authStore = useAuthStore();
