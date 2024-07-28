@@ -13,6 +13,10 @@ export class AuthService {
         try {
             const user = await this.userRepository.getByEmail(dto.email);
 
+            if (!user) {
+                throw new UnauthorizedException();
+            }
+
             await this.verifyPassword(dto.password, user.hash);
 
             delete user.hash;
@@ -60,7 +64,7 @@ export class AuthService {
         );
 
         if (!isPasswordMatching) {
-            throw new Error('Nieprawidłowe dane uwierzytelniające');
+            throw new UnauthorizedException();
         }
     }
 }

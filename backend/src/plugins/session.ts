@@ -18,7 +18,6 @@ export const useSession = async (app: NestExpressApplication) => {
 
     try {
         await redisClient.connect();
-        console.log('test');
     } catch (error) {
         throw Error(error);
     }

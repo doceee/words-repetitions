@@ -11,7 +11,9 @@ import { useCors } from './plugins/cors';
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-    useContainer(app.select(AppModule), { fallbackOnErrors: true });
+    useContainer(app.select(AppModule), {
+        fallbackOnErrors: true
+    });
 
     const configService = app.get(ConfigService);
 
@@ -23,7 +25,6 @@ async function bootstrap() {
 
     app.set('trust proxy', true);
     app.use(helmet());
-
     useCors(app);
 
     await app.listen(configService.get('appPort'));
