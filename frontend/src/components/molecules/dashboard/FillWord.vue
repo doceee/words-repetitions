@@ -1,23 +1,25 @@
 <template>
-    <div v-if="currentIndex < wordList.length" class="my-[8px]">
-        <displayed-word
-            :current-index="currentIndex"
-            :displayed-text="displayedText"
-            :words-length="wordList.length"
-        />
+    <div>
+        <div v-if="currentIndex < wordList.length" class="my-[8px]">
+            <displayed-word
+                :current-index="currentIndex"
+                :displayed-text="displayedText"
+                :words-length="wordList.length"
+            />
 
-        <input
-            id="answer"
-            v-model="currentValue"
-            class="mx-auto block w-full max-w-[400px] rounded-md border border-gray-300 focus:ring-gray-600"
-            :class="inputClass"
-            placeholder="Tłumaczenie"
-            @input="handleInput"
-        />
-    </div>
-    <div v-else>
-        <div class="mx-auto my-10 flex justify-center">
-            <v-button @click="reset"> Jeszcze raz? </v-button>
+            <input
+                id="answer"
+                v-model="currentValue"
+                class="mx-auto block w-full max-w-[400px] rounded-md border border-gray-300 focus:ring-gray-600"
+                :class="inputClass"
+                placeholder="Tłumaczenie"
+                @input="handleInput"
+            />
+        </div>
+        <div v-else>
+            <div class="mx-auto my-10 flex justify-center">
+                <v-button @click="reset"> Jeszcze raz? </v-button>
+            </div>
         </div>
     </div>
 </template>

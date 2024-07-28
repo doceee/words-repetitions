@@ -17,7 +17,7 @@
 
             <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
                 <div
-                    class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
+                    class="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0"
                 >
                     <transition-child
                         as="template"
@@ -32,50 +32,38 @@
                             class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
                         >
                             <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="w-full sm:flex sm:items-start">
-                                    <div
-                                        class="text-center sm:ml-4 sm:mt-0 sm:text-left"
+                                <div class="text-center sm:text-left">
+                                    <dialog-title
+                                        as="h3"
+                                        class="text-base font-semibold leading-6 text-gray-900"
                                     >
-                                        <dialog-title
-                                            as="h3"
-                                            class="text-base font-semibold leading-6 text-gray-900"
+                                        {{ wordId ? 'Edytuj' : 'Dodaj' }}
+                                        słówko
+                                    </dialog-title>
+                                    <div class="mt-2">
+                                        <form
+                                            class="flex w-full flex-col sm:grid sm:grid-cols-[auto_auto] sm:gap-4"
+                                            @keydown.enter.prevent="onSubmit"
                                         >
-                                            {{ wordId ? 'Edytuj' : 'Dodaj' }}
-                                            słówko
-                                        </dialog-title>
-                                        <div class="mt-2">
-                                            <form
-                                                class="flex w-full flex-col sm:grid sm:grid-cols-[auto_auto] sm:gap-4"
-                                                @keydown.enter.prevent="
-                                                    onSubmit
+                                            <v-input
+                                                id="word"
+                                                v-model="formData.word"
+                                                required
+                                                label="Słówko"
+                                                :error="getError('word')"
+                                                @input="clearError('word')"
+                                            />
+                                            <v-input
+                                                id="translation"
+                                                v-model="formData.translation"
+                                                required
+                                                label="Tłumaczenie"
+                                                :error="getError('translation')"
+                                                @input="
+                                                    clearError('translation')
                                                 "
-                                            >
-                                                <v-input
-                                                    id="word"
-                                                    v-model="formData.word"
-                                                    required
-                                                    label="Słówko"
-                                                    :error="getError('word')"
-                                                    @input="clearError('word')"
-                                                />
-                                                <v-input
-                                                    id="translation"
-                                                    v-model="
-                                                        formData.translation
-                                                    "
-                                                    required
-                                                    label="Tłumaczenie"
-                                                    :error="
-                                                        getError('translation')
-                                                    "
-                                                    @input="
-                                                        clearError(
-                                                            'translation'
-                                                        )
-                                                    "
-                                                />
-                                            </form>
-                                        </div>
+                                            />
+                                        </form>
                                     </div>
                                 </div>
                             </div>

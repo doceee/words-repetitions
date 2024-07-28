@@ -22,7 +22,7 @@ const props = withDefaults(
         isDisabled?: boolean;
         link?: boolean;
         to?: string;
-        buttonType?: 'normal' | 'danger' | 'success';
+        buttonType?: 'normal' | 'success';
     }>(),
     {
         isProcessing: false,
@@ -43,8 +43,6 @@ const classes = computed(() => ({
     'inline-flex': link.value,
     'justify-center rounded-md px-3 py-2 text-sm  shadow-sm ring-1 ring-inset ring-gray-300 sm:mt-0 sm:w-auto':
         !link.value,
-    'bg-red-600 text-white hover:bg-red-500':
-        buttonType.value === 'danger' && !link.value,
     'bg-white text-gray-900 hover:bg-gray-50':
         buttonType.value === 'normal' && !link.value,
     'bg-green-600 text-white hover:bg-green-500':

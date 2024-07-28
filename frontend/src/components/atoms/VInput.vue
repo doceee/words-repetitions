@@ -26,15 +26,6 @@
                 @blur="onBlur"
                 @focus="onFocus"
             />
-            <div
-                v-if="error"
-                class="pointer-events-none absolute inset-y-0 right-[5px] flex items-center"
-            >
-                <exclamation-circle-icon
-                    class="h-5 w-5 text-red-400"
-                    aria-hidden="true"
-                />
-            </div>
         </div>
         <p v-if="error" class="text-xs leading-5 text-red-400">
             {{ error }}
@@ -44,7 +35,6 @@
 
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue';
-import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
 
 const props = withDefaults(
     defineProps<{
@@ -62,7 +52,7 @@ const props = withDefaults(
         modelValue: '',
         error: '',
         placeholder: '',
-        id: Math.random().toString(36).substring(2),
+        id: Math.random().toString(36),
         type: 'text',
         required: false,
         disabled: false,

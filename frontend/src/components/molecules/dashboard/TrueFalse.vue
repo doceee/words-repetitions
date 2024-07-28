@@ -1,22 +1,26 @@
 <template>
-    <div v-if="currentIndex < words.length">
-        <displayed-word
-            :current-index="currentIndex"
-            :displayed-text="displayedText"
-            :words-length="wordList.length"
-        />
+    <div>
+        <div v-if="currentIndex < words.length">
+            <displayed-word
+                :current-index="currentIndex"
+                :displayed-text="displayedText"
+                :words-length="wordList.length"
+            />
 
-        <true-false-switch v-model="currentValue" class="my-8" />
+            <true-false-switch v-model="currentValue" class="my-8" />
 
-        <v-button class="mx-auto" @click="handleIncrement">Następne</v-button>
-    </div>
-    <div v-else>
-        <h2
-            class="mx-auto mb-3 mt-14 max-w-fit rounded-lg border-2 border-gray-800 bg-white p-5 font-bold text-gray-800"
-        >
-            Wynik: {{ `${score}/${words.length}` }}
-        </h2>
-        <v-button class="mx-auto" @click="reset"> Jeszcze raz? </v-button>
+            <v-button class="mx-auto" @click="handleIncrement"
+                >Następne</v-button
+            >
+        </div>
+        <div v-else>
+            <h2
+                class="mx-auto mb-3 mt-14 max-w-fit rounded-lg border-2 border-gray-800 bg-white p-5 font-bold text-gray-800"
+            >
+                Wynik: {{ `${score}/${words.length}` }}
+            </h2>
+            <v-button class="mx-auto" @click="reset"> Jeszcze raz? </v-button>
+        </div>
     </div>
 </template>
 
