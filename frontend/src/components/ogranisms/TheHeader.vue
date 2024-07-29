@@ -1,7 +1,7 @@
 <template>
     <div class="h-[55px] w-full bg-white">
         <div
-            class="h-full w-full transition-[width] ease-in-out sm:grid sm:grid-cols-[90px_auto_90px] mx-auto max-w-4xl"
+            class="mx-auto h-full w-full max-w-4xl transition-[width] ease-in-out sm:grid sm:grid-cols-[90px_auto_90px]"
         >
             <div class="hidden sm:block" />
 
@@ -27,27 +27,27 @@
 
             <popover class="relative mr-[8px] grid h-[35px] self-center">
                 <popover-button
-                    class="justify-self-end hover:bg-gray-200 p-1 rounded-md"
+                    class="justify-self-end rounded-md p-1 hover:bg-gray-200"
                 >
                     <user-circle-icon class="h-[25px] hover:cursor-pointer" />
                 </popover-button>
                 <popover-panel
-                    class="absolute shadow-md border-[1px] rounded-md bg-white p-2 top-[40px] right-0 z-10"
+                    class="absolute right-0 top-[40px] z-10 rounded-md border-[1px] bg-white p-2 shadow-md"
                     v-slot="{ close }"
                 >
                     <ul class="flex-wrap justify-center" @click="close">
                         <li
-                            class="w-full font-normal hover:bg-gray-200 cursor-pointer rounded-md"
+                            class="w-full cursor-pointer rounded-md font-normal hover:bg-gray-200"
                         >
                             <router-link
-                                class="w-full h-full block px-2 py-[3px]"
+                                class="block h-full w-full px-2 py-[3px]"
                                 to="/profile"
                             >
                                 Profil
                             </router-link>
                         </li>
                         <button
-                            class="w-full px-2 py-[3px] font-normal hover:bg-gray-200 cursor-pointer rounded-md"
+                            class="w-full cursor-pointer rounded-md px-2 py-[3px] font-normal hover:bg-gray-200"
                             @click="handleLogout"
                         >
                             Wyloguj
@@ -67,12 +67,7 @@ import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
 import { UserCircleIcon } from '@heroicons/vue/24/outline';
 import { useAuthStore } from '@/store/modules/auth';
 import { useWordsStore } from '@/store/modules/words';
-import {
-    Popover,
-    PopoverButton,
-    PopoverOverlay,
-    PopoverPanel
-} from '@headlessui/vue';
+import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
 
 const wordsStore = useWordsStore();
 const authStore = useAuthStore();

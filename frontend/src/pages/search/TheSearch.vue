@@ -1,13 +1,14 @@
 <template>
     <v-spinner v-if="isProcessing" />
     <div v-else>
-        <router-link class="flex items-center hover:cursor-pointer" to="/">
-            <arrow-left-icon class="mr-[8px] h-[18px] text-gray-800" /> powrót
-        </router-link>
+        <nav-link to="/" />
 
         <ul class="my-3 flex w-full flex-col">
             <h5 class="mb-[44px] ml-[10px] mt-[12px]">
-                Wyniki wyszukiwania dla: <i>{{ searchText }}</i>
+                Wyniki wyszukiwania dla:
+                <i>
+                    {{ searchText }}
+                </i>
             </h5>
             <li
                 v-for="result in searchResults"
@@ -34,14 +35,11 @@
 import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
-import {
-    ArrowLeftIcon,
-    PlusCircleIcon,
-    MinusCircleIcon
-} from '@heroicons/vue/20/solid';
+import { PlusCircleIcon, MinusCircleIcon } from '@heroicons/vue/20/solid';
 import VSpinner from '@/components/atoms/VSpinner.vue';
 import { useWordsStore } from '@/store/modules/words';
 import { toast } from '@/helpers/toast';
+import NavLink from '@/components/atoms/NavLink.vue';
 import type { IWord } from '@/types/word';
 
 const router = useRouter();
