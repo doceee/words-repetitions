@@ -1,15 +1,17 @@
 <template>
     <div
-        class="fixed left-0 top-0 z-[39] h-[100vh] w-[100vw] bg-gray-400 opacity-20"
-        @click="onClose"
-    />
-
-    <div
         id="drawer-navigation"
-        class="absolute right-0 top-0 z-40 h-screen w-64 overflow-y-auto bg-white px-[18px] pt-[6px] dark:bg-gray-800"
+        class="absolute right-0 top-0 z-40 h-screen w-64 overflow-y-auto bg-white px-[18px] pt-[6px]"
         tabindex="-1"
         aria-labelledby="drawer-navigation-label"
     >
+        <teleport to="body">
+            <div
+                class="fixed left-0 top-0 z-[39] h-[100vh] w-[100vw] bg-gray-400 opacity-40"
+                @click="onClose"
+            />
+        </teleport>
+
         <button
             type="button"
             class="ml-auto block items-center rounded-lg bg-transparent p-1.5 text-sm hover:bg-gray-200"
@@ -38,6 +40,7 @@
 import {
     XMarkIcon,
     UserIcon,
+    HomeIcon,
     ArrowRightOnRectangleIcon
 } from '@heroicons/vue/20/solid';
 import SidebarNavItem from '@/components/atoms/SidebarNavItem.vue';
@@ -61,6 +64,7 @@ const handleLogout = async () => {
 };
 
 const navItemList = [
+    { text: 'Strona główna', icon: HomeIcon, to: '/', click: onClose },
     { text: 'Profil', icon: UserIcon, to: '/profile', click: onClose },
     { text: 'Wyloguj', icon: ArrowRightOnRectangleIcon, click: handleLogout }
 ];
