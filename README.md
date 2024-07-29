@@ -1,6 +1,6 @@
 ## App
 
-### To run app locally
+### Run app locally
 
 #### Client
 

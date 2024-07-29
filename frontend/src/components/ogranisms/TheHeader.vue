@@ -1,15 +1,15 @@
 <template>
-    <div class="h-[55px] w-full bg-white">
+    <div class="w-full bg-white">
         <div
-            class="mx-auto h-full w-full max-w-4xl transition-[width] ease-in-out sm:grid sm:grid-cols-[90px_auto_90px]"
+            class="relative mx-auto h-full w-full max-w-4xl ease-in-out sm:grid sm:grid-cols-[90px_auto_90px]"
         >
             <div class="hidden sm:block" />
 
             <div
-                class="relative mx-[10px] flex flex-1 items-center justify-center sm:ml-0"
+                class="relative mx-[10px] flex flex-1 items-center justify-center py-[7px] sm:ml-0"
             >
                 <form
-                    class="h-[35px] w-[219px] sm:w-[260px]"
+                    class="w-[219px] sm:w-[260px]"
                     @submit.prevent="submitSearch"
                 >
                     <input
@@ -25,36 +25,19 @@
                 </form>
             </div>
 
-            <popover class="relative mr-[8px] grid h-[35px] self-center">
-                <popover-button
-                    class="justify-self-end rounded-md p-1 hover:bg-gray-200"
+            <div class="mr-[18px] grid self-center">
+                <button
+                    type="button"
+                    data-drawer-hide="drawer-navigation"
+                    aria-controls="drawer-navigation"
+                    class="ml-auto inline-flex w-min items-center rounded-lg bg-transparent p-1.5 text-sm hover:bg-gray-200"
+                    @click="isSidebarOpen = !isSidebarOpen"
                 >
-                    <user-circle-icon class="h-[25px] hover:cursor-pointer" />
-                </popover-button>
-                <popover-panel
-                    class="absolute right-0 top-[40px] z-10 rounded-md border-[1px] bg-white p-2 shadow-md"
-                    v-slot="{ close }"
-                >
-                    <ul class="flex-wrap justify-center" @click="close">
-                        <li
-                            class="w-full cursor-pointer rounded-md font-normal hover:bg-gray-200"
-                        >
-                            <router-link
-                                class="block h-full w-full px-2 py-[3px]"
-                                to="/profile"
-                            >
-                                Profil
-                            </router-link>
-                        </li>
-                        <button
-                            class="w-full cursor-pointer rounded-md px-2 py-[3px] font-normal hover:bg-gray-200"
-                            @click="handleLogout"
-                        >
-                            Wyloguj
-                        </button>
-                    </ul>
-                </popover-panel>
-            </popover>
+                    <bars3-icon class="ml-auto h-[25px]" />
+                </button>
+            </div>
+
+            <the-sidebar v-if="isSidebarOpen" @close="isSidebarOpen = false" />
         </div>
     </div>
 </template>
@@ -62,16 +45,16 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useRouter } from 'vue-router';
-import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
-import { UserCircleIcon } from '@heroicons/vue/24/outline';
-import { useAuthStore } from '@/store/modules/auth';
+
+import { MagnifyingGlassIcon, Bars3Icon } from '@heroicons/vue/20/solid';
 import { useWordsStore } from '@/store/modules/words';
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
+import TheSidebar from '@/components/ogranisms/TheSidebar.vue';
+import { useRouter } from 'vue-router';
 
 const wordsStore = useWordsStore();
-const authStore = useAuthStore();
 const router = useRouter();
+
+const isSidebarOpen = ref(false);
 const text = ref('');
 
 const { searchText } = storeToRefs(wordsStore);
@@ -95,16 +78,6 @@ const submitSearch = () => {
     }
 
     searchWords();
-};
-
-const handleLogout = async () => {
-    try {
-        await authStore.logout();
-
-        router.push({ name: 'login' });
-    } catch (error) {
-        console.error(error);
-    }
 };
 
 const searchWords = async () => {

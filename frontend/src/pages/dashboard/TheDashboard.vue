@@ -2,16 +2,16 @@
     <v-spinner v-if="isProcessing" />
     <div v-else>
         <ul class="my-3 flex w-full flex-wrap justify-center">
-            <li v-for="(pill, index) in pills" :key="pill.text" class="mr-3">
+            <li v-for="(com, index) in components" :key="com.text" class="mr-3">
                 <button
                     class="inline-block rounded-[10px] border-[3px] bg-blue-500 px-3 py-1 text-white disabled:opacity-50"
                     :class="{
-                        underline: pill.text === currentPill
+                        underline: com.text === currentPill
                     }"
-                    :disabled="isPillDisabled(pill.text)"
-                    @click="setPill(pill.text, index)"
+                    :disabled="isPillDisabled(com.text)"
+                    @click="setPill(com.text, index)"
                 >
-                    {{ pill.label }}
+                    {{ com.label }}
                 </button>
             </li>
         </ul>
@@ -29,7 +29,7 @@
             >
                 <component
                     :key="currentPillIndex"
-                    :is="components[currentPill]"
+                    :is="components[currentPill][currentPill]"
                 />
             </transition>
         </the-container>
@@ -50,14 +50,17 @@ import TheContainer from '@/components/molecules/dashboard/TheContainer.vue';
 const isProcessing = ref(false);
 const wordsStore = useWordsStore();
 const { words } = storeToRefs(wordsStore);
-const components = { WordList, TrueFalse, WordRevision, FillWord };
+const components = {
+    WordList: { WordList, text: 'WordList', label: 'Lista słówek' },
+    TrueFalse: { TrueFalse, text: 'TrueFalse', label: 'Prawda/Fałsz' },
+    WordRevision: {
+        WordRevision,
+        text: 'WordRevision',
+        label: 'Powtórka słówek'
+    },
+    FillWord: { FillWord, text: 'FillWord', label: 'Uzupełnianie słówek' }
+};
 
-const pills = ref([
-    { text: 'WordList', label: 'Lista słówek' },
-    { text: 'TrueFalse', label: 'Prawda/Fałsz' },
-    { text: 'WordRevision', label: 'Powtórka słówek' },
-    { text: 'FillWord', label: 'Uzupełnianie słówek' }
-]);
 const currentPill = ref('WordList');
 let forward = ref(true);
 let currentPillIndex = ref(0);
