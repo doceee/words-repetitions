@@ -45,18 +45,16 @@
                                 @input="clearError('translation')"
                             />
                         </form>
-                        <div
-                            class="flex justify-between sm:flex sm:flex-row-reverse"
-                        >
+                        <div class="flex justify-between sm:flex">
+                            <v-button @click="$emit('close')">
+                                Anuluj
+                            </v-button>
                             <v-button
                                 :is-disabled="!isFormChanged"
                                 button-type="success"
                                 @click="onSubmit"
                             >
                                 Potwierdź
-                            </v-button>
-                            <v-button @click="$emit('close')">
-                                Anuluj
                             </v-button>
                         </div>
                     </div>

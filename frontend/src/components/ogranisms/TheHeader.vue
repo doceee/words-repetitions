@@ -1,15 +1,15 @@
 <template>
     <div class="w-full bg-white">
         <div
-            class="relative mx-auto h-full w-full max-w-4xl ease-in-out sm:grid sm:grid-cols-[90px_auto_90px]"
+            class="relative mx-auto grid h-full w-full max-w-4xl grid-cols-[50px_auto_50px] ease-in-out sm:grid-cols-[90px_auto_90px]"
         >
-            <div class="hidden sm:block" />
+            <div />
 
             <div
                 class="relative mx-[10px] flex flex-1 items-center justify-center py-[7px] sm:ml-0"
             >
                 <form
-                    class="w-[219px] sm:w-[260px]"
+                    class="w-[212px] sm:w-[260px]"
                     @submit.prevent="submitSearch"
                 >
                     <input
@@ -19,7 +19,7 @@
                         class="h-[35px] w-full rounded border border-gray-300 focus:outline-none focus:ring-blue-600"
                     />
                     <magnifying-glass-icon
-                        class="absolute right-0 top-[6px] mr-4 h-[20px] hover:cursor-pointer"
+                        class="absolute right-0 top-[6px] mr-[8px] h-[20px] hover:cursor-pointer"
                         @click="submitSearch"
                     />
                 </form>
