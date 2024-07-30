@@ -8,6 +8,7 @@ export interface IWord {
 export interface IWordState {
     words: IWord[];
     isProcessing: boolean;
+    isFetched: boolean;
     searchResults: IWord[];
     searchText: string;
 }

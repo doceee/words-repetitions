@@ -31,6 +31,15 @@ export const routes: RouteRecordRaw[] = [
         }
     },
     {
+        path: '/reviews',
+        name: 'reviews',
+        component: () => import('@/pages/reviews/TheReviews.vue'),
+        meta: {
+            title: 'Powtórki',
+            authRequired: true
+        }
+    },
+    {
         path: '/search',
         name: 'search',
         component: () => import('@/pages/search/TheSearch.vue'),

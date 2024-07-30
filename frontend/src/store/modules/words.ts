@@ -7,6 +7,7 @@ export const useWordsStore = defineStore('words', {
         return {
             words: [],
             isProcessing: false,
+            isFetched: false,
             searchResults: [],
             searchText: ''
         };
@@ -14,7 +15,21 @@ export const useWordsStore = defineStore('words', {
 
     actions: {
         async getWords(): Promise<IWord[]> {
-            this.words = await axios.get(`/words`);
+            if (this.isFetched) {
+                return this.words;
+            }
+
+            this.isProcessing = true;
+
+            try {
+                this.words = await axios.get(`/words`);
+
+                this.isFetched = true;
+            } catch (error) {
+                console.error(error);
+            } finally {
+                this.isProcessing = false;
+            }
 
             return this.words;
         },
@@ -60,6 +75,8 @@ export const useWordsStore = defineStore('words', {
                 this.searchResults = await axios.get(
                     `/words/search/${this.searchText}`
                 );
+            } catch (error) {
+                console.error(error);
             } finally {
                 this.isProcessing = false;
             }

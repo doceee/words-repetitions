@@ -9,14 +9,14 @@
         ></div>
 
         <div class="absolute max-h-full max-w-full overflow-y-auto">
-            <div class="container overflow-hidden rounded-md bg-white">
+            <div class="container rounded-md bg-white">
                 <div
-                    class="flex select-none items-center justify-between border-b bg-gray-100 px-4 py-2 text-center text-sm font-medium leading-none sm:text-left"
+                    class="text-md flex select-none items-center justify-between rounded-t-md border-b bg-gray-100 px-4 py-2 text-center font-medium leading-none sm:text-left"
                 >
                     <h3> {{ wordId ? 'Edytuj' : 'Dodaj' }} słówko </h3>
                     <button
                         @click="$emit('close')"
-                        class="text-2xl hover:text-gray-600"
+                        class="text-3xl hover:text-gray-600"
                     >
                         &#215;
                     </button>

@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { MagnifyingGlassIcon, Bars3Icon } from '@heroicons/vue/20/solid';
@@ -60,11 +60,10 @@ const text = ref('');
 const { searchText } = storeToRefs(wordsStore);
 
 const submitSearch = () => {
-    if (text.value.length < 2) return;
-
     if (
-        searchText.value === text.value &&
-        router.currentRoute.value.name === 'search'
+        text.value.length < 2 ||
+        (searchText.value === text.value &&
+            router.currentRoute.value.name === 'search')
     ) {
         return;
     }
@@ -80,11 +79,13 @@ const submitSearch = () => {
     searchWords();
 };
 
-const searchWords = async () => {
-    try {
-        await wordsStore.searchWords();
-    } catch (error) {
-        console.error(error);
-    }
+const searchWords = () => {
+    wordsStore.searchWords();
 };
+
+watch(searchText, val => {
+    if (!val) {
+        text.value = '';
+    }
+});
 </script>

@@ -28,7 +28,6 @@
                     :key="item.text"
                     :to="item.to"
                     :text="item.text"
-                    :icon="item.icon"
                     @click="item.click"
                 />
             </ul>
@@ -37,12 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-    XMarkIcon,
-    UserIcon,
-    HomeIcon,
-    ArrowRightOnRectangleIcon
-} from '@heroicons/vue/20/solid';
+import { XMarkIcon } from '@heroicons/vue/20/solid';
 import SidebarNavItem from '@/components/atoms/SidebarNavItem.vue';
 import { useAuthStore } from '@/store/modules/auth';
 import { useRouter } from 'vue-router';
@@ -64,8 +58,9 @@ const handleLogout = async () => {
 };
 
 const navItemList = [
-    { text: 'Strona główna', icon: HomeIcon, to: '/', click: onClose },
-    { text: 'Profil', icon: UserIcon, to: '/profile', click: onClose },
-    { text: 'Wyloguj', icon: ArrowRightOnRectangleIcon, click: handleLogout }
+    { text: 'Strona główna', to: '/', click: onClose },
+    { text: 'Powtórki', to: '/reviews', click: onClose },
+    { text: 'Profil', to: '/profile', click: onClose },
+    { text: 'Wyloguj', click: handleLogout }
 ];
 </script>

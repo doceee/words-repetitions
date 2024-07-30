@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 import { PlusCircleIcon, MinusCircleIcon } from '@heroicons/vue/20/solid';
@@ -94,4 +94,6 @@ onMounted(async () => {
         console.error(error);
     }
 });
+
+onUnmounted(() => wordsStore.setSearchText(''));
 </script>

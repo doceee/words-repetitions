@@ -4,9 +4,8 @@
             :is="componentType"
             :to="to"
             class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100"
-            :class="{ 'block w-full text-start': !props.to }"
+            :class="{ 'block w-full text-start': !props.to, 'nav-item': to }"
         >
-            <component :is="icon" class="h-5 w-5 flex-shrink-0" />
             <span class="ms-3 flex-1 whitespace-nowrap group-hover:underline">
                 {{ text }}
             </span>
@@ -15,13 +14,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, type FunctionalComponent } from 'vue';
+import { computed } from 'vue';
 
 const props = withDefaults(
     defineProps<{
         to?: string;
         text: string;
-        icon: FunctionalComponent;
     }>(),
     {
         to: ''

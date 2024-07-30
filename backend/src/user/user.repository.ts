@@ -3,13 +3,12 @@ import * as argon from 'argon2';
 
 import { EditUserDto } from './dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { User } from '@prisma/client';
 
 @Injectable()
 export class UserRepository {
     constructor(private readonly prisma: PrismaService) {}
 
-    async getByEmail(email: string): Promise<User | null> {
+    async getByEmail(email: string) {
         return this.prisma.user.findUnique({
             where: { email }
         });
@@ -49,7 +48,7 @@ export class UserRepository {
         return user;
     }
 
-    async getAllUsers(): Promise<User[]> {
+    async getAllUsers() {
         return this.prisma.user.findMany();
     }
 }
