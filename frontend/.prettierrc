@@ -8,5 +8,7 @@
     "jsxBracketSameLine": false,
     "proseWrap": "never",
     "htmlWhitespaceSensitivity": "strict",
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "plugins": ["prettier-plugin-tailwindcss"],
+    "tailwindConfig": "./tailwind.config.js"
 }
