@@ -16,10 +16,5 @@
   "bugs": {
     "url": "https://github.com/doceee/words-repetitions/issues"
   },
-  "homepage": "https://github.com/doceee/words-repetitions#readme",
-  "devDependencies": {
-    "eslint-config-prettier": "^9.0.0",
-    "prettier": "^3.0.2",
-    "prettier-plugin-tailwindcss": "^0.5.10"
-  }
+  "homepage": "https://github.com/doceee/words-repetitions#readme"
 }
