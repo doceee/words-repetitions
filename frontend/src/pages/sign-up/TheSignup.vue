@@ -117,13 +117,10 @@ const onSubmit = async () => {
             const { response } = error;
 
             if (response) {
-                const {
-                    status,
-                    data: { errors }
-                } = response;
+                const { status, data } = response;
 
-                if (status === 400 && errors) {
-                    serverErrors.value = errors;
+                if (status === 400 && data) {
+                    serverErrors.value = [response.data];
 
                     return;
                 }

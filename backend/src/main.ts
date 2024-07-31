@@ -1,33 +1,33 @@
-import helmet from 'helmet';
+import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { HttpExceptionFilter } from './filters/global-exception.filter';
-import { useContainer } from 'class-validator';
-import { useSession } from './plugins/session';
-import { useCors } from './plugins/cors';
+import { useCors } from '@/plugins/cors';
+import { AppModule } from '@/modules/app.module';
+import { useValidationPipe } from '@/plugins/validationPipe';
+import { useSession } from '@/plugins/session';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-    useContainer(app.select(AppModule), {
-        fallbackOnErrors: true
-    });
-
-    const configService = app.get(ConfigService);
+    useCors(app);
+    useValidationPipe(app);
 
     await useSession(app);
 
     app.setGlobalPrefix('api');
 
-    app.useGlobalFilters(new HttpExceptionFilter());
+    const port = app.get(ConfigService).get('app.port');
 
-    app.set('trust proxy', true);
-    app.use(helmet());
-    useCors(app);
+    await app.listen(port);
 
-    await app.listen(configService.get('appPort'));
+    process.on('SIGTERM', async () => {
+        await app.close();
+    });
+
+    process.on('SIGINT', async () => {
+        await app.close();
+    });
 }
 
 bootstrap();

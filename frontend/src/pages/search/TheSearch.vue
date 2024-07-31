@@ -19,7 +19,7 @@
                 <minus-circle-icon
                     v-if="result.id"
                     class="h-[30px] w-[25px] rounded-lg p-[4px] text-red-600 hover:cursor-pointer hover:bg-gray-200"
-                    @click="handleDeleteWord(result.id)"
+                    @click="handleRemoveWord(result.id)"
                 />
                 <plus-circle-icon
                     v-else
@@ -46,9 +46,9 @@ const router = useRouter();
 const wordsStore = useWordsStore();
 const { isProcessing, searchResults, searchText } = storeToRefs(wordsStore);
 
-const handleDeleteWord = async (wordId: string) => {
+const handleRemoveWord = async (wordId: string) => {
     try {
-        await wordsStore.destroy(wordId);
+        await wordsStore.remove(wordId);
 
         const resultIndex = searchResults.value.findIndex(
             item => item.id === wordId

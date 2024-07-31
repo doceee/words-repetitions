@@ -27,5 +27,10 @@ module.exports = {
                 endOfLine: 'auto'
             }
         ]
+    },
+    settings: {
+        'import/resolver': {
+            typescript: {}
+        }
     }
 };

@@ -3,7 +3,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 export const useCors = (app: NestExpressApplication) => {
     const configService = app.get(ConfigService);
-    const whitelist = [configService.get('frontendUrl')];
+    const whitelist = [configService.get('app.frontendUrl')];
 
     app.enableCors({
         origin: function (origin, callback) {

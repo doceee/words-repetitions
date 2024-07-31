@@ -25,7 +25,7 @@
                 />
                 <trash-icon
                     class="h-[25px] w-[25px] rounded-lg p-[4px] text-red-600 hover:cursor-pointer hover:bg-gray-200"
-                    @click="deleteWord(id)"
+                    @click="handleRemoveWord(id)"
                 />
             </li>
         </ul>
@@ -47,9 +47,9 @@ const selectedWordId = ref('');
 
 const { words } = storeToRefs(wordsStore);
 
-const deleteWord = async (wordId: string) => {
+const handleRemoveWord = async (wordId: string) => {
     try {
-        await wordsStore.destroy(wordId);
+        await wordsStore.remove(wordId);
 
         toast('Słówko usunięte', 'success');
     } catch (error) {

@@ -1,10 +1,9 @@
-import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import * as connectRedis from 'connect-redis';
 import * as expressSession from 'express-session';
 import { createClient } from 'redis';
 
-export const useSession = async (app: NestExpressApplication) => {
+export const useSession = async app => {
     const configService = app.get(ConfigService);
     const oneHour = 3600 * 1000 * 1;
     const redisClient = createClient({
@@ -14,6 +13,14 @@ export const useSession = async (app: NestExpressApplication) => {
             'redisSession.port'
         )}`,
         legacyMode: true
+    });
+
+    redisClient.on('connect', () => {
+        console.info('Redis Client connected');
+    });
+
+    redisClient.on('error', err => {
+        console.info('Redis Client Error: ' + err.message);
     });
 
     try {
@@ -28,7 +35,7 @@ export const useSession = async (app: NestExpressApplication) => {
     app.use(
         expressSession({
             store,
-            secret: configService.get('sessionSecret'),
+            secret: configService.get('session.secret'),
             name: 'token',
             resave: false,
             saveUninitialized: false,
@@ -36,8 +43,8 @@ export const useSession = async (app: NestExpressApplication) => {
             cookie: {
                 maxAge: oneHour,
                 secure:
-                    configService.get('isProduction') &&
-                    configService.get('appUrl').startsWith('https')
+                    configService.get('app.isProd') &&
+                    configService.get('app.appUrl').startsWith('https')
             }
         })
     );

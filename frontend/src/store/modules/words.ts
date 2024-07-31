@@ -34,10 +34,10 @@ export const useWordsStore = defineStore('words', {
             return this.words;
         },
 
-        async destroy(wordId: string) {
+        async remove(wordId: string) {
             const wordIndex = this.words.findIndex(item => item.id === wordId);
 
-            await axios.delete(`/words/${wordId}`);
+            await axios.post(`/words/${wordId}`);
 
             this.words.splice(wordIndex, 1);
         },
