@@ -4,14 +4,18 @@
         <page-header title="Powtórki" />
 
         <ul class="my-3 flex w-full flex-wrap justify-center">
-            <li v-for="(com, index) in components" :key="com.text" class="mr-3">
+            <li
+                v-for="(com, name, index) in components"
+                :key="name"
+                class="mr-3"
+            >
                 <button
                     class="inline-block rounded-[10px] border-[3px] bg-blue-500 px-3 py-1 text-white disabled:opacity-50"
                     :class="{
-                        underline: com.text === currentPill
+                        underline: name === currentPill
                     }"
                     :disabled="!words.length"
-                    @click="setPill(com.text, index)"
+                    @click="setPill(name, index)"
                 >
                     {{ com.label }}
                 </button>
@@ -33,19 +37,16 @@
             >
                 <component
                     :key="currentPillIndex"
-                    :is="components[currentPill][currentPill]"
+                    :is="components[currentPill].component"
                 />
             </transition>
         </the-container>
     </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue';
+<script setup lang="ts">
+import { ref, onMounted, defineAsyncComponent } from 'vue';
 import VSpinner from '@/components/atoms/VSpinner.vue';
-import TrueFalse from '@/components/molecules/reviews/TrueFalse.vue';
-import WordRevision from '@/components/molecules/reviews/WordRevision.vue';
-import FillWord from '@/components/molecules/reviews/FillWord.vue';
 import TheContainer from '@/components/molecules/TheContainer.vue';
 import PageHeader from '@/components/atoms/PageHeader.vue';
 
@@ -55,21 +56,33 @@ import { useWordsStore } from '@/store/modules/words';
 const wordsStore = useWordsStore();
 
 const { words } = storeToRefs(wordsStore);
+
 const components = {
-    TrueFalse: { TrueFalse, text: 'TrueFalse', label: 'Prawda/Fałsz' },
+    TrueFalse: {
+        component: defineAsyncComponent(
+            () => import('../../components/molecules/reviews/TrueFalse.vue')
+        ),
+        label: 'Prawda/Fałsz'
+    },
     WordRevision: {
-        WordRevision,
-        text: 'WordRevision',
+        component: defineAsyncComponent(
+            () => import('../../components/molecules/reviews/WordRevision.vue')
+        ),
         label: 'Powtórka słówek'
     },
-    FillWord: { FillWord, text: 'FillWord', label: 'Uzupełnianie słówek' }
+    FillWord: {
+        component: defineAsyncComponent(
+            () => import('../../components/molecules/reviews/FillWord.vue')
+        ),
+        label: 'Uzupełnianie słówek'
+    }
 };
 
-const currentPill = ref('TrueFalse');
+const currentPill = ref<keyof typeof components>('TrueFalse');
 let forward = ref(true);
 let currentPillIndex = ref(0);
 
-const setPill = (pill, pillIndex) => {
+const setPill = (pill: keyof typeof components, pillIndex: number) => {
     forward.value = pillIndex > currentPillIndex.value;
     currentPillIndex.value = pillIndex;
     currentPill.value = pill;

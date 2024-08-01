@@ -8,7 +8,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted } from 'vue';
 import VSpinner from '@/components/atoms/VSpinner.vue';
 import { useWordsStore } from '@/store/modules/words';
