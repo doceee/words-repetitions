@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { RegisterDto } from '../../dto/Auth/RegisterDto';
+import { RegisterDto } from '../../dto/auth/RegisterDto';
 import { UserRepository } from '../../repositories/User';
 import { User } from '../../entities/User';
 import { Request } from '../../types/common';

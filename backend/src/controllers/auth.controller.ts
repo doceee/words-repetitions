@@ -10,13 +10,13 @@ import {
     UseGuards,
     UseInterceptors
 } from '@nestjs/common';
-import { LoginDto } from '../dto/Auth/LoginDto';
+import { LoginDto } from '../dto/auth/LoginDto';
 import { MeService } from '../services/auth/MeService';
 import { LoginService } from '../services/auth/LoginService';
 import { LogoutService } from '../services/auth/LogoutService';
 import { Request } from '../types/common';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
-import { RegisterDto } from '../dto/Auth/RegisterDto';
+import { RegisterDto } from '../dto/auth/RegisterDto';
 import { RegisterService } from '../services/auth/RegisterService';
 
 @Controller('auth')

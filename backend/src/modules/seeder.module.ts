@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { Seeder } from '../services/seeder/seeder';
+import { Seeder } from '../services/seeder/Seeder';
 import { DatabaseModule } from './database.module';
 import { AuthModule } from './auth.module';
 import { WordModule } from './word.module';
