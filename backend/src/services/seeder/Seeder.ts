@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { UserRepository } from '@/repositories/User';
-import { WordRepository } from '@/repositories/Word';
-import { User } from '@/entities/User';
+import { UserRepository } from '../../repositories/User';
+import { WordRepository } from '../../repositories/Word';
+import { User } from '../../entities/User';
 
 @Injectable()
 export class Seeder {

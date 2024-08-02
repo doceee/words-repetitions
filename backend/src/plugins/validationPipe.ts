@@ -3,8 +3,9 @@ import {
     BadRequestException,
     type ValidationError
 } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
-export const useValidationPipe = app => {
+export const useValidationPipe = (app: NestExpressApplication) => {
     app.useGlobalPipes(
         new ValidationPipe({
             skipUndefinedProperties: false,

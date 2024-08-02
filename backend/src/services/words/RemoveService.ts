@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { WordRepository } from '@/repositories/Word';
-import { UserRepository } from '@/repositories/User';
+import { WordRepository } from '../../repositories/Word';
+import { UserRepository } from '../../repositories/User';
 
 @Injectable()
 export class RemoveService {

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Request } from '@/types/common';
+import { Request } from '../../types/common';
 
 @Injectable()
 export class LogoutService {

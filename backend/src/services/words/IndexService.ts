@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { WordRepository } from '@/repositories/Word';
-import type { Word } from '@/entities/Word';
+import { WordRepository } from '../../repositories/Word';
+import type { Word } from '../../entities/Word';
 
 @Injectable()
 export class IndexService {

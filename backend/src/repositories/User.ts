@@ -2,8 +2,8 @@ import * as deepMerge from 'deepmerge';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { User } from '@/entities/User';
-import { AbstractRepository } from '@/repositories/abstract';
+import { User } from '../entities/User';
+import { AbstractRepository } from './Abstract';
 
 import { Repository, FindOneOptions } from 'typeorm';
 

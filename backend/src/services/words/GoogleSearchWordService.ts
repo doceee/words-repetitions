@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { WordRepository } from '@/repositories/Word';
+import { WordRepository } from '../../repositories/Word';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('google-translate-extended-api');
 
-import type { TranslationResponse } from '@/types/general';
+import type { TranslationResponse } from '../../types/general';
 
 @Injectable()
 export class GoogleSearchWordService {

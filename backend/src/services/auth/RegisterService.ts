@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { RegisterDto } from '@/dto/Auth/RegisterDto';
-import { UserRepository } from '@/repositories/User';
-import { User } from '@/entities/User';
-import { Request } from '@/types/common';
+import { RegisterDto } from '../../dto/Auth/RegisterDto';
+import { UserRepository } from '../../repositories/User';
+import { User } from '../../entities/User';
+import { Request } from '../../types/common';
 
 @Injectable()
 export class RegisterService {

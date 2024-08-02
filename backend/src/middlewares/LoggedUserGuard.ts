@@ -1,11 +1,11 @@
-import { GetLoggedUserService } from '@/services/auth/GetLoggedUser';
+import { GetLoggedUserService } from '../services/auth/GetLoggedUser';
 import {
     CanActivate,
     ExecutionContext,
     Injectable,
     UnauthorizedException
 } from '@nestjs/common';
-import { Request } from '@/types/common';
+import { Request } from '../types/common';
 
 @Injectable()
 export class LoggedUserGuard implements CanActivate {

@@ -1,6 +1,6 @@
 import { Module, OnModuleDestroy } from '@nestjs/common';
 import { InjectDataSource, TypeOrmModule } from '@nestjs/typeorm';
-import { config } from '@/config';
+import { config } from '../config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 

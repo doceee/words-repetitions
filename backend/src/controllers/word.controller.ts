@@ -11,15 +11,16 @@ import {
     ClassSerializerInterceptor,
     UseInterceptors
 } from '@nestjs/common';
-import { LoggedUserGuard } from '@/middlewares/LoggedUserGuard';
-import { GoogleSearchWordService } from '@/services/words/GoogleSearchWordService';
-import { GetUser } from '@/decorators/GetUser.decorator';
-import { User } from '@/entities/User';
-import { IndexService } from '@/services/words/IndexService';
-import { CreateEditDto } from '@/dto/word/CreateEdit.dto';
-import { RemoveService } from '@/services/words/RemoveService';
-import { AssignService } from '@/services/words/AssignService';
-import { EditService } from '@/services/words/EditService';
+import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
+import { GoogleSearchWordService } from '../services/words/GoogleSearchWordService';
+import { GetUser } from '../decorators/GetUser.decorator';
+import { IndexService } from '../services/words/IndexService';
+import { CreateEditDto } from '../dto/word/CreateEdit.dto';
+import { RemoveService } from '../services/words/RemoveService';
+import { AssignService } from '../services/words/AssignService';
+import { EditService } from '../services/words/EditService';
+
+import type { User } from '../entities/User';
 
 @Controller('words')
 @UseGuards(LoggedUserGuard)

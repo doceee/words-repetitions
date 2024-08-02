@@ -18,7 +18,10 @@ export const config = () => ({
         isProduction: PROD_ENVIRONMENTS.includes(currentEnvironment)
     },
     database: {
-        url: `postgres://${env('DB_USER', 'user')}:${env('DB_PASSWORD')}@${env('DB_HOST', 'localhost')}:${+env('DB_PORT', '5432')}/${env('DB_NAME', 'database')}?${
+        url: `postgres://${env('DB_USER', 'user')}:${env('DB_PASSWORD')}@${env(
+            'DB_HOST',
+            'localhost'
+        )}:${+env('DB_PORT', '5432')}/${env('DB_NAME', 'database')}?${
             nodeEnvironment === 'prod' ? 'sslmode=require' : ''
         }`,
         type: 'postgres',

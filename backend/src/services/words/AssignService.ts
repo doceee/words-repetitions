@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
-import { WordRepository } from '@/repositories/Word';
-import { CreateEditDto } from '@/dto/word/CreateEdit.dto';
+import { WordRepository } from '../../repositories/Word';
+import { CreateEditDto } from '../../dto/word/CreateEdit.dto';
 
-import type { Word } from '@/entities/Word';
-import type { User } from '@/entities/User';
+import type { Word } from '../../entities/Word';
+import type { User } from '../../entities/User';
 
 @Injectable()
 export class AssignService {

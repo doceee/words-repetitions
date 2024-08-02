@@ -1,9 +1,10 @@
 import { ConfigService } from '@nestjs/config';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import * as connectRedis from 'connect-redis';
 import * as expressSession from 'express-session';
 import { createClient } from 'redis';
 
-export const useSession = async app => {
+export const useSession = async (app: NestExpressApplication) => {
     const configService = app.get(ConfigService);
     const oneHour = 3600 * 1000 * 1;
     const redisClient = createClient({

@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
-import { useCors } from '@/plugins/cors';
-import { AppModule } from '@/modules/app.module';
-import { useValidationPipe } from '@/plugins/validationPipe';
-import { useSession } from '@/plugins/session';
+import { useCors } from './plugins/cors';
+import { AppModule } from './modules/app.module';
+import { useValidationPipe } from './plugins/validationPipe';
+import { useSession } from './plugins/session';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
