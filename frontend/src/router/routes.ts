@@ -1,10 +1,12 @@
 import type { RouteRecordRaw } from 'vue-router';
+import TheLogin from '@/pages/login/TheLogin.vue';
+import TheDashboard from '@/pages/dashboard/TheDashboard.vue';
 
 export const routes: RouteRecordRaw[] = [
     {
         path: '/login',
         name: 'login',
-        component: () => import('@/pages/login/TheLogin.vue'),
+        component: TheLogin,
         meta: {
             title: 'Logowanie',
             guestOnly: true,
@@ -24,7 +26,7 @@ export const routes: RouteRecordRaw[] = [
     {
         path: '/',
         name: 'dashboard',
-        component: () => import('@/pages/dashboard/TheDashboard.vue'),
+        component: TheDashboard,
         meta: {
             title: 'Strona główna',
             authRequired: true

@@ -32,8 +32,9 @@
                         : '-translate-x-[40px] opacity-0'
                 "
                 enter-to-class="translate-x-0 opacity-100"
-                leave-from-class="hidden"
-                leave-to-class="hidden"
+                leave-from-class="opacity-100"
+                leave-to-class="opacity-0"
+                mode="out-in"
             >
                 <component
                     :key="currentPillIndex"
@@ -49,7 +50,7 @@ import { ref, onMounted, defineAsyncComponent } from 'vue';
 import VSpinner from '@/components/atoms/VSpinner.vue';
 import TheContainer from '@/components/molecules/TheContainer.vue';
 import PageHeader from '@/components/atoms/PageHeader.vue';
-
+import TrueFalse from '@/components/molecules/reviews/TrueFalse.vue';
 import { storeToRefs } from 'pinia';
 import { useWordsStore } from '@/store/modules/words';
 
@@ -59,9 +60,7 @@ const { words } = storeToRefs(wordsStore);
 
 const components = {
     TrueFalse: {
-        component: defineAsyncComponent(
-            () => import('../../components/molecules/reviews/TrueFalse.vue')
-        ),
+        component: TrueFalse,
         label: 'Prawda/Fałsz'
     },
     WordRevision: {
