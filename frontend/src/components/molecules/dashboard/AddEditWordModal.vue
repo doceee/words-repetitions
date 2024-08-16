@@ -78,7 +78,7 @@ import type { ServerError } from '@/types/auth';
 const props = withDefaults(
     defineProps<{
         isOpen: boolean;
-        wordId: string;
+        wordId?: string;
     }>(),
     {
         wordId: ''

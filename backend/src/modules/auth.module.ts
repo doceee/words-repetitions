@@ -1,21 +1,18 @@
 import { Module } from '@nestjs/common';
 
 import { AuthController } from '../controllers/auth.controller';
-import { UserRepository } from '../repositories/User';
 import { LogoutService } from '../services/auth/LogoutService';
 import { MeService } from '../services/auth/MeService';
 import { LoginService } from '../services/auth/LoginService';
 import { RegisterService } from '../services/auth/RegisterService';
 import { GetLoggedUserService } from '../services/auth/GetLoggedUser';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../entities/User';
+import { PrismaModule } from './prisma.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([User])],
+    imports: [PrismaModule],
     controllers: [AuthController],
     providers: [
-        UserRepository,
         LogoutService,
         RegisterService,
         MeService,
@@ -23,6 +20,6 @@ import { User } from '../entities/User';
         GetLoggedUserService,
         LoggedUserGuard
     ],
-    exports: [UserRepository, LoggedUserGuard, GetLoggedUserService]
+    exports: [LoggedUserGuard, GetLoggedUserService]
 })
 export class AuthModule {}

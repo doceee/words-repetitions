@@ -1,20 +1,19 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserRepository } from '../../repositories/User';
-import { User } from '../../entities/User';
+import { PrismaService } from '../prisma.service';
 import { Request } from '../../types/common';
 
 @Injectable()
 export class MeService {
-    constructor(private readonly userRepository: UserRepository) {}
+    constructor(private readonly prisma: PrismaService) {}
 
-    async handle(req: Request): Promise<User> {
+    async handle(req: Request) {
         const id = req.session.user;
 
         if (!id) {
             throw new UnauthorizedException();
         }
 
-        const user = this.userRepository.findOne({
+        const user = this.prisma.user.findUnique({
             where: { id }
         });
 

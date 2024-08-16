@@ -1,32 +1,22 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
-import { WordRepository } from '../../repositories/Word';
 import { CreateEditDto } from '../../dto/word/CreateEdit.dto';
-
-import type { Word } from '../../entities/Word';
-import type { User } from '../../entities/User';
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class AssignService {
-    constructor(private wordRepository: WordRepository) {}
+    constructor(private prisma: PrismaService) {}
 
-    async handle(data: CreateEditDto, user: User): Promise<Word> {
+    async handle(data: CreateEditDto, userId: string) {
         const { word, translation } = data;
 
-        const associatedWord = await this.wordRepository.repository
-            .createQueryBuilder('word')
-            .innerJoin('word.users', 'user', 'user.id = :userId', {
-                userId: user.id
-            })
-            .where('word.word = :word', { word })
-            .andWhere('word.translation = :translation', {
+        const associatedWord = await this.prisma.word.findFirst({
+            where: {
+                userId,
+                word,
                 translation
-            })
-            .orWhere('word.translation = :word', { word })
-            .andWhere('word.word = :translation', {
-                translation
-            })
-            .getOne();
+            }
+        });
 
         if (associatedWord) {
             throw new BadRequestException({
@@ -35,24 +25,11 @@ export class AssignService {
             });
         }
 
-        let wordItem = await this.wordRepository.findOne({
-            where: { word, translation },
-            relations: { users: true }
+        return this.prisma.word.create({
+            data: {
+                userId,
+                ...data
+            }
         });
-
-        if (!wordItem) {
-            wordItem = await this.wordRepository.create({
-                ...data,
-                users: [user]
-            });
-        } else {
-            Object.assign(wordItem, {
-                users: [...wordItem.users, user]
-            });
-
-            await this.wordRepository.repository.save(wordItem);
-        }
-
-        return this.wordRepository.findById(wordItem.id);
     }
 }

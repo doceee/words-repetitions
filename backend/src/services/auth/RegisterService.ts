@@ -1,18 +1,18 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { RegisterDto } from '../../dto/auth/RegisterDto';
-import { UserRepository } from '../../repositories/User';
-import { User } from '../../entities/User';
+import { PrismaService } from '../prisma.service';
 import { Request } from '../../types/common';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class RegisterService {
-    constructor(private readonly userRepository: UserRepository) {}
+    constructor(private readonly prisma: PrismaService) {}
 
-    async handle(data: RegisterDto, req: Request): Promise<User> {
-        const { email } = data;
+    async handle(data: RegisterDto, req: Request) {
+        const { email, password } = data;
 
-        const user = await this.userRepository.findByEmail(email, {
-            where: { deletedAt: null }
+        const user = await this.prisma.user.findUnique({
+            where: { email }
         });
 
         if (user) {
@@ -21,12 +21,15 @@ export class RegisterService {
                 msg: 'Użytkownik z danym emailem jest już zarejestrowany.'
             });
         }
+        const hash = bcrypt.hashSync(password, 12);
 
-        const createdUser = await this.userRepository.create({
-            ...data
+        const createdUser = await this.prisma.user.create({
+            data: { email, hash }
         });
 
-        const userItem = await this.userRepository.findById(createdUser.id);
+        const userItem = await this.prisma.user.findUnique({
+            where: { id: createdUser.id }
+        });
 
         req.user = userItem;
         req.session.user = userItem.id;

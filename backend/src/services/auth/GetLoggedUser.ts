@@ -1,24 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { UserRepository } from '../../repositories/User';
-import { User } from '../../entities/User';
+import { PrismaService } from '../prisma.service';
 import { Request } from '../../types/common';
 
 @Injectable()
 export class GetLoggedUserService {
-    constructor(private readonly userRepository: UserRepository) {}
+    constructor(private readonly prisma: PrismaService) {}
 
-    async handle(req: Request): Promise<User | null> {
+    async handle(req: Request) {
         const { user: userId } = req.session || {};
 
         if (!userId) {
             return null;
         }
 
-        return this.userRepository.findOne({
-            where: { id: userId },
-            relations: {
-                words: true
-            }
+        return this.prisma.user.findUnique({
+            where: { id: userId }
         });
     }
 }

@@ -39,10 +39,12 @@
 import { XMarkIcon } from '@heroicons/vue/20/solid';
 import SidebarNavItem from '@/components/atoms/SidebarNavItem.vue';
 import { useAuthStore } from '@/store/modules/auth';
+import { useWordsStore } from '@/store/modules/words';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const wordsStore = useWordsStore();
 const emit = defineEmits(['close']);
 const onClose = () => emit('close');
 
@@ -50,6 +52,7 @@ const handleLogout = async () => {
     try {
         await authStore.logout();
 
+        wordsStore.$reset();
         onClose();
         router.push({ name: 'login' });
     } catch (error) {

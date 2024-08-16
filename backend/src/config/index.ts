@@ -1,7 +1,3 @@
-import * as dotenv from 'dotenv';
-
-dotenv.config();
-
 const env = (val: string, defaultValue = ''): string =>
     process.env[val] || defaultValue;
 

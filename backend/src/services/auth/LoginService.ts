@@ -1,36 +1,33 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { LoginDto } from '../../dto/auth/LoginDto';
-import { UserRepository } from '../../repositories/User';
-import { User } from '../../entities/User';
+import { PrismaService } from '../prisma.service';
 import { Request } from '../../types/common';
 
 @Injectable()
 export class LoginService {
-    constructor(private readonly userRepository: UserRepository) {}
+    constructor(private readonly prisma: PrismaService) {}
 
-    async handle(data: LoginDto, req: Request): Promise<User> {
+    async handle(data: LoginDto, req: Request) {
         const { email, password } = data;
 
-        const user = await this.userRepository.findByEmail(email, {
-            select: { password: true }
+        const user = await this.prisma.user.findUnique({
+            where: { email }
         });
 
         if (!user) {
             throw new UnauthorizedException();
         }
 
-        const isValid = await bcrypt.compare(password, user.password);
+        const isValid = bcrypt.compareSync(password, user.hash);
 
         if (!isValid) {
             throw new UnauthorizedException();
         }
 
-        const userItem = await this.userRepository.findByEmail(email);
+        req.user = user;
+        req.session.user = user.id;
 
-        req.user = userItem;
-        req.session.user = userItem.id;
-
-        return userItem;
+        return user;
     }
 }

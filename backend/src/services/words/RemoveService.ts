@@ -1,30 +1,25 @@
 import { Injectable } from '@nestjs/common';
 
-import { WordRepository } from '../../repositories/Word';
-import { UserRepository } from '../../repositories/User';
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class RemoveService {
-    constructor(
-        private readonly wordRepository: WordRepository,
-        private readonly userRepository: UserRepository
-    ) {}
+    constructor(private prisma: PrismaService) {}
 
     async handle(wordId: string, userId: string) {
-        const word = await this.wordRepository.findById(wordId);
+        const word = await this.prisma.word.findUnique({
+            where: {
+                userId,
+                id: wordId
+            }
+        });
 
-        if (!word) {
-            return;
+        if (word) {
+            await this.prisma.word.delete({
+                where: {
+                    id: wordId
+                }
+            });
         }
-
-        const user = await this.userRepository.findById(userId, {
-            relations: { words: true }
-        });
-
-        Object.assign(user, {
-            words: user.words.filter(item => item.id !== wordId)
-        });
-
-        await this.userRepository.repository.save(user);
     }
 }

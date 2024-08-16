@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { WordRepository } from '../../repositories/Word';
+import { PrismaService } from '../prisma.service';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('google-translate-extended-api');
@@ -8,18 +8,17 @@ import type { TranslationResponse } from '../../types/general';
 
 @Injectable()
 export class GoogleSearchWordService {
-    constructor(private readonly wordRepository: WordRepository) {}
+    constructor(private prisma: PrismaService) {}
 
     async handle(searchText: string, userId: string) {
         try {
             let parsedTranslations: string[] = [];
 
-            const userWords = await this.wordRepository.repository
-                .createQueryBuilder('word')
-                .innerJoin('word.users', 'user', 'user.id = :userId', {
+            const userWords = await this.prisma.word.findMany({
+                where: {
                     userId
-                })
-                .getMany();
+                }
+            });
 
             const res: TranslationResponse = await translate(
                 searchText,

@@ -20,8 +20,6 @@ import { RemoveService } from '../services/words/RemoveService';
 import { AssignService } from '../services/words/AssignService';
 import { EditService } from '../services/words/EditService';
 
-import type { User } from '../entities/User';
-
 @Controller('words')
 @UseGuards(LoggedUserGuard)
 @UseInterceptors(ClassSerializerInterceptor)
@@ -47,20 +45,21 @@ export class WordsController {
     @HttpCode(HttpStatus.CREATED)
     @Post()
     assignWord(
-        @GetUser() user: User,
+        @GetUser('id') userId: string,
         @Body()
         dto: CreateEditDto
     ) {
-        return this.assignService.handle(dto, user);
+        return this.assignService.handle(dto, userId);
     }
 
-    @Put()
+    @Put(':id')
     editWord(
-        @GetUser() user: User,
+        @GetUser('id') userId: string,
+        @Param('id') wordId: string,
         @Body()
         dto: CreateEditDto
     ) {
-        return this.editService.handle(dto, user);
+        return this.editService.handle(dto, wordId, userId);
     }
 
     @HttpCode(HttpStatus.OK)
