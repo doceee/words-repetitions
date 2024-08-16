@@ -8,7 +8,7 @@ import {
 import { Request } from '../types/common';
 import { ILucia } from '../plugins/lucia';
 import { LuciaFactory } from '../modules/lucia.module';
-import { PrismaService } from '../services/prisma.service';
+import { PrismaService } from '../services/PrismaService';
 
 @Injectable()
 export class LoggedUserGuard implements CanActivate {

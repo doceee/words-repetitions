@@ -1,6 +1,6 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { RegisterDto } from '../../dto/auth/RegisterDto';
-import { PrismaService } from '../prisma.service';
+import { PrismaService } from '../PrismaService';
 import { Request } from '../../types/common';
 import * as bcrypt from 'bcryptjs';
 import { LuciaFactory } from '../../modules/lucia.module';

@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from 'src/services/prisma.service';
+import { PrismaService } from 'src/services/PrismaService';
 import {
     loadLuciaModule,
     loadPrismaAdapterModule

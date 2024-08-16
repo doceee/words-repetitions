@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
+import { PrismaService } from '../PrismaService';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('google-translate-extended-api');

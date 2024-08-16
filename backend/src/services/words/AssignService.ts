@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { CreateEditDto } from '../../dto/word/CreateEdit.dto';
-import { PrismaService } from '../prisma.service';
+import { PrismaService } from '../PrismaService';
 
 @Injectable()
 export class AssignService {
