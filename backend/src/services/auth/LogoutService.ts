@@ -1,17 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Request } from '../../types/common';
+import { Response } from 'express';
+import { ILucia } from '../../plugins/lucia';
+import { LuciaFactory } from '../../modules/lucia.module';
 
 @Injectable()
 export class LogoutService {
-    handle(req: Request): Promise<void> {
-        return new Promise<void>(resolve =>
-            req.session.destroy(error => {
-                if (error) {
-                    throw error;
-                }
-
-                resolve();
-            })
+    constructor(@Inject(LuciaFactory) private readonly lucia: ILucia) {}
+    async handle(req: Request, res: Response): Promise<void> {
+        const sessionId = this.lucia.readSessionCookie(
+            req.headers.cookie ?? ''
         );
+
+        if (!sessionId) return;
+
+        const { user } = await this.lucia.validateSession(sessionId);
+
+        await this.lucia.invalidateUserSessions(user.id);
+
+        const sessionCookie = this.lucia.createBlankSessionCookie();
+
+        res.setHeader('Set-Cookie', sessionCookie.serialize());
     }
 }

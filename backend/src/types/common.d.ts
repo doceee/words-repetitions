@@ -1,9 +1,9 @@
-import { User } from '@/entities/User';
 import { Request as ExpressRequest } from 'express';
 import { Session } from 'express-session';
+import { type FullModel } from './general';
 
 interface Request extends ExpressRequest {
-    user?: User;
+    user?: FullModel<'User'>;
     session: Session & {
         user?: string;
     };

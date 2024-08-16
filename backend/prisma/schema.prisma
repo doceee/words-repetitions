@@ -21,9 +21,17 @@ model User {
   email String @unique
   hash  String
 
-  words Word[]
+  sessions Session[]
+  words    Word[]
 
   @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Word {
@@ -39,3 +47,4 @@ model Word {
 
   @@map("words")
 }
+

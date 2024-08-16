@@ -4,7 +4,6 @@ import { ConfigService } from '@nestjs/config';
 import { useCors } from './plugins/cors';
 import { AppModule } from './modules/app.module';
 import { useValidationPipe } from './plugins/validationPipe';
-import { useSession } from './plugins/session';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
@@ -12,8 +11,6 @@ async function bootstrap() {
 
     useCors(app);
     useValidationPipe(app);
-
-    await useSession(app);
 
     app.setGlobalPrefix('api');
 

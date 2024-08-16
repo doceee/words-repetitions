@@ -1,14 +1,20 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { RegisterDto } from '../../dto/auth/RegisterDto';
 import { PrismaService } from '../prisma.service';
 import { Request } from '../../types/common';
 import * as bcrypt from 'bcryptjs';
+import { LuciaFactory } from '../../modules/lucia.module';
+import { type Response } from 'express';
+import { type ILucia } from '../../plugins/lucia';
 
 @Injectable()
 export class RegisterService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        @Inject(LuciaFactory) private readonly lucia: ILucia,
+        private readonly prisma: PrismaService
+    ) {}
 
-    async handle(data: RegisterDto, req: Request) {
+    async handle(data: RegisterDto, req: Request, res: Response) {
         const { email, password } = data;
 
         const user = await this.prisma.user.findUnique({
@@ -32,7 +38,12 @@ export class RegisterService {
         });
 
         req.user = userItem;
-        req.session.user = userItem.id;
+
+        const session = await this.lucia.createSession(user.id, {});
+
+        const sessionCookie = this.lucia.createSessionCookie(session.id);
+
+        res.appendHeader('Set-Cookie', sessionCookie.serialize());
 
         return userItem;
     }

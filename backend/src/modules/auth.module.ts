@@ -5,21 +5,20 @@ import { LogoutService } from '../services/auth/LogoutService';
 import { MeService } from '../services/auth/MeService';
 import { LoginService } from '../services/auth/LoginService';
 import { RegisterService } from '../services/auth/RegisterService';
-import { GetLoggedUserService } from '../services/auth/GetLoggedUser';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
 import { PrismaModule } from './prisma.module';
+import { LuciaModule } from './lucia.module';
 
 @Module({
-    imports: [PrismaModule],
+    imports: [PrismaModule, LuciaModule],
     controllers: [AuthController],
     providers: [
         LogoutService,
         RegisterService,
         MeService,
         LoginService,
-        GetLoggedUserService,
         LoggedUserGuard
     ],
-    exports: [LoggedUserGuard, GetLoggedUserService]
+    exports: [LoggedUserGuard]
 })
 export class AuthModule {}

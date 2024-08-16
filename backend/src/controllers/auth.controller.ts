@@ -7,6 +7,7 @@ import {
     HttpStatus,
     Post,
     Req,
+    Res,
     UseGuards,
     UseInterceptors
 } from '@nestjs/common';
@@ -14,11 +15,11 @@ import { LoginDto } from '../dto/auth/LoginDto';
 import { MeService } from '../services/auth/MeService';
 import { LoginService } from '../services/auth/LoginService';
 import { LogoutService } from '../services/auth/LogoutService';
-import { Request } from '../types/common';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
 import { RegisterDto } from '../dto/auth/RegisterDto';
 import { RegisterService } from '../services/auth/RegisterService';
-
+import { type Response } from 'express';
+import { type Request } from '../types/common';
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
@@ -39,9 +40,10 @@ export class AuthController {
     login(
         @Body()
         dto: LoginDto,
-        @Req() req: Request
+        @Req() req: Request,
+        @Res({ passthrough: true }) res: Response
     ) {
-        return this.loginService.handle(dto, req);
+        return this.loginService.handle(dto, req, res);
     }
 
     @HttpCode(HttpStatus.CREATED)
@@ -49,14 +51,15 @@ export class AuthController {
     register(
         @Body()
         dto: RegisterDto,
-        @Req() req: Request
+        @Req() req: Request,
+        @Res({ passthrough: true }) res: Response
     ) {
-        return this.registerService.handle(dto, req);
+        return this.registerService.handle(dto, req, res);
     }
 
     @HttpCode(HttpStatus.NO_CONTENT)
     @Post('/logout')
-    logout(@Req() req: Request) {
-        return this.logoutService.handle(req);
+    logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+        return this.logoutService.handle(req, res);
     }
 }
