@@ -1,10 +1,9 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { RegisterDto } from '../../dto/auth/RegisterDto';
 import { PrismaService } from '../PrismaService';
-import { Request } from '../../types/common';
 import * as bcrypt from 'bcryptjs';
 import { LuciaFactory } from '../../modules/lucia.module';
-import { type Response } from 'express';
+import { type Response, type Request } from 'express';
 import { type ILucia } from '../../plugins/lucia';
 
 @Injectable()

@@ -13,8 +13,16 @@ export class AssignService {
         const associatedWord = await this.prisma.word.findFirst({
             where: {
                 userId,
-                word,
-                translation
+                OR: [
+                    {
+                        word,
+                        translation
+                    },
+                    {
+                        translation: word,
+                        word: translation
+                    }
+                ]
             }
         });
 

@@ -15,7 +15,7 @@ export class EditService {
             }
         });
 
-        if (!associatedWord) {
+        if (associatedWord) {
             throw new BadRequestException({
                 param: 'word',
                 msg: 'Słówko jest już na liście'

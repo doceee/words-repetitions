@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Request } from '../../types/common';
-import { Response } from 'express';
+import { type Request, type Response } from 'express';
 import { ILucia } from '../../plugins/lucia';
 import { LuciaFactory } from '../../modules/lucia.module';
 

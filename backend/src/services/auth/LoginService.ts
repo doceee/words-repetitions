@@ -2,10 +2,9 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { LoginDto } from '../../dto/auth/LoginDto';
 import { PrismaService } from '../PrismaService';
-import { Request } from '../../types/common';
 import { LuciaFactory } from '../../modules/lucia.module';
 import { type ILucia } from '../../plugins/lucia';
-import { type Response } from 'express';
+import { type Response, type Request } from 'express';
 
 @Injectable()
 export class LoginService {
