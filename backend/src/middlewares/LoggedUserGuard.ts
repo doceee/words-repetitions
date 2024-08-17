@@ -5,7 +5,7 @@ import {
     Injectable,
     UnauthorizedException
 } from '@nestjs/common';
-import { Request } from '../types/common';
+import { type Request } from 'express';
 import { ILucia } from '../plugins/lucia';
 import { LuciaFactory } from '../modules/lucia.module';
 import { PrismaService } from '../services/PrismaService';

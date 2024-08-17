@@ -1,6 +1,9 @@
-import { Request as ExpressRequest } from 'express';
 import { type FullModel } from './general';
 
-interface Request extends ExpressRequest {
-    user?: FullModel<'User'>;
+declare global {
+    declare namespace Express {
+        interface Request {
+            user?: FullModel<'User'>;
+        }
+    }
 }
