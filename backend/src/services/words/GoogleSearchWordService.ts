@@ -16,7 +16,7 @@ export class GoogleSearchWordService {
 
             const userWords = await this.prisma.word.findMany({
                 where: {
-                    userId
+                    users: { some: { id: userId } }
                 }
             });
 

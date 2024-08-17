@@ -8,15 +8,7 @@ const seedDb = async () => {
 
     try {
         const password = 'test1234';
-
         const hash = bcrypt.hashSync(password, 12);
-        const user = await prisma.user.create({
-            data: { hash, email: 'user@gmail.com' }
-        });
-        const user2 = await prisma.user.create({
-            data: { hash, email: 'user2@gmail.com' }
-        });
-
         const words = [
             { word: 'add', translation: 'dodawać' },
             { word: 'work', translation: 'praca' },
@@ -25,19 +17,31 @@ const seedDb = async () => {
             { word: 'world', translation: 'świat' }
         ];
 
-        const promise = [user, user2].map(async item => {
-            for (let i = 0; i < words.length; i++) {
-                await prisma.word.create({
-                    data: {
-                        word: words[i].word,
-                        translation: words[i].translation,
-                        userId: item.id
-                    }
-                });
-            }
+        const user = await prisma.user.create({
+            data: { hash, email: 'user@gmail.com' }
+        });
+        const user2 = await prisma.user.create({
+            data: { hash, email: 'user2@gmail.com' }
         });
 
-        await Promise.all(promise);
+        for (let i = 0; i < words.length; i++) {
+            const wordItem = await prisma.word.create({
+                data: {
+                    word: words[i].word,
+                    translation: words[i].translation
+                }
+            });
+            await prisma.word.update({
+                where: {
+                    id: wordItem.id
+                },
+                data: {
+                    users: {
+                        connect: [{ id: user.id }, { id: user2.id }]
+                    }
+                }
+            });
+        }
     } catch (error) {
         console.error(error);
     }
