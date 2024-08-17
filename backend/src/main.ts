@@ -5,11 +5,13 @@ import { useCors } from './plugins/cors';
 import { AppModule } from './modules/app.module';
 import { useValidationPipe } from './plugins/validationPipe';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { useHelmet } from './plugins/helmet';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
     useCors(app);
+    useHelmet(app);
     useValidationPipe(app);
 
     app.setGlobalPrefix('api');

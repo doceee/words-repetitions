@@ -15,9 +15,6 @@ export async function useLucia(prisma: PrismaService, config: ConfigService) {
     );
 
     return new Lucia(adapter, {
-        getUserAttributes: dbUserAttributes => {
-            return dbUserAttributes.email;
-        },
         sessionExpiresIn: new TimeSpan(3, 'h'),
         sessionCookie: {
             name: 'token',
@@ -33,11 +30,7 @@ export async function useLucia(prisma: PrismaService, config: ConfigService) {
 declare module 'lucia' {
     interface Register {
         Lucia: Awaited<ReturnType<typeof useLucia>>;
-        DatabaseUserAttributes: DatabaseUserAttributes;
     }
-}
-interface DatabaseUserAttributes {
-    email: string;
 }
 
 export type ILucia = Awaited<ReturnType<typeof useLucia>>;
