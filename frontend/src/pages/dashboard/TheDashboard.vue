@@ -1,24 +1,13 @@
 <template>
-    <v-spinner v-if="wordsStore.isProcessing" />
-    <div v-else>
-        <page-header title="Słówka" />
-        <the-container>
-            <word-list />
-        </the-container>
-    </div>
+    <the-container>
+        <profile-card :email="authStore.loggedUser?.email" />
+    </the-container>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import VSpinner from '@/components/atoms/VSpinner.vue';
-import { useWordsStore } from '@/store/modules/words';
-import WordList from '@/components/molecules/dashboard/WordList.vue';
+import { useAuthStore } from '@/store/modules/auth';
 import TheContainer from '@/components/molecules/TheContainer.vue';
-import PageHeader from '@/components/atoms/PageHeader.vue';
+import ProfileCard from '@/components/molecules/dashboard/ProfileCard.vue';
 
-const wordsStore = useWordsStore();
-
-onMounted(() => {
-    wordsStore.getWords();
-});
+const authStore = useAuthStore();
 </script>

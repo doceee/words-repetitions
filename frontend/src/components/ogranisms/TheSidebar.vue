@@ -62,6 +62,7 @@ const handleLogout = async () => {
 
 const navItemList = [
     { text: 'Strona główna', to: '/', click: onClose },
+    { text: 'Słówka', to: '/word-list', click: onClose },
     { text: 'Powtórki', to: '/reviews', click: onClose },
     { text: 'Profil', to: '/profile', click: onClose },
     { text: 'Wyloguj', click: handleLogout }

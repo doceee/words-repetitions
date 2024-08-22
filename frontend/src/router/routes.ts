@@ -33,6 +33,15 @@ export const routes: RouteRecordRaw[] = [
         }
     },
     {
+        path: '/word-list',
+        name: 'word-list',
+        component: () => import('@/pages/wordlist/WordList.vue'),
+        meta: {
+            title: 'Słówka',
+            authRequired: true
+        }
+    },
+    {
         path: '/reviews',
         name: 'reviews',
         component: () => import('@/pages/reviews/TheReviews.vue'),
