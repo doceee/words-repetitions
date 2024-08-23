@@ -114,7 +114,7 @@ const formatDate = (obj: IWeeklyActivity) =>
 
 const getSignin = (obj: IWeeklyActivity) => obj[Object.keys(obj)[0]].signin;
 
-const getReview = (obj: IWeeklyActivity) => obj[Object.keys(obj)[0]].signin;
+const getReview = (obj: IWeeklyActivity) => obj[Object.keys(obj)[0]].review;
 
 const getDayname = (obj: IWeeklyActivity) =>
     dayjs(Object.keys(obj)[0]).format('dd').toLocaleUpperCase();

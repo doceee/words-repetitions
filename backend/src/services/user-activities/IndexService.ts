@@ -29,19 +29,19 @@ export class IndexService {
             }
         });
 
-        const transformedActivities = week.map(item => {
-            const signin = activities.some(
-                activity =>
-                    activity.activity === ActivityType.Login &&
-                    dayjs(activity.activity_time).isSame(item, 'day')
-            );
-            const review = activities.some(
-                activity =>
-                    activity.activity === ActivityType.Review &&
-                    dayjs(activity.activity_time).isSame(item, 'day')
+        const transformedActivities = week.map(weekDay => {
+            const filteredActivities = activities.filter(activity =>
+                dayjs(activity.activity_time).isSame(dayjs(weekDay), 'd')
             );
 
-            return { [item]: { signin, review } };
+            const signin = filteredActivities.some(
+                ({ activity }) => activity === ActivityType.Login
+            );
+            const review = filteredActivities.some(
+                ({ activity }) => activity === ActivityType.Review
+            );
+
+            return { [weekDay]: { signin, review } };
         });
 
         return transformedActivities;
