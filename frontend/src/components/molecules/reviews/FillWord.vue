@@ -28,19 +28,22 @@
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useWordsStore } from '@/store/modules/words';
+import { useUserActivitiesStore } from '@/store/modules/user-activities';
 import VButton from '@/components/atoms/VButton.vue';
 import { shuffleArray } from '@/helpers/shuffleArray';
 import DisplayedWord from '@/components/atoms/DisplayedWord.vue';
+import { ActivityType } from '@/types/user-activity';
 
 const score = ref(0);
 const currentIndex = ref(0);
 const currentValue = ref('');
-const inputClass = ref('');
+const inputClass = ref<string[]>([]);
 const userResponseArray = ref<string[]>([]);
 const correctValueClass = 'shadow-green-500';
 const incorrectValueClass = 'shadow-red-500';
 
 const wordsStore = useWordsStore();
+const userActivitiesStore = useUserActivitiesStore();
 
 const { words } = storeToRefs(wordsStore);
 
@@ -49,7 +52,7 @@ const wordList = ref(shuffleArray(words.value));
 const handleInput = (e: Event) => {
     const val = (e.target as HTMLInputElement).value;
 
-    inputClass.value = '';
+    inputClass.value = [];
 
     if (!val) {
         return;
@@ -60,15 +63,18 @@ const handleInput = (e: Event) => {
             val[i].toLowerCase() ===
             wordList.value[currentIndex.value].word[i].toLowerCase()
         ) {
-            inputClass.value =
-                'shadow-[0px_0px_30px_0px_rgba(0,0,0,1)] ' + correctValueClass;
+            inputClass.value = [
+                'shadow-[0px_0px_30px_0px_rgba(0,0,0,1)]',
+                correctValueClass
+            ];
         } else if (
             val[i].toLowerCase() !==
             wordList.value[currentIndex.value].word[i].toLowerCase()
         ) {
-            inputClass.value =
-                'shadow-[0px_0px_30px_0px_rgba(0,0,0,1)] ' +
-                incorrectValueClass;
+            inputClass.value = [
+                'shadow-[0px_0px_30px_0px_rgba(0,0,0,1)]',
+                incorrectValueClass
+            ];
         }
     }
 
@@ -78,7 +84,11 @@ const handleInput = (e: Event) => {
     ) {
         currentIndex.value++;
         currentValue.value = '';
-        inputClass.value = '';
+        inputClass.value = [];
+    }
+
+    if (currentIndex.value === wordList.value.length) {
+        userActivitiesStore.storeActivity(ActivityType.Review);
     }
 };
 

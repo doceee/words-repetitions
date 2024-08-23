@@ -21,8 +21,9 @@ model User {
   email String @unique
   hash  String
 
-  sessions Session[]
-  words    Word[]
+  sessions       Session[]
+  words          Word[]
+  userActivities UserActivity[]
 }
 
 model Session {
@@ -41,4 +42,17 @@ model Word {
   translation String
 
   users User[]
+}
+
+model UserActivity {
+  id            String       @id @default(uuid())
+  userId        String
+  activity      ActivityType
+  activity_time DateTime     @default(now())
+  user          User         @relation(fields: [userId], references: [id])
+}
+
+enum ActivityType {
+  Login
+  Review
 }

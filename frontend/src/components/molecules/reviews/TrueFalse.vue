@@ -32,6 +32,8 @@ import VButton from '@/components/atoms/VButton.vue';
 import { useWordsStore } from '@/store/modules/words';
 import { shuffleArray } from '@/helpers/shuffleArray';
 import DisplayedWord from '@/components/atoms/DisplayedWord.vue';
+import { useUserActivitiesStore } from '@/store/modules/user-activities';
+import { ActivityType } from '@/types/user-activity';
 
 const currentIndex = ref(0);
 const currentValue = ref(false);
@@ -40,6 +42,7 @@ const userResponseArray = ref<boolean[]>([]);
 const score = ref(0);
 
 const wordsStore = useWordsStore();
+const userActivitiesStore = useUserActivitiesStore();
 const { words } = storeToRefs(wordsStore);
 const wordList = ref(shuffleArray(words.value));
 
@@ -54,6 +57,10 @@ const handleIncrement = () => {
     userResponseArray.value.map((item, index) => {
         if (item === answerArray.value[index]) score.value++;
     });
+
+    if (currentIndex.value === wordList.value.length) {
+        userActivitiesStore.storeActivity(ActivityType.Review);
+    }
 };
 
 const midifyWord = (text: string) => {

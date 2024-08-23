@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "ActivityType" AS ENUM ('Login', 'Review');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -30,6 +33,16 @@ CREATE TABLE "Word" (
 );
 
 -- CreateTable
+CREATE TABLE "UserActivity" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "activity" "ActivityType" NOT NULL,
+    "activity_time" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "UserActivity_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "_UserToWord" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL
@@ -46,6 +59,9 @@ CREATE INDEX "_UserToWord_B_index" ON "_UserToWord"("B");
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserActivity" ADD CONSTRAINT "UserActivity_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_UserToWord" ADD CONSTRAINT "_UserToWord_A_fkey" FOREIGN KEY ("A") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
