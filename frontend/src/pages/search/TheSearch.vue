@@ -45,7 +45,11 @@
 import { onMounted, onUnmounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
-import { PlusCircleIcon, MinusCircleIcon } from '@heroicons/vue/20/solid';
+import {
+    PlusCircleIcon,
+    MinusCircleIcon,
+    ArrowLeftIcon
+} from '@heroicons/vue/20/solid';
 import VSpinner from '@/components/atoms/VSpinner.vue';
 import { useWordsStore } from '@/store/modules/words';
 import { toast } from '@/helpers/toast';

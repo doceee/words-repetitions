@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../PrismaService';
 import { ActivityType } from '@prisma/client';
-import { CreateDto } from '../../dto/user/Create.dto';
+import { CreateDto } from '../../dto/user-activity/Create.dto';
 import * as dayjs from 'dayjs';
 
 @Injectable()

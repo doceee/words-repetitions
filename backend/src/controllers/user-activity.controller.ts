@@ -12,7 +12,7 @@ import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
 import { StoreService } from '../services/user-activities/StoreService';
 import { IndexService } from '../services/user-activities/IndexService';
 import { GetUser } from '../decorators/GetUser.decorator';
-import { CreateDto } from '../dto/user/Create.dto';
+import { CreateDto } from '../dto/user-activity/Create.dto';
 
 @Controller('user-activities')
 @UseGuards(LoggedUserGuard)

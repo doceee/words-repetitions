@@ -1,11 +1,16 @@
 <template>
     <the-container>
         <div class="flex">
-            <profile-card :email="authStore.loggedUser?.email" />
+            <profile-card :email="loggedUser?.email" />
             <week-card
                 :activities="activityList"
                 :is-fetching="isFetchingActivities"
                 @change="fetchActivities($event)"
+            />
+            <user-stats-card
+                :reviewed-words="loggedUser?.reviewedWords"
+                :consecutive-activity="loggedUser?.consecutiveActivity"
+                :reviews-done="loggedUser?.reviewsDone"
             />
         </div>
     </the-container>
@@ -13,19 +18,21 @@
 
 <script setup lang="ts">
 import dayjs from 'dayjs';
+import { storeToRefs } from 'pinia';
 import { onMounted, ref } from 'vue';
 import { useAuthStore } from '@/store/modules/auth';
 import { useUserActivitiesStore } from '@/store/modules/user-activities';
 import TheContainer from '@/components/molecules/TheContainer.vue';
 import ProfileCard from '@/components/molecules/dashboard/ProfileCard.vue';
 import WeekCard from '@/components/molecules/dashboard/WeekCard.vue';
+import UserStatsCard from '@/components/molecules/dashboard/UserStatsCard.vue';
+
 import { type IWeeklyActivity } from '@/types/user-activity';
 
-const authStore = useAuthStore();
+const { loggedUser } = storeToRefs(useAuthStore());
 const userActivitiesStore = useUserActivitiesStore();
-
-let activityList = ref<IWeeklyActivity[]>();
 const isFetchingActivities = ref(false);
+let activityList = ref<IWeeklyActivity[]>();
 
 const fetchActivities = async (date: string) => {
     isFetchingActivities.value = true;

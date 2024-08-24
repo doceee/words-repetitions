@@ -15,8 +15,18 @@ export class LogoutService {
 
         const { user } = await this.lucia.validateSession(sessionId);
 
+        if (!user) {
+            this.clearCookie(res);
+
+            return;
+        }
+
         await this.lucia.invalidateUserSessions(user.id);
 
+        this.clearCookie(res);
+    }
+
+    clearCookie(res: Response) {
         const sessionCookie = this.lucia.createBlankSessionCookie();
 
         res.setHeader('Set-Cookie', sessionCookie.serialize());

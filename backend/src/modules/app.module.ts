@@ -7,6 +7,7 @@ import { config } from '../config/index';
 import { LuciaModule } from './lucia.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronModule } from './cron.module';
+import { UserModule } from './user.module';
 
 @Module({
     imports: [
@@ -19,6 +20,7 @@ import { CronModule } from './cron.module';
         LuciaModule,
         AuthModule,
         WordModule,
+        UserModule,
         CronModule
     ],
     controllers: [],

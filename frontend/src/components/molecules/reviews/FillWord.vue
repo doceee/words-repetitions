@@ -33,6 +33,7 @@ import VButton from '@/components/atoms/VButton.vue';
 import { shuffleArray } from '@/helpers/shuffleArray';
 import DisplayedWord from '@/components/atoms/DisplayedWord.vue';
 import { ActivityType } from '@/types/user-activity';
+import { useStats } from '@/hooks/useStats';
 
 const score = ref(0);
 const currentIndex = ref(0);
@@ -42,6 +43,7 @@ const userResponseArray = ref<string[]>([]);
 const correctValueClass = 'shadow-green-500';
 const incorrectValueClass = 'shadow-red-500';
 
+const { updateStat } = useStats();
 const wordsStore = useWordsStore();
 const userActivitiesStore = useUserActivitiesStore();
 
@@ -82,13 +84,15 @@ const handleInput = (e: Event) => {
         wordList.value[currentIndex.value].word.toLowerCase() ===
         val.toLowerCase()
     ) {
+        updateStat('reviewedWords', 1);
         currentIndex.value++;
         currentValue.value = '';
         inputClass.value = [];
-    }
 
-    if (currentIndex.value === wordList.value.length) {
-        userActivitiesStore.storeActivity(ActivityType.Review);
+        if (currentIndex.value === wordList.value.length) {
+            userActivitiesStore.storeActivity(ActivityType.Review);
+            updateStat('reviewsDone', 1);
+        }
     }
 };
 

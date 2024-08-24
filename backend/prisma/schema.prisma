@@ -14,12 +14,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  email String @unique
-  hash  String
+  id                  String   @id @default(uuid())
+  email               String   @unique
+  hash                String
+  consecutiveActivity Int      @default(1)
+  reviewedWords        Int      @default(0)
+  reviewsDone       Int      @default(0)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
   sessions       Session[]
   words          Word[]
@@ -34,10 +36,9 @@ model Session {
 }
 
 model Word {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   word        String
   translation String
 

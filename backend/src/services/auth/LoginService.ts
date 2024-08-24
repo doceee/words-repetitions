@@ -7,20 +7,23 @@ import { type ILucia } from '../../plugins/lucia';
 import { type Response, type Request } from 'express';
 import { StoreService } from '../user-activities/StoreService';
 import { ActivityType } from '@prisma/client';
+import { GetConsecutiveActivityDaysService } from '../users/GetConsecutiveActivityDaysService';
 
 @Injectable()
 export class LoginService {
     constructor(
         @Inject(LuciaFactory) private readonly lucia: ILucia,
         private readonly prisma: PrismaService,
-        private readonly storeUserActivityService: StoreService
+        private readonly storeUserActivityService: StoreService,
+        private readonly getConsecutiveActivityDaysService: GetConsecutiveActivityDaysService
     ) {}
 
     async handle(data: LoginDto, req: Request, res: Response) {
         const { email, password } = data;
 
         const user = await this.prisma.user.findUnique({
-            where: { email }
+            where: { email },
+            select: { hash: true, id: true }
         });
 
         if (!user) {
@@ -33,8 +36,6 @@ export class LoginService {
             throw new UnauthorizedException();
         }
 
-        req.user = user;
-
         const session = await this.lucia.createSession(user.id, {});
 
         const sessionCookie = this.lucia.createSessionCookie(session.id);
@@ -46,6 +47,14 @@ export class LoginService {
             user.id
         );
 
-        return user;
+        await this.getConsecutiveActivityDaysService.handle(user.id);
+
+        const updatedUser = await this.prisma.user.findUnique({
+            where: { id: user.id }
+        });
+
+        req.user = updatedUser;
+
+        return updatedUser;
     }
 }

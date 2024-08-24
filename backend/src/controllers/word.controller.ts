@@ -9,7 +9,8 @@ import {
     Put,
     UseGuards,
     ClassSerializerInterceptor,
-    UseInterceptors
+    UseInterceptors,
+    Patch
 } from '@nestjs/common';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
 import { GoogleSearchWordService } from '../services/words/GoogleSearchWordService';

@@ -4,10 +4,13 @@ CREATE TYPE "ActivityType" AS ENUM ('Login', 'Review');
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
     "email" TEXT NOT NULL,
     "hash" TEXT NOT NULL,
+    "consecutiveActivity" INTEGER NOT NULL DEFAULT 1,
+    "reviewedWords" INTEGER NOT NULL DEFAULT 0,
+    "reviewsDone" INTEGER NOT NULL DEFAULT 0,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

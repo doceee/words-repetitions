@@ -43,6 +43,7 @@ import { shuffleArray } from '@/helpers/shuffleArray';
 import DisplayedWord from '@/components/atoms/DisplayedWord.vue';
 import { useUserActivitiesStore } from '@/store/modules/user-activities';
 import { ActivityType } from '@/types/user-activity';
+import { useStats } from '@/hooks/useStats';
 
 const currentIndex = ref(0);
 const currentValue = ref('');
@@ -53,11 +54,14 @@ const wordsStore = useWordsStore();
 const userActivitiesStore = useUserActivitiesStore();
 const { words } = storeToRefs(wordsStore);
 const wordList = ref(shuffleArray(words.value));
+const { updateStat } = useStats();
 
 const handleIncrement = () => {
     currentIndex.value++;
     userResponseArray.value.push(currentValue.value.toLowerCase());
     currentValue.value = '';
+
+    updateStat('reviewedWords', 1);
 
     if (currentIndex.value < wordList.value.length) {
         return;
@@ -71,9 +75,8 @@ const handleIncrement = () => {
             score.value++;
     });
 
-    if (currentIndex.value === wordList.value.length) {
-        userActivitiesStore.storeActivity(ActivityType.Review);
-    }
+    userActivitiesStore.storeActivity(ActivityType.Review);
+    updateStat('reviewsDone', 1);
 };
 
 const displayedText = computed(
