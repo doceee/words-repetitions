@@ -10,16 +10,10 @@ import { PrismaModule } from './prisma.module';
 import { LuciaModule } from './lucia.module';
 import { UserActivityModule } from './user-activity.module';
 import { StoreService } from '../services/user-activities/StoreService';
-import { UserModule } from './user.module';
-import { GetConsecutiveActivityDaysService } from '../services/users/GetConsecutiveActivityDaysService';
+import { UpdateConsecutiveActivityDaysService } from '../services/user-activities/UpdateConsecutiveActivityDaysService';
 
 @Module({
-    imports: [
-        PrismaModule,
-        LuciaModule,
-        forwardRef(() => UserActivityModule),
-        forwardRef(() => UserModule)
-    ],
+    imports: [PrismaModule, LuciaModule, forwardRef(() => UserActivityModule)],
     controllers: [AuthController],
     providers: [
         LogoutService,
@@ -28,7 +22,7 @@ import { GetConsecutiveActivityDaysService } from '../services/users/GetConsecut
         LoginService,
         LoggedUserGuard,
         StoreService,
-        GetConsecutiveActivityDaysService
+        UpdateConsecutiveActivityDaysService
     ],
     exports: [LoggedUserGuard]
 })

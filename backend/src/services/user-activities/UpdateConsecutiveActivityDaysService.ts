@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../PrismaService';
-import { ActivityType, UserActivity } from '@prisma/client';
+import { UserActivity } from '@prisma/client';
 import * as dayjs from 'dayjs';
 
 @Injectable()
-export class GetConsecutiveActivityDaysService {
+export class UpdateConsecutiveActivityDaysService {
     constructor(private prisma: PrismaService) {}
 
     async handle(userId: string) {
@@ -53,7 +53,5 @@ export class GetConsecutiveActivityDaysService {
             where: { id: userId },
             data: { consecutiveActivity: maxConsecutiveDays }
         });
-
-        return maxConsecutiveDays;
     }
 }

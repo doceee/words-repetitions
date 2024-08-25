@@ -7,7 +7,7 @@ import { type ILucia } from '../../plugins/lucia';
 import { type Response, type Request } from 'express';
 import { StoreService } from '../user-activities/StoreService';
 import { ActivityType } from '@prisma/client';
-import { GetConsecutiveActivityDaysService } from '../users/GetConsecutiveActivityDaysService';
+import { UpdateConsecutiveActivityDaysService } from '../user-activities/UpdateConsecutiveActivityDaysService';
 
 @Injectable()
 export class LoginService {
@@ -15,7 +15,7 @@ export class LoginService {
         @Inject(LuciaFactory) private readonly lucia: ILucia,
         private readonly prisma: PrismaService,
         private readonly storeUserActivityService: StoreService,
-        private readonly getConsecutiveActivityDaysService: GetConsecutiveActivityDaysService
+        private readonly updateConsecutiveActivityDaysService: UpdateConsecutiveActivityDaysService
     ) {}
 
     async handle(data: LoginDto, req: Request, res: Response) {
@@ -47,7 +47,7 @@ export class LoginService {
             user.id
         );
 
-        await this.getConsecutiveActivityDaysService.handle(user.id);
+        await this.updateConsecutiveActivityDaysService.handle(user.id);
 
         const updatedUser = await this.prisma.user.findUnique({
             where: { id: user.id }

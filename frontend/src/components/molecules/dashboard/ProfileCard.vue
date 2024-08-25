@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex w-full max-w-[210px] flex-col justify-center rounded-md bg-gray-100 px-[12px] py-[14px] text-center"
+        class="flex h-[235px] w-full max-w-[210px] flex-col justify-center rounded-md bg-gray-100 px-[12px] py-[14px] text-center"
     >
         <user-circle-icon class="h-[55px] text-blue-500" />
 

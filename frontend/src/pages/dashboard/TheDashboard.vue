@@ -1,13 +1,18 @@
 <template>
     <the-container>
-        <div class="flex">
-            <profile-card :email="loggedUser?.email" />
+        <div class="grid grid-flow-row-dense grid-cols-2 gap-2 md:flex">
+            <profile-card
+                class="justify-self-center"
+                :email="loggedUser?.email"
+            />
             <week-card
+                class="order-first col-span-2 justify-self-center md:order-none"
                 :activities="activityList"
                 :is-fetching="isFetchingActivities"
                 @change="fetchActivities($event)"
             />
             <user-stats-card
+                class="justify-self-center"
                 :reviewed-words="loggedUser?.reviewedWords"
                 :consecutive-activity="loggedUser?.consecutiveActivity"
                 :reviews-done="loggedUser?.reviewsDone"

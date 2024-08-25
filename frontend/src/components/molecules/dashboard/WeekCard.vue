@@ -1,6 +1,6 @@
 <template>
     <div
-        class="relative mx-[12px] w-full max-w-[400px] justify-center rounded-md bg-gray-100 pt-[14px] text-center transition-opacity"
+        class="relative mx-[12px] h-[235px] w-full justify-center rounded-md bg-gray-100 pt-[14px] text-center transition-opacity md:max-w-[400px]"
     >
         <v-spinner
             v-if="props.isFetching"
@@ -26,13 +26,13 @@
         </div>
 
         <div
-            class="flex px-[22px] py-[12px] text-lg"
+            class="flex h-[150px] justify-between px-[22px] py-[12px] text-sm sm:text-lg"
             :class="{ 'opacity-10': props.isFetching }"
         >
             <div
-                v-for="(activity, index) in activities"
+                v-for="(activity, index) in props.activities"
                 :key="index"
-                class="mx-[5px] flex flex-col rounded-xl px-[8px] py-[8px]"
+                class="mx-[2px] flex flex-col justify-around rounded-xl px-[2px] py-[8px] sm:mx-[5px] sm:px-[8px]"
                 :class="{ 'bg-gray-200': isToday(activity) }"
             >
                 <p>
@@ -42,7 +42,7 @@
                     {{ formatDate(activity) }}
                 </p>
                 <fire-icon
-                    class="my-[5px] h-[22px] text-gray-300"
+                    class="my-[2px] h-[22px] text-gray-300 sm:my-[5px]"
                     :class="{ 'text-red-500': getReview(activity) }"
                 />
                 <cloud-icon
@@ -68,7 +68,6 @@ import { FireIcon, CloudIcon } from '@heroicons/vue/20/solid';
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/vue/24/outline';
 import { type IWeeklyActivity } from '@/types/user-activity';
 import VSpinner from '@/components/atoms/VSpinner.vue';
-import { toRef } from 'vue';
 
 const emit = defineEmits(['change']);
 const onClick = (op: 'subtract' | 'add') => {
@@ -84,27 +83,28 @@ const props = defineProps<{
     activities?: IWeeklyActivity[];
     isFetching: boolean;
 }>();
-const activities = toRef(() => props.activities);
 
 const getCurrentDate = () => {
-    if (!activities.value) return;
+    if (!props.activities) return;
 
     let months: string[] = [];
-    const year = dayjs(Object.keys(activities.value[0])[0]).year();
+    let years: string[] = [];
 
-    activities.value.map(item => {
-        let date = dayjs(Object.keys(item)[0])
-            .format('MMMM')
-            .toLocaleUpperCase();
+    props.activities.map(item => {
+        let date = Object.keys(item)[0];
+        let month = dayjs(date).format('MMMM');
+        let year = dayjs(date).year();
 
-        if (!months.includes(date)) months.push(date);
+        if (!months.includes(month)) months.push(month);
+        if (!years.includes(year)) years.push(year);
     });
 
-    if (months.length > 1) {
-        return `${months[0]} | ${months[1]}  ${year}`;
-    }
+    let monthTemplate =
+        months.length > 1 ? `${months[0]} | ${months[1]}` : `${months[0]}`;
+    let yearTemplate =
+        years.length > 1 ? `${years[0]} | ${years[1]}` : `${years[0]}`;
 
-    return `${months[0]}  ${year}`;
+    return `${monthTemplate}  ${yearTemplate}`.toLocaleUpperCase();
 };
 
 const isToday = (obj: IWeeklyActivity) => dayjs(Object.keys(obj)[0]).isToday();

@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 export const useUserActivitiesStore = defineStore('userActivities', {
     actions: {
         getActivities(date: string): Promise<IWeeklyActivity[] | undefined> {
-            return axios.get(`/user-activities`, {
+            return axios.get(`/user-activities/weekly-activities`, {
                 params: { date: dayjs(date).format('YYYY-MM-DD') }
             });
         },

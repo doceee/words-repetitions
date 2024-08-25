@@ -18,7 +18,7 @@ export const seedUserActivities = async (prisma: PrismaClient, user: User) => {
                 activity_time: date
             });
 
-            if (Math.random() < 0.3) {
+            if (Math.random() < 0.6) {
                 reviewsCount++;
                 seedData.push({
                     userId: user.id,

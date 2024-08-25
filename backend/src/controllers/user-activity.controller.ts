@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
 import { StoreService } from '../services/user-activities/StoreService';
-import { IndexService } from '../services/user-activities/IndexService';
+import { GetWeeklyActivitiesService } from '../services/user-activities/GetWeeklyActivitiesService';
 import { GetUser } from '../decorators/GetUser.decorator';
 import { CreateDto } from '../dto/user-activity/Create.dto';
 
@@ -19,12 +19,15 @@ import { CreateDto } from '../dto/user-activity/Create.dto';
 export class UserActivitiesController {
     constructor(
         private storeService: StoreService,
-        private indexService: IndexService
+        private getWeeklyActivitiesService: GetWeeklyActivitiesService
     ) {}
 
-    @Get()
-    getActivities(@GetUser('id') userId: string, @Query('date') date: string) {
-        return this.indexService.handle(userId, date);
+    @Get('weekly-activities')
+    getWeeklyActivities(
+        @GetUser('id') userId: string,
+        @Query('date') date: string
+    ) {
+        return this.getWeeklyActivitiesService.handle(userId, date);
     }
 
     @HttpCode(HttpStatus.CREATED)
