@@ -40,7 +40,7 @@ export const useWordsStore = defineStore('words', {
                     item => item.id === wordId
                 );
 
-                await axios.post(`/words/${wordId}`);
+                await axios.delete(`/words/${wordId}`);
 
                 this.words.splice(wordIndex, 1);
             } catch (error) {

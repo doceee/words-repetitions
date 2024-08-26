@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../PrismaService';
 import { ActivityType } from '@prisma/client';
 import { getWeekDates } from '../../helpers/dates';
-import * as dayjs from 'dayjs';
+import { dayjs } from '../../helpers/dates';
 
 @Injectable()
 export class GetWeeklyActivitiesService {
     constructor(private prisma: PrismaService) {}
 
     async handle(userId: string, date = '') {
-        const week = getWeekDates(date || new Date().toISOString());
+        const week = getWeekDates(date);
         const startDate = new Date(week[0]),
             endDate = new Date(dayjs(week[6]).add(1, 'd').format('YYYY-MM-DD'));
 
@@ -29,21 +29,22 @@ export class GetWeeklyActivitiesService {
             }
         });
 
-        return week.map(weekDay => {
-            return {
-                [weekDay]: {
-                    signin: activities.some(
-                        ({ activity_time, activity }) =>
-                            dayjs(activity_time).isSame(dayjs(weekDay), 'd') &&
-                            activity === ActivityType.Login
-                    ),
-                    review: activities.some(
-                        ({ activity_time, activity }) =>
-                            dayjs(activity_time).isSame(dayjs(weekDay), 'd') &&
-                            activity === ActivityType.Review
-                    )
+        const activityMap = new Map(
+            week.map(day => [day, { signin: false, review: false }])
+        );
+
+        activities.forEach(({ activity_time, activity }) => {
+            const day = dayjs(activity_time).format('YYYY-MM-DD');
+
+            if (activityMap.has(day)) {
+                if (activity === ActivityType.Login) {
+                    activityMap.get(day).signin = true;
+                } else if (activity === ActivityType.Review) {
+                    activityMap.get(day).review = true;
                 }
-            };
+            }
         });
+
+        return week.map(weekDay => ({ [weekDay]: activityMap.get(weekDay) }));
     }
 }

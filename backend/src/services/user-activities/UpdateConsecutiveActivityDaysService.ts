@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../PrismaService';
 import { UserActivity } from '@prisma/client';
-import * as dayjs from 'dayjs';
+import { dayjs } from '../../helpers/dates';
 
 @Injectable()
 export class UpdateConsecutiveActivityDaysService {

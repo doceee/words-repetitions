@@ -66,7 +66,7 @@ const handleIncrement = () => {
     updateStat('reviewsDone', 1);
 };
 
-const midifyWord = (text: string) => {
+const modifyWord = (text: string) => {
     const modify = Boolean(Math.round(Math.random()));
 
     if (!modify) {
@@ -75,27 +75,34 @@ const midifyWord = (text: string) => {
         return text;
     }
 
-    answerArray.value.push(false);
-    let changedWord = changeWord(text);
+    let changedWord = text;
+    let attempts = 0;
+    const maxAttempts = 10;
 
-    do {
+    while (text === changedWord && attempts < maxAttempts) {
         changedWord = changeWord(text);
-    } while (text === changedWord);
+        attempts++;
+    }
 
+    if (text === changedWord) {
+        answerArray.value.push(true);
+    } else {
+        answerArray.value.push(false);
+    }
     return changedWord;
 };
 
 const changeWord = (word: string) => {
-    const aplhabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
     const decPos = Math.floor(Math.random() * word.length);
-    const decAl = Math.floor(Math.random() * word.length);
+    const decAl = Math.floor(Math.random() * alphabet.length);
 
-    return word.slice(0, decPos) + aplhabet[decAl] + word.slice(decPos + 1);
+    return word.slice(0, decPos) + alphabet[decAl] + word.slice(decPos + 1);
 };
 
 const displayedText = computed(
     () =>
-        midifyWord(wordList.value[currentIndex.value].word) +
+        modifyWord(wordList.value[currentIndex.value].word) +
         ' - ' +
         wordList.value[currentIndex.value].translation
 );

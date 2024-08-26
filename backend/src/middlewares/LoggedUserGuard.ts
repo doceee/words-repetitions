@@ -19,14 +19,11 @@ export class LoggedUserGuard implements CanActivate {
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const req = context.switchToHttp().getRequest<Request>();
-        const {
-            headers: { uid }
-        } = req;
         const sessionId = this.lucia.readSessionCookie(
             req.headers.cookie ?? ''
         );
 
-        if (!sessionId || !uid) {
+        if (!sessionId) {
             throw new UnauthorizedException();
         }
 

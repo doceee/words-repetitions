@@ -10,7 +10,7 @@ import {
     UseGuards,
     ClassSerializerInterceptor,
     UseInterceptors,
-    Patch
+    Delete
 } from '@nestjs/common';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
 import { GoogleSearchWordService } from '../services/words/GoogleSearchWordService';
@@ -62,7 +62,7 @@ export class WordsController {
     }
 
     @HttpCode(HttpStatus.OK)
-    @Post(':id')
+    @Delete(':id')
     removeWordById(@GetUser('id') userId: string, @Param('id') wordId: string) {
         return this.removeService.handle(wordId, userId);
     }

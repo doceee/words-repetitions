@@ -51,6 +51,15 @@ export const routes: RouteRecordRaw[] = [
         }
     },
     {
+        path: '/games',
+        name: 'games',
+        component: () => import('@/pages/games/TheGames.vue'),
+        meta: {
+            title: 'Gry językowe',
+            authRequired: true
+        }
+    },
+    {
         path: '/search',
         name: 'search',
         component: () => import('@/pages/search/TheSearch.vue'),

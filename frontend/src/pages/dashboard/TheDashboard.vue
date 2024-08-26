@@ -37,7 +37,7 @@ import { type IWeeklyActivity } from '@/types/user-activity';
 const { loggedUser } = storeToRefs(useAuthStore());
 const userActivitiesStore = useUserActivitiesStore();
 const isFetchingActivities = ref(false);
-let activityList = ref<IWeeklyActivity[]>();
+const activityList = ref<IWeeklyActivity[]>();
 
 const fetchActivities = async (date: string) => {
     isFetchingActivities.value = true;

@@ -7,9 +7,9 @@ export class AssignService {
     constructor(private prisma: PrismaService) {}
 
     async handle(data: CreateEditDto, userId: string, wordId = '') {
-        const [isAssigned] = await this.isAlreadyAssigned(data, userId);
+        const assignedWord = await this.isAlreadyAssigned(data, userId);
 
-        if (isAssigned) {
+        if (assignedWord) {
             throw new BadRequestException({
                 param: 'word',
                 msg: 'Słówko jest już na liście'
@@ -58,22 +58,23 @@ export class AssignService {
         });
     }
 
-    isAlreadyAssigned(data: CreateEditDto, userId: string) {
+    async isAlreadyAssigned(data: CreateEditDto, userId: string) {
         const { word, translation } = data;
 
-        return this.prisma.user.findUnique({ where: { id: userId } }).words({
+        const existingWord = await this.prisma.word.findFirst({
             where: {
                 OR: [
-                    {
-                        word,
-                        translation
-                    },
-                    {
-                        translation: word,
-                        word: translation
+                    { word, translation },
+                    { translation: word, word: translation }
+                ],
+                users: {
+                    some: {
+                        id: userId
                     }
-                ]
+                }
             }
         });
+
+        return existingWord !== null;
     }
 }

@@ -18,7 +18,7 @@ export const useStats = () => {
                     authStore.loggedUser.reviewsDone += value;
                     break;
                 default:
-                    throw Error('Niepoprawny klucz!');
+                    throw Error('Invalid key!');
             }
         }
     };

@@ -88,7 +88,7 @@ const getCurrentDate = () => {
     if (!props.activities) return;
 
     let months: string[] = [];
-    let years: string[] = [];
+    let years: number[] = [];
 
     props.activities.map(item => {
         let date = Object.keys(item)[0];

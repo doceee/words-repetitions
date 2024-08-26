@@ -39,8 +39,8 @@ CREATE TABLE "Word" (
 CREATE TABLE "UserActivity" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "activity_time" TIMESTAMP(3) NOT NULL,
     "activity" "ActivityType" NOT NULL,
-    "activity_time" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "UserActivity_pkey" PRIMARY KEY ("id")
 );
@@ -53,6 +53,9 @@ CREATE TABLE "_UserToWord" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Word_word_translation_key" ON "Word"("word", "translation");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_UserToWord_AB_unique" ON "_UserToWord"("A", "B");
