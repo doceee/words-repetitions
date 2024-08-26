@@ -1,7 +1,7 @@
 <template>
     <div
         :class="{
-            'pb-[20px]': !error
+            'pb-[20px]': !error && !nonStaticError
         }"
     >
         <div>
@@ -47,6 +47,7 @@ const props = withDefaults(
         disabled?: boolean;
         label?: string;
         redBorder?: boolean;
+        nonStaticError?: boolean;
     }>(),
     {
         modelValue: '',
@@ -81,7 +82,7 @@ const inputClass = computed(() => {
     const classes = {
         'border-red-300 text-red-900 placeholder:text-red-300 focus:ring-red-500 focus:border-red-500':
             isRedBorder.value,
-        'border-gray-300 placeholder:text-gray-500 focus:ring-blue-600 focus:border-blue-600':
+        'border-gray-300 placeholder:text-gray-500 focus:ring-sky-500 focus:border-sky-500':
             !isRedBorder.value
     };
 

@@ -16,7 +16,7 @@
                         v-model="text"
                         type="text"
                         placeholder="Wyszukaj po angielsku..."
-                        class="h-[35px] w-full rounded border border-gray-300 focus:outline-none focus:ring-blue-600"
+                        class="h-[35px] w-full rounded border border-gray-300 focus:outline-none focus:ring-sky-500"
                     />
                     <magnifying-glass-icon
                         class="absolute right-0 top-[6px] mr-[8px] h-[20px] hover:cursor-pointer"

@@ -1,12 +1,7 @@
 import * as dayjs from 'dayjs';
 import * as isoWeek from 'dayjs/plugin/isoWeek';
-import * as utc from 'dayjs/plugin/utc';
-import * as timezone from 'dayjs/plugin/timezone';
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
 dayjs.extend(isoWeek);
-dayjs.locale('pl');
 
 const getWeekDates = (givenDate: string): string[] => {
     const date = givenDate ? dayjs(givenDate) : dayjs();

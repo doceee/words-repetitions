@@ -46,7 +46,10 @@
                             />
                         </form>
                         <div class="flex justify-between sm:flex">
-                            <v-button @click="$emit('close')">
+                            <v-button
+                                button-type="gray"
+                                @click="$emit('close')"
+                            >
                                 Anuluj
                             </v-button>
                             <v-button
