@@ -16,7 +16,7 @@
                         v-model="text"
                         type="text"
                         placeholder="Wyszukaj po angielsku..."
-                        class="h-[35px] w-full rounded border border-gray-300 focus:outline-none focus:ring-blue-600"
+                        class="h-[35px] w-full rounded border border-gray-300 focus:outline-none focus:ring-sky-500"
                     />
                     <magnifying-glass-icon
                         class="absolute right-0 top-[6px] mr-[8px] h-[20px] hover:cursor-pointer"
@@ -45,10 +45,9 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-
 import { MagnifyingGlassIcon, Bars3Icon } from '@heroicons/vue/20/solid';
 import { useWordsStore } from '@/store/modules/words';
-import TheSidebar from '@/components/ogranisms/TheSidebar.vue';
+import TheSidebar from '@/components/organisms/TheSidebar.vue';
 import { useRouter } from 'vue-router';
 
 const wordsStore = useWordsStore();
@@ -60,11 +59,7 @@ const text = ref('');
 const { searchText } = storeToRefs(wordsStore);
 
 const submitSearch = () => {
-    if (
-        text.value.length < 2 ||
-        (searchText.value === text.value &&
-            router.currentRoute.value.name === 'search')
-    ) {
+    if (text.value.length < 2) {
         return;
     }
 
@@ -72,14 +67,8 @@ const submitSearch = () => {
 
     if (router.currentRoute.value.name !== 'search') {
         router.push({ name: 'search', query: { word: text.value } });
-
-        return;
     }
 
-    searchWords();
-};
-
-const searchWords = () => {
     wordsStore.searchWords();
 };
 

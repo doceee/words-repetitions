@@ -33,6 +33,15 @@ export const routes: RouteRecordRaw[] = [
         }
     },
     {
+        path: '/word-list',
+        name: 'word-list',
+        component: () => import('@/pages/wordlist/WordList.vue'),
+        meta: {
+            title: 'Słówka',
+            authRequired: true
+        }
+    },
+    {
         path: '/reviews',
         name: 'reviews',
         component: () => import('@/pages/reviews/TheReviews.vue'),
@@ -42,20 +51,20 @@ export const routes: RouteRecordRaw[] = [
         }
     },
     {
+        path: '/games',
+        name: 'games',
+        component: () => import('@/pages/games/TheGames.vue'),
+        meta: {
+            title: 'Gry językowe',
+            authRequired: true
+        }
+    },
+    {
         path: '/search',
         name: 'search',
         component: () => import('@/pages/search/TheSearch.vue'),
         meta: {
             title: 'Wyszukiwanie',
-            authRequired: true
-        }
-    },
-    {
-        path: '/profile',
-        name: 'profile',
-        component: () => import('@/pages/profile/TheProfile.vue'),
-        meta: {
-            title: 'Profil',
             authRequired: true
         }
     }

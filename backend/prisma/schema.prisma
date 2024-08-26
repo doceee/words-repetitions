@@ -14,31 +14,50 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                  String   @id @default(uuid())
+  email               String   @unique
+  hash                String
+  consecutiveActivity Int      @default(1)
+  reviewedWords       Int      @default(0)
+  reviewsDone         Int      @default(0)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
-  email String @unique
-  hash  String
-
-  sessions Session[]
-  words    Word[]
+  sessions       Session[]
+  words          Word[]
+  userActivities UserActivity[]
 }
 
 model Session {
   id        String   @id @default(uuid())
   userId    String
   expiresAt DateTime
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Word {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   word        String
   translation String
 
   users User[]
+
+  @@unique([word, translation])
+}
+
+model UserActivity {
+  id            String       @id @default(uuid())
+  userId        String
+  activity_time DateTime
+  activity      ActivityType
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+enum ActivityType {
+  Login
+  Review
 }

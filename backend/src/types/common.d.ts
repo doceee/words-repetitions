@@ -1,9 +1,9 @@
-import { type FullModel } from './general';
+import { type User } from '@prisma/client';
 
 declare global {
     declare namespace Express {
         interface Request {
-            user?: FullModel<'User'>;
+            user?: User;
         }
     }
 }

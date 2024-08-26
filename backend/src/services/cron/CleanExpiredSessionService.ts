@@ -11,7 +11,12 @@ export class CleanExpiredSessionService {
 
     @Cron(CronExpression.EVERY_DAY_AT_1AM)
     async handleCron() {
-        await this.lucia.deleteExpiredSessions();
-        this.logger.debug('Deleted all expired sessions');
+        try {
+            await this.lucia.deleteExpiredSessions();
+
+            this.logger.debug('Deleted all expired sessions');
+        } catch (error) {
+            this.logger.error('Failed to delete expired sessions');
+        }
     }
 }

@@ -1,7 +1,15 @@
 <template>
     <v-spinner v-if="isProcessing" />
     <div v-else>
-        <nav-link to="/" />
+        <router-link
+            class="group flex w-min items-center hover:cursor-pointer"
+            to="/"
+        >
+            <arrow-left-icon
+                class="mr-[8px] h-[18px] text-gray-800 transition group-hover:translate-x-[-5px]"
+            />
+            powrót
+        </router-link>
 
         <ul class="my-3 flex w-full flex-col">
             <h5 class="mb-[44px] ml-[10px] mt-[12px]">
@@ -35,11 +43,14 @@
 import { onMounted, onUnmounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
-import { PlusCircleIcon, MinusCircleIcon } from '@heroicons/vue/20/solid';
+import {
+    PlusCircleIcon,
+    MinusCircleIcon,
+    ArrowLeftIcon
+} from '@heroicons/vue/20/solid';
 import VSpinner from '@/components/atoms/VSpinner.vue';
 import { useWordsStore } from '@/store/modules/words';
 import { toast } from '@/helpers/toast';
-import NavLink from '@/components/atoms/NavLink.vue';
 import type { IWord } from '@/types/word';
 
 const router = useRouter();

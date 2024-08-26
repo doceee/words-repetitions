@@ -15,8 +15,8 @@
                 >
                     <h3> {{ wordId ? 'Edytuj' : 'Dodaj' }} słówko </h3>
                     <button
-                        @click="$emit('close')"
                         class="text-3xl hover:text-gray-600"
+                        @click="$emit('close')"
                     >
                         &#215;
                     </button>
@@ -46,7 +46,10 @@
                             />
                         </form>
                         <div class="flex justify-between sm:flex">
-                            <v-button @click="$emit('close')">
+                            <v-button
+                                button-type="gray"
+                                @click="$emit('close')"
+                            >
                                 Anuluj
                             </v-button>
                             <v-button
@@ -65,7 +68,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, toRefs, reactive } from 'vue';
+import {
+    ref,
+    computed,
+    watch,
+    toRefs,
+    reactive,
+    onMounted,
+    onBeforeUnmount
+} from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { AxiosError } from 'axios';
 import { wordValidation } from '@/helpers/validationRules';
@@ -195,4 +206,18 @@ const clearError = (key?: string) => {
 
     serverErrors.value = [];
 };
+
+const keyboardEvent = (e: KeyboardEvent) => {
+    if (e.keyCode === 27) {
+        emit('close');
+    }
+};
+
+onMounted(() => {
+    document.addEventListener('keyup', keyboardEvent);
+});
+
+onBeforeUnmount(() => {
+    document.removeEventListener('keyup', keyboardEvent);
+});
 </script>

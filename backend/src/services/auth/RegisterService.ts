@@ -26,24 +26,21 @@ export class RegisterService {
                 msg: 'Użytkownik z danym emailem jest już zarejestrowany.'
             });
         }
+
         const hash = bcrypt.hashSync(password, 12);
 
         const createdUser = await this.prisma.user.create({
             data: { email, hash }
         });
 
-        const userItem = await this.prisma.user.findUnique({
-            where: { id: createdUser.id }
-        });
+        req.user = createdUser;
 
-        req.user = userItem;
-
-        const session = await this.lucia.createSession(user.id, {});
+        const session = await this.lucia.createSession(createdUser.id, {});
 
         const sessionCookie = this.lucia.createSessionCookie(session.id);
 
         res.appendHeader('Set-Cookie', sessionCookie.serialize());
 
-        return userItem;
+        return createdUser;
     }
 }
