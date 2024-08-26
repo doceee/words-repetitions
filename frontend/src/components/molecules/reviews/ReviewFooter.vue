@@ -5,14 +5,14 @@
                 class="mx-[12px] w-[200px]"
                 button-type="gray"
                 rounded
-                @click="$emit('hint')"
+                @click="emit('hint')"
             >
                 Podpowiedź
             </v-button>
             <v-button
                 class="mx-[12px] w-[200px]"
                 rounded
-                @click="$emit('check')"
+                @click="emit('check')"
             >
                 Sprawdzam
             </v-button>
@@ -22,7 +22,7 @@
                 class="mx-[12px] w-[200px]"
                 button-type="danger"
                 rounded
-                @click="$emit('bad')"
+                @click="emit('bad')"
             >
                 Źle
             </v-button>
@@ -30,7 +30,7 @@
                 class="mx-[12px] w-[200px]"
                 button-type="success"
                 rounded
-                @click="$emit('good')"
+                @click="emit('good')"
             >
                 Świetnie
             </v-button>
@@ -45,10 +45,5 @@ const props = defineProps({
     answerRevealed: Boolean
 });
 
-const emit = defineEmits<{
-    (e: 'check'): void;
-    (e: 'hint'): void;
-    (e: 'good'): void;
-    (e: 'bad'): void;
-}>();
+const emit = defineEmits(['check', 'hint', 'good', 'bad']);
 </script>
