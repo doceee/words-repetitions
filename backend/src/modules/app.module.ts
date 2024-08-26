@@ -11,12 +11,12 @@ import { UserModule } from './user.module';
 
 @Module({
     imports: [
+        PrismaModule,
         ScheduleModule.forRoot(),
         ConfigModule.forRoot({
             isGlobal: true,
             load: [config]
         }),
-        PrismaModule,
         LuciaModule,
         AuthModule,
         WordModule,

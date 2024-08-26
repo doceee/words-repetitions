@@ -1,5 +1,4 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { PrismaModule } from './prisma.module';
 import { StoreService } from '../services/user-activities/StoreService';
 import { GetWeeklyActivitiesService } from '../services/user-activities/GetWeeklyActivitiesService';
 import { UserActivitiesController } from '../controllers/user-activity.controller';
@@ -8,7 +7,7 @@ import { LoggedUserGuard } from 'src/middlewares/LoggedUserGuard';
 import { UpdateConsecutiveActivityDaysService } from '../services/user-activities/UpdateConsecutiveActivityDaysService';
 
 @Module({
-    imports: [PrismaModule, forwardRef(() => AuthModule)],
+    imports: [forwardRef(() => AuthModule)],
     controllers: [UserActivitiesController],
     providers: [
         StoreService,

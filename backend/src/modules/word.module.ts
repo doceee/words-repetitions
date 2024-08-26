@@ -6,11 +6,10 @@ import { AssignService } from '../services/words/AssignService';
 import { RemoveService } from '../services/words/RemoveService';
 import { IndexService } from '../services/words/IndexService';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
-import { PrismaModule } from './prisma.module';
 import { AuthModule } from './auth.module';
 
 @Module({
-    imports: [PrismaModule, AuthModule],
+    imports: [AuthModule],
     controllers: [WordsController],
     providers: [
         AssignService,
