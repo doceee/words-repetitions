@@ -63,7 +63,12 @@
                 class="mx-auto my-6 w-full max-w-[140px]"
                 alt="a girl reading a book image"
             />
-            <v-button class="mt-6" to="/"> powrót na stronę główną </v-button>
+            <v-button class="group mt-6 flex items-center" to="/">
+                <arrow-left-icon
+                    class="mr-[8px] h-[18px] text-gray-800 transition group-hover:translate-x-[-5px]"
+                />
+                powrót na stronę główną
+            </v-button>
         </div>
     </div>
 </template>
@@ -81,6 +86,7 @@ import { useStats } from '@/hooks/useStats';
 import ReviewFooter from './ReviewFooter.vue';
 import VButton from '@/components/atoms/VButton.vue';
 import GirlReading from '@/assets/images/girl_reading_book.svg';
+import { ArrowLeftIcon } from '@heroicons/vue/20/solid';
 
 const currentIndex = ref(0);
 const currentValueIndex = ref(0);

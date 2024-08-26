@@ -5,12 +5,10 @@
             class="group flex w-min items-center hover:cursor-pointer"
             to="/"
         >
-            <slot>
-                <arrow-left-icon
-                    class="mr-[8px] h-[18px] text-gray-800 transition group-hover:translate-x-[-5px]"
-                />
-                powrót
-            </slot>
+            <arrow-left-icon
+                class="mr-[8px] h-[18px] text-gray-800 transition group-hover:translate-x-[-5px]"
+            />
+            powrót
         </router-link>
 
         <ul class="my-3 flex w-full flex-col">

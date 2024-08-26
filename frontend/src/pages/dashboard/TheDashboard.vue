@@ -31,7 +31,6 @@ import TheContainer from '@/components/molecules/TheContainer.vue';
 import ProfileCard from '@/components/molecules/dashboard/ProfileCard.vue';
 import WeekCard from '@/components/molecules/dashboard/WeekCard.vue';
 import UserStatsCard from '@/components/molecules/dashboard/UserStatsCard.vue';
-
 import { type IWeeklyActivity } from '@/types/user-activity';
 
 const { loggedUser } = storeToRefs(useAuthStore());
