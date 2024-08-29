@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from 'src/services/prisma.service';
+import { PrismaService } from 'src/services/PrismaService';
 import {
     loadLuciaModule,
     loadPrismaAdapterModule
@@ -15,12 +15,14 @@ export async function useLucia(prisma: PrismaService, config: ConfigService) {
     );
 
     return new Lucia(adapter, {
-        getUserAttributes: dbUserAttributes => {
-            return dbUserAttributes.email;
+        getSessionAttributes: ({ token }) => {
+            return {
+                token
+            };
         },
         sessionExpiresIn: new TimeSpan(3, 'h'),
         sessionCookie: {
-            name: 'token',
+            name: 'sid',
             attributes: {
                 secure:
                     config.get('app.isProd') &&
@@ -33,11 +35,11 @@ export async function useLucia(prisma: PrismaService, config: ConfigService) {
 declare module 'lucia' {
     interface Register {
         Lucia: Awaited<ReturnType<typeof useLucia>>;
-        DatabaseUserAttributes: DatabaseUserAttributes;
+        DatabaseSessionAttributes: DatabaseSessionAttributes;
     }
-}
-interface DatabaseUserAttributes {
-    email: string;
+    interface DatabaseSessionAttributes {
+        token: string;
+    }
 }
 
 export type ILucia = Awaited<ReturnType<typeof useLucia>>;

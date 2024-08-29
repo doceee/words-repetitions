@@ -18,8 +18,8 @@ import { LogoutService } from '../services/auth/LogoutService';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
 import { RegisterDto } from '../dto/auth/RegisterDto';
 import { RegisterService } from '../services/auth/RegisterService';
-import { type Response } from 'express';
-import { type Request } from '../types/common';
+import { type Response, type Request } from 'express';
+
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {

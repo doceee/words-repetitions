@@ -1,5 +1,8 @@
 import { PrismaClient } from '@prisma/client';
+
 import * as bcrypt from 'bcryptjs';
+import { seedUserActivities } from './seed/seedUserActivities';
+import { seedWords } from './seed/seedWords';
 
 const prisma = new PrismaClient();
 
@@ -8,8 +11,8 @@ const seedDb = async () => {
 
     try {
         const password = 'test1234';
-
         const hash = bcrypt.hashSync(password, 12);
+
         const user = await prisma.user.create({
             data: { hash, email: 'user@gmail.com' }
         });
@@ -17,27 +20,10 @@ const seedDb = async () => {
             data: { hash, email: 'user2@gmail.com' }
         });
 
-        const words = [
-            { word: 'add', translation: 'dodawać' },
-            { word: 'work', translation: 'praca' },
-            { word: 'word', translation: 'słowo' },
-            { word: 'way', translation: 'droga' },
-            { word: 'world', translation: 'świat' }
-        ];
+        await seedWords(prisma, [user.id, user2.id]);
 
-        const promise = [user, user2].map(async item => {
-            for (let i = 0; i < words.length; i++) {
-                await prisma.word.create({
-                    data: {
-                        word: words[i].word,
-                        translation: words[i].translation,
-                        userId: item.id
-                    }
-                });
-            }
-        });
-
-        await Promise.all(promise);
+        await seedUserActivities(prisma, user);
+        await seedUserActivities(prisma, user2);
     } catch (error) {
         console.error(error);
     }

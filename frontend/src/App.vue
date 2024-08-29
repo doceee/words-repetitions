@@ -7,13 +7,16 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
-import { watch, ref, onMounted, defineAsyncComponent } from 'vue';
+import { watch, ref, onMounted } from 'vue';
 import { useAuthStore } from '@/store/modules/auth';
+import LoaderLayout from '@/layouts/LoaderLayout.vue';
+import AuthLayout from '@/layouts/AuthLayout.vue';
+import DefaultLayout from '@/layouts/DefaultLayout.vue';
 
 const layouts = {
-    auth: defineAsyncComponent(() => import('./layouts/AuthLayout.vue')),
-    loader: defineAsyncComponent(() => import('./layouts/LoaderLayout.vue')),
-    default: defineAsyncComponent(() => import('./layouts/DefaultLayout.vue'))
+    loader: LoaderLayout,
+    auth: AuthLayout,
+    default: DefaultLayout
 };
 
 const isLoading = ref(true);

@@ -17,5 +17,5 @@
 </template>
 
 <script lang="ts" setup>
-import TheHeader from '@/components/ogranisms/TheHeader.vue';
+import TheHeader from '@/components/organisms/TheHeader.vue';
 </script>

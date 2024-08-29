@@ -35,11 +35,17 @@ export const useWordsStore = defineStore('words', {
         },
 
         async remove(wordId: string) {
-            const wordIndex = this.words.findIndex(item => item.id === wordId);
+            try {
+                const wordIndex = this.words.findIndex(
+                    item => item.id === wordId
+                );
 
-            await axios.post(`/words/${wordId}`);
+                await axios.delete(`/words/${wordId}`);
 
-            this.words.splice(wordIndex, 1);
+                this.words.splice(wordIndex, 1);
+            } catch (error) {
+                console.error(error);
+            }
         },
 
         async addWord(word: string, translation: string): Promise<IWord> {
@@ -58,14 +64,18 @@ export const useWordsStore = defineStore('words', {
             translation: string,
             id: string
         ): Promise<void> {
-            const data: IWord = await axios.put(`/words/${id}`, {
-                word,
-                translation
-            });
+            try {
+                const data: IWord = await axios.put(`/words/${id}`, {
+                    word,
+                    translation
+                });
 
-            const wordId = this.words.findIndex(item => item.id === id);
+                const wordId = this.words.findIndex(item => item.id === id);
 
-            this.words.splice(wordId, 1, data);
+                this.words.splice(wordId, 1, data);
+            } catch (error) {
+                console.error(error);
+            }
         },
 
         async searchWords(): Promise<void> {

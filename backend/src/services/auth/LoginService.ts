@@ -1,24 +1,30 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { LoginDto } from '../../dto/auth/LoginDto';
-import { PrismaService } from '../prisma.service';
-import { Request } from '../../types/common';
+import { PrismaService } from '../PrismaService';
 import { LuciaFactory } from '../../modules/lucia.module';
 import { type ILucia } from '../../plugins/lucia';
-import { type Response } from 'express';
+import { type Response, type Request } from 'express';
+import { StoreService } from '../user-activities/StoreService';
+import { ActivityType } from '@prisma/client';
+import { UpdateConsecutiveActivityDaysService } from '../user-activities/UpdateConsecutiveActivityDaysService';
+import { generateToken } from '../../helpers/csrf-token';
 
 @Injectable()
 export class LoginService {
     constructor(
         @Inject(LuciaFactory) private readonly lucia: ILucia,
-        private readonly prisma: PrismaService
+        private readonly prisma: PrismaService,
+        private readonly storeUserActivityService: StoreService,
+        private readonly updateConsecutiveActivityDaysService: UpdateConsecutiveActivityDaysService
     ) {}
 
     async handle(data: LoginDto, req: Request, res: Response) {
         const { email, password } = data;
 
         const user = await this.prisma.user.findUnique({
-            where: { email }
+            where: { email },
+            select: { hash: true, id: true }
         });
 
         if (!user) {
@@ -31,14 +37,28 @@ export class LoginService {
             throw new UnauthorizedException();
         }
 
-        req.user = user;
+        await this.storeUserActivityService.handle(
+            { activity: ActivityType.Login },
+            user.id
+        );
 
-        const session = await this.lucia.createSession(user.id, {});
+        await this.updateConsecutiveActivityDaysService.handle(user.id);
+
+        const updatedUser = await this.prisma.user.findUnique({
+            where: { id: user.id }
+        });
+
+        const token = generateToken();
+
+        const session = await this.lucia.createSession(user.id, {
+            token
+        });
 
         const sessionCookie = this.lucia.createSessionCookie(session.id);
 
         res.appendHeader('Set-Cookie', sessionCookie.serialize());
+        res.appendHeader('csrf-token', token);
 
-        return user;
+        return updatedUser;
     }
 }

@@ -16,10 +16,6 @@ export const useAuthStore = defineStore('auth', {
     state: (): IAuthState => {
         const loggedUser = getSavedState('user') || null;
 
-        if (loggedUser) {
-            setUserId(loggedUser.id);
-        }
-
         return {
             loggedUser
         };
@@ -85,7 +81,6 @@ export const useAuthStore = defineStore('auth', {
             this.loggedUser = user;
 
             if (user) {
-                setUserId(user.id);
                 saveState('user', user);
 
                 return;
@@ -95,7 +90,3 @@ export const useAuthStore = defineStore('auth', {
         }
     }
 });
-
-function setUserId(uid?: string) {
-    axios.defaults.headers.uid = uid;
-}

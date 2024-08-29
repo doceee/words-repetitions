@@ -9,7 +9,8 @@ import {
     Put,
     UseGuards,
     ClassSerializerInterceptor,
-    UseInterceptors
+    UseInterceptors,
+    Delete
 } from '@nestjs/common';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
 import { GoogleSearchWordService } from '../services/words/GoogleSearchWordService';
@@ -18,7 +19,6 @@ import { IndexService } from '../services/words/IndexService';
 import { CreateEditDto } from '../dto/word/CreateEdit.dto';
 import { RemoveService } from '../services/words/RemoveService';
 import { AssignService } from '../services/words/AssignService';
-import { EditService } from '../services/words/EditService';
 
 @Controller('words')
 @UseGuards(LoggedUserGuard)
@@ -27,7 +27,6 @@ export class WordsController {
     constructor(
         private indexService: IndexService,
         private removeService: RemoveService,
-        private editService: EditService,
         private assignService: AssignService,
         private googleSearchWordService: GoogleSearchWordService
     ) {}
@@ -54,16 +53,16 @@ export class WordsController {
 
     @Put(':id')
     editWord(
-        @GetUser('id') userId: string,
-        @Param('id') wordId: string,
         @Body()
-        dto: CreateEditDto
+        dto: CreateEditDto,
+        @Param('id') wordId: string,
+        @GetUser('id') userId: string
     ) {
-        return this.editService.handle(dto, wordId, userId);
+        return this.assignService.handle(dto, userId, wordId);
     }
 
     @HttpCode(HttpStatus.OK)
-    @Post(':id')
+    @Delete(':id')
     removeWordById(@GetUser('id') userId: string, @Param('id') wordId: string) {
         return this.removeService.handle(wordId, userId);
     }

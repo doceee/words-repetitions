@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
+import { PrismaService } from '../PrismaService';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('google-translate-extended-api');
@@ -16,7 +16,7 @@ export class GoogleSearchWordService {
 
             const userWords = await this.prisma.word.findMany({
                 where: {
-                    userId
+                    users: { some: { id: userId } }
                 }
             });
 
@@ -36,38 +36,34 @@ export class GoogleSearchWordService {
                 ];
             }
 
-            const translations = [];
-            parsedTranslations.map(item => {
-                const assignedWordIndex = userWords.findIndex(
+            const translations = parsedTranslations.map(item => {
+                const assignedWord = userWords.find(
                     userWord =>
                         (userWord.word === item ||
                             userWord.word === searchText) &&
                         (userWord.translation === item ||
-                            userWord.translation == searchText)
+                            userWord.translation === searchText)
                 );
 
-                if (~assignedWordIndex) {
-                    translations.push({
-                        id: userWords[assignedWordIndex].id,
-                        word: searchText,
-                        translation: item,
-                        userId
-                    });
-                } else {
-                    translations.push({
-                        word: searchText,
-                        translation: item,
-                        userId: '',
-                        id: ''
-                    });
-                }
+                return assignedWord
+                    ? {
+                          id: assignedWord.id,
+                          word: searchText,
+                          translation: item,
+                          userId
+                      }
+                    : {
+                          word: searchText,
+                          translation: item,
+                          userId: '',
+                          id: ''
+                      };
             });
 
             return translations;
         } catch (error) {
-            console.error(error);
-
-            return [];
+            console.error('Error in GoogleSearchWordService:', error);
+            throw error;
         }
     }
 }

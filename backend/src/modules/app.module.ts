@@ -5,17 +5,23 @@ import { AuthModule } from './auth.module';
 import { WordModule } from './word.module';
 import { config } from '../config/index';
 import { LuciaModule } from './lucia.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronModule } from './cron.module';
+import { UserModule } from './user.module';
 
 @Module({
     imports: [
+        PrismaModule,
+        ScheduleModule.forRoot(),
         ConfigModule.forRoot({
             isGlobal: true,
             load: [config]
         }),
-        PrismaModule,
         LuciaModule,
         AuthModule,
-        WordModule
+        WordModule,
+        UserModule,
+        CronModule
     ],
     controllers: [],
     providers: []

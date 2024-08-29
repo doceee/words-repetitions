@@ -1,13 +1,53 @@
 import axios, { AxiosError } from 'axios';
 import { config } from '@/config';
+import { getSavedState, saveState } from './storage';
 
 const { apiUrl, publicPath } = config;
 
 axios.defaults.baseURL = apiUrl;
 axios.defaults.withCredentials = true;
 
+axios.interceptors.request.use(config => {
+    const { url, method, headers } = config;
+
+    if (
+        url &&
+        method &&
+        headers &&
+        ['post', 'put', 'patch', 'delete'].includes(method) &&
+        !url.split('/').some(part => ['login', 'register'].includes(part))
+    ) {
+        headers['csrf-token'] = getSavedState('csrfToken') || '';
+    }
+
+    return config;
+});
+
 axios.interceptors.response.use(
-    ({ data }) => data,
+    response => {
+        const { headers, request } = response;
+
+        const responseURL =
+            typeof request.responseURL === 'string'
+                ? request.responseURL
+                : undefined;
+
+        if (!responseURL) {
+            return response.data;
+        }
+
+        if (
+            responseURL
+                .split('/')
+                .some((part: string) => ['login', 'register'].includes(part))
+        ) {
+            if (headers['csrf-token']) {
+                saveState('csrfToken', headers['csrf-token']);
+            }
+        }
+
+        return response.data;
+    },
     error => {
         console.error(error);
 

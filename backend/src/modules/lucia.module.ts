@@ -1,5 +1,5 @@
 import { Global, Module } from '@nestjs/common';
-import { PrismaService } from '../services/prisma.service';
+import { PrismaService } from '../services/PrismaService';
 import { ConfigService } from '@nestjs/config';
 import { useLucia } from '../plugins/lucia';
 

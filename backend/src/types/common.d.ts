@@ -1,10 +1,9 @@
-import { Request as ExpressRequest } from 'express';
-import { Session } from 'express-session';
-import { type FullModel } from './general';
+import { type User } from '@prisma/client';
 
-interface Request extends ExpressRequest {
-    user?: FullModel<'User'>;
-    session: Session & {
-        user?: string;
-    };
+declare global {
+    declare namespace Express {
+        interface Request {
+            user?: User;
+        }
+    }
 }

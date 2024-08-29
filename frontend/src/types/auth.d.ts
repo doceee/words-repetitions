@@ -1,6 +1,9 @@
 export interface ILoggedUser {
     id: string;
     email: string;
+    consecutiveActivity: number;
+    reviewedWords: number;
+    reviewsDone: number;
     createdAt: string;
     updatedAt: string;
 }

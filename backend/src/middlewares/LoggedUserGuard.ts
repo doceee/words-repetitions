@@ -1,14 +1,15 @@
 import {
     CanActivate,
     ExecutionContext,
+    ForbiddenException,
     Inject,
     Injectable,
     UnauthorizedException
 } from '@nestjs/common';
-import { Request } from '../types/common';
+import { type Response, type Request } from 'express';
 import { ILucia } from '../plugins/lucia';
 import { LuciaFactory } from '../modules/lucia.module';
-import { PrismaService } from '../services/prisma.service';
+import { PrismaService } from '../services/PrismaService';
 
 @Injectable()
 export class LoggedUserGuard implements CanActivate {
@@ -19,14 +20,18 @@ export class LoggedUserGuard implements CanActivate {
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const req = context.switchToHttp().getRequest<Request>();
+        const res = context.switchToHttp().getResponse<Response>();
         const {
-            headers: { uid }
+            headers: { 'csrf-token': token },
+            method,
+            url
         } = req;
+
         const sessionId = this.lucia.readSessionCookie(
             req.headers.cookie ?? ''
         );
 
-        if (!sessionId || !uid) {
+        if (!sessionId) {
             throw new UnauthorizedException();
         }
 
@@ -34,6 +39,11 @@ export class LoggedUserGuard implements CanActivate {
 
         if (!session) {
             throw new UnauthorizedException();
+        }
+
+        if (session.fresh) {
+            const sessionCookie = this.lucia.createSessionCookie(session.id);
+            res.appendHeader('Set-Cookie', sessionCookie.serialize());
         }
 
         const user = await this.prisma.user.findUnique({
@@ -45,6 +55,17 @@ export class LoggedUserGuard implements CanActivate {
         }
 
         req.user = user;
+
+        if (
+            !['DELETE', 'PUT', 'POST', 'PATCH'].includes(method) ||
+            url.split('/').some(part => ['login', 'register'].includes(part))
+        ) {
+            return true;
+        }
+
+        if (!token || token !== session.token) {
+            throw new ForbiddenException();
+        }
 
         return true;
     }
