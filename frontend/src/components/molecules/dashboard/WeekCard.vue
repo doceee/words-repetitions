@@ -17,10 +17,12 @@
                 <arrow-left-icon
                     @click="onClick('subtract')"
                     class="h-[25px] rounded-full p-[5px] hover:cursor-pointer hover:bg-gray-500"
+                    aria-label="Poprzedni tydzień"
                 />
                 <arrow-right-icon
                     @click="onClick('add')"
                     class="ml-[8px] h-[25px] rounded-full p-[5px] hover:cursor-pointer hover:bg-gray-400"
+                    aria-label="Kolejny tydzień"
                 />
             </div>
         </div>
@@ -85,24 +87,14 @@ const props = defineProps<{
 }>();
 
 const getCurrentDate = () => {
-    if (!props.activities) return;
+    if (!props.activities || props.activities.length === 0) return '';
 
-    let months: string[] = [];
-    let years: number[] = [];
+    const dates = props.activities.map(item => dayjs(Object.keys(item)[0]));
+    const months = [...new Set(dates.map(date => date.format('MMMM')))];
+    const years = [...new Set(dates.map(date => date.year()))];
 
-    props.activities.map(item => {
-        let date = Object.keys(item)[0];
-        let month = dayjs(date).format('MMMM');
-        let year = dayjs(date).year();
-
-        if (!months.includes(month)) months.push(month);
-        if (!years.includes(year)) years.push(year);
-    });
-
-    let monthTemplate =
-        months.length > 1 ? `${months[0]} | ${months[1]}` : `${months[0]}`;
-    let yearTemplate =
-        years.length > 1 ? `${years[0]} | ${years[1]}` : `${years[0]}`;
+    const monthTemplate = months.join(' | ');
+    const yearTemplate = years.join(' | ');
 
     return `${monthTemplate}  ${yearTemplate}`.toLocaleUpperCase();
 };

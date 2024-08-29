@@ -44,6 +44,7 @@
             <review-footer
                 class="my-[18px]"
                 :answer-revealed="isAnswerDisplayed"
+                :is-loading="isLoading"
                 @check="handleCheck"
                 @good="handleGoodResponse"
                 @bad="handleBadResponse"
@@ -77,7 +78,7 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import VInput from '@/components/atoms/VInput.vue';
 import { useWordsStore } from '@/store/modules/words';
 import { shuffleArray } from '@/helpers/shuffleArray';
@@ -91,6 +92,7 @@ import GirlReading from '@/assets/images/girl_reading_book.svg';
 import { ArrowLeftIcon } from '@heroicons/vue/20/solid';
 
 const currentIndex = ref(0);
+const isLoading = ref(false);
 const currentValueIndex = ref(0);
 const isAnswerDisplayed = ref(false);
 const isCorrect = ref(false);
@@ -103,34 +105,50 @@ const progress = computed(() => words.value.length - wordList.value.length);
 
 const { updateStat } = useStats();
 
-const handleBadResponse = () => {
-    updateStat('reviewedWords', 1);
-    wordList.value.push(
-        wordList.value.splice(
-            wordList.value.indexOf(wordList.value[currentIndex.value]),
-            1
-        )[0]
-    );
-    isAnswerDisplayed.value = false;
-    currentValue.value = '';
+const handleBadResponse = async () => {
+    isLoading.value = true;
+
+    try {
+        await updateStat('reviewedWords', 1);
+
+        wordList.value.push(
+            wordList.value.splice(
+                wordList.value.indexOf(wordList.value[currentIndex.value]),
+                1
+            )[0]
+        );
+        isAnswerDisplayed.value = false;
+        currentValue.value = '';
+    } catch (error) {
+        console.error(error);
+    } finally {
+        isLoading.value = false;
+    }
 };
 
-const handleGoodResponse = () => {
-    updateStat('reviewedWords', 1);
+const handleGoodResponse = async () => {
+    isLoading.value = true;
+    try {
+        await updateStat('reviewedWords', 1);
 
-    if (currentIndex.value === wordList.value.length - 1) {
-        wordList.value.length = 0;
-        userActivitiesStore.storeActivity(ActivityType.Review);
-        updateStat('reviewsDone', 1);
+        if (currentIndex.value === wordList.value.length - 1) {
+            wordList.value.length = 0;
+            await userActivitiesStore.storeActivity(ActivityType.Review);
+            await updateStat('reviewsDone', 1);
 
-        return;
+            return;
+        }
+
+        wordList.value = wordList.value.filter(
+            item => item.id !== wordList.value[currentIndex.value].id
+        );
+        isAnswerDisplayed.value = false;
+        currentValue.value = '';
+    } catch (error) {
+        console.error(error);
+    } finally {
+        isLoading.value = false;
     }
-
-    wordList.value = wordList.value.filter(
-        item => item.id !== wordList.value[currentIndex.value].id
-    );
-    isAnswerDisplayed.value = false;
-    currentValue.value = '';
 };
 
 const handleHint = () => {
@@ -177,9 +195,7 @@ const displayedText = computed(
 );
 
 const onEnterEvent = (e: KeyboardEvent) => {
-    if (e.key === 'Enter' && isAnswerDisplayed.value) {
-        handleGoodResponse();
-    }
+    if (isLoading.value) return;
 
     if (e.key === 'Enter' && !isAnswerDisplayed.value) {
         handleCheck();

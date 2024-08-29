@@ -1,10 +1,14 @@
 <template>
-    <div class="flex items-center justify-center">
+    <div
+        class="flex items-center justify-center"
+        :class="{ isLoading: 'opacity-50' }"
+    >
         <template v-if="!props.answerRevealed">
             <v-button
                 class="mx-[12px] w-[200px]"
                 button-type="gray"
                 rounded
+                :is-disabled="isLoading"
                 @click="emit('hint')"
             >
                 Podpowiedź
@@ -12,6 +16,7 @@
             <v-button
                 class="mx-[12px] w-[200px]"
                 rounded
+                :is-disabled="isLoading"
                 @click="emit('check')"
             >
                 Sprawdzam
@@ -22,6 +27,7 @@
                 class="mx-[12px] w-[200px]"
                 button-type="danger"
                 rounded
+                :is-disabled="isLoading"
                 @click="emit('bad')"
             >
                 Źle
@@ -30,6 +36,7 @@
                 class="mx-[12px] w-[200px]"
                 button-type="success"
                 rounded
+                :is-disabled="isLoading"
                 @click="emit('good')"
             >
                 Świetnie
@@ -42,7 +49,8 @@
 import VButton from '@/components/atoms/VButton.vue';
 
 const props = defineProps({
-    answerRevealed: Boolean
+    answerRevealed: Boolean,
+    isLoading: Boolean
 });
 
 const emit = defineEmits(['check', 'hint', 'good', 'bad']);

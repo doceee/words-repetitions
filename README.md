@@ -4,7 +4,7 @@
 
 #### Client
 
-Install client dependencies
+Install dependencies
 
 ```bash
 cd client
@@ -25,7 +25,7 @@ npm run dev
 
 #### Server
 
-Install server dependencies
+Install dependencies
 
 ```bash
 cd server
@@ -50,4 +50,25 @@ Start the app
 
 ```bash
 npm run start:dev
+```
+
+#### Landing page
+
+Install dependencies
+
+```bash
+cd landing-page
+npm install
+```
+
+Copy env file
+
+```bash
+cp .env.example .env
+```
+
+Start the app
+
+```bash
+npm run dev
 ```
