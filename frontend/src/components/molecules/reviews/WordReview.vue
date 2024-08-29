@@ -20,7 +20,7 @@
                 class="mx-auto mt-[12px] flex w-full max-w-[650px] flex-col rounded-xl bg-white p-[8px] shadow-md"
             >
                 <p
-                    class="my-[5px] w-full px-[12px] text-lg font-[500]"
+                    class="my-[5px] w-full rounded-lg px-[12px] text-lg font-[500]"
                     :class="[
                         isCorrect
                             ? 'bg-green-200 text-green-600'
@@ -35,9 +35,11 @@
             </div>
             <v-input
                 v-else
+                id="answer-input"
                 v-model="currentValue"
                 non-static-error
                 class="mx-auto my-[18px] w-full max-w-[400px] sm:my-[38px]"
+                @keyup.enter="handleCheck"
             />
             <review-footer
                 class="my-[18px]"
@@ -75,7 +77,7 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import VInput from '@/components/atoms/VInput.vue';
 import { useWordsStore } from '@/store/modules/words';
 import { shuffleArray } from '@/helpers/shuffleArray';
@@ -173,4 +175,24 @@ const handleCheck = () => {
 const displayedText = computed(
     () => wordList.value[currentIndex.value].translation
 );
+
+const onEnterEvent = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' && isAnswerDisplayed.value) {
+        handleGoodResponse();
+    }
+
+    if (e.key === 'Enter' && !isAnswerDisplayed.value) {
+        handleCheck();
+    }
+};
+
+onMounted(() => {
+    document.getElementById('answer-input')?.focus();
+
+    document.addEventListener('keypress', onEnterEvent);
+});
+
+onBeforeUnmount(() => {
+    document.removeEventListener('keypress', onEnterEvent);
+});
 </script>

@@ -29,7 +29,8 @@
                             @keydown.enter.prevent="onSubmit"
                         >
                             <v-input
-                                id="word"
+                                ref="wordInput"
+                                id="word-input"
                                 v-model="formData.word"
                                 required
                                 label="Słówko"
@@ -37,7 +38,7 @@
                                 @input="clearError('word')"
                             />
                             <v-input
-                                id="translation"
+                                id="translation-input"
                                 v-model="formData.translation"
                                 required
                                 label="Tłumaczenie"
@@ -68,15 +69,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-    ref,
-    computed,
-    watch,
-    toRefs,
-    reactive,
-    onMounted,
-    onBeforeUnmount
-} from 'vue';
+import { ref, computed, watch, toRefs, reactive, nextTick } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { AxiosError } from 'axios';
 import { wordValidation } from '@/helpers/validationRules';
@@ -103,6 +96,7 @@ const initFormData = reactive({ word: '', translation: '' });
 const formData = reactive({ word: '', translation: '' });
 
 const serverErrors = ref<ServerError[]>([]);
+const wordInput = ref<{ focus: () => void } | null>(null);
 
 const rules = computed(() => ({
     word: wordValidation,
@@ -121,11 +115,16 @@ watch(formData, val => {
     }
 });
 
-watch(isOpen, val => {
+watch(isOpen, async val => {
     v$.value.$reset();
     serverErrors.value = [];
 
     if (val) {
+        document.addEventListener('keyup', keyboardEvent);
+
+        await nextTick();
+
+        wordInput.value?.focus();
         const selectedWord = wordsStore.words.find(
             item => item.id === props.wordId
         );
@@ -137,6 +136,7 @@ watch(isOpen, val => {
     } else {
         Object.assign(formData, defaultFormData);
         Object.assign(initFormData, defaultFormData);
+        document.removeEventListener('keyup', keyboardEvent);
     }
 });
 
@@ -212,12 +212,4 @@ const keyboardEvent = (e: KeyboardEvent) => {
         emit('close');
     }
 };
-
-onMounted(() => {
-    document.addEventListener('keyup', keyboardEvent);
-});
-
-onBeforeUnmount(() => {
-    document.removeEventListener('keyup', keyboardEvent);
-});
 </script>

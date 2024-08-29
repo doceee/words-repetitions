@@ -1,11 +1,11 @@
 <template>
     <div
         :class="{
-            'pb-[20px]': !error && !nonStaticError
+            'pb-[20px]': !props.error && !nonStaticError
         }"
     >
         <div>
-            <label :for="id">{{ label }}</label>
+            <label :for="props.id">{{ label }}</label>
         </div>
 
         <div
@@ -13,28 +13,27 @@
             :class="{ 'mt-1': label }"
         >
             <input
-                :id="id"
+                :id="props.id"
                 v-model="model"
+                ref="input"
                 class="w-full appearance-none rounded-md border px-3 py-2 text-sm focus-within:z-10 focus:outline-none disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 lg:text-base"
                 :class="inputClass"
                 :autocomplete="autocomplete"
-                :type="type"
-                :disabled="disabled"
-                :required="required"
-                :placeholder="placeholder"
+                :type="props.type"
+                :disabled="props.disabled"
+                :required="props.required"
+                :placeholder="props.placeholder"
                 @input="onInput"
-                @blur="onBlur"
-                @focus="onFocus"
             />
         </div>
-        <p v-if="error" class="text-xs leading-5 text-red-400">
-            {{ error }}
+        <p v-if="props.error" class="text-xs leading-5 text-red-400">
+            {{ props.error }}
         </p>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = withDefaults(
     defineProps<{
@@ -62,21 +61,22 @@ const props = withDefaults(
     }
 );
 
-const { error, modelValue, redBorder, type, placeholder, required, disabled } =
-    toRefs(props);
-
+const input = ref<HTMLInputElement | null>(null);
 const emit = defineEmits(['update:modelValue', 'input', 'blur', 'focus']);
+defineExpose({
+    focus: () => input.value?.focus()
+});
 const model = computed({
     get() {
-        return modelValue.value;
+        return props.modelValue;
     },
     set(value) {
         emit('update:modelValue', value);
     }
 });
 
-const isRedBorder = computed(() => !!error.value || redBorder.value);
-const autocomplete = computed(() => (type.value === 'password' ? 'on' : 'off'));
+const isRedBorder = computed(() => !!props.error || props.redBorder);
+const autocomplete = computed(() => (props.type === 'password' ? 'on' : 'off'));
 
 const inputClass = computed(() => {
     const classes = {
@@ -93,6 +93,4 @@ const onInput = (e: Event) => {
     const { value } = e.target as HTMLInputElement;
     emit('input', value);
 };
-const onFocus = (e: Event) => emit('focus', e);
-const onBlur = (e: Event) => emit('blur', e);
 </script>
