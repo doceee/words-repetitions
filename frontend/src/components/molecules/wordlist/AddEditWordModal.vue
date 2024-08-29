@@ -1,7 +1,7 @@
 <template>
     <div
         class="fixed left-0 top-0 z-10 flex h-full w-full items-center justify-center"
-        v-if="isOpen"
+        v-if="props.isOpen"
     >
         <div
             class="absolute h-full w-full bg-gray-400 opacity-40"
@@ -13,7 +13,7 @@
                 <div
                     class="text-md flex select-none items-center justify-between rounded-t-md border-b bg-gray-100 px-4 py-2 text-center font-medium leading-none sm:text-left"
                 >
-                    <h3> {{ wordId ? 'Edytuj' : 'Dodaj' }} słówko </h3>
+                    <h3> {{ props.wordId ? 'Edytuj' : 'Dodaj' }} słówko </h3>
                     <button
                         class="text-3xl hover:text-gray-600"
                         @click="$emit('close')"
@@ -69,7 +69,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, toRefs, reactive, nextTick } from 'vue';
+import { ref, computed, watch, reactive, nextTick } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { AxiosError } from 'axios';
 import { wordValidation } from '@/helpers/validationRules';
@@ -88,10 +88,8 @@ const props = withDefaults(
         wordId: ''
     }
 );
-const { isOpen, wordId } = toRefs(props);
 
 const emit = defineEmits(['close']);
-const defaultFormData = { word: '', translation: '' };
 const initFormData = reactive({ word: '', translation: '' });
 const formData = reactive({ word: '', translation: '' });
 
@@ -115,30 +113,32 @@ watch(formData, val => {
     }
 });
 
-watch(isOpen, async val => {
-    v$.value.$reset();
-    serverErrors.value = [];
+watch(
+    () => props.isOpen,
+    async val => {
+        v$.value.$reset();
+        serverErrors.value = [];
 
-    if (val) {
-        document.addEventListener('keyup', keyboardEvent);
+        if (val) {
+            document.addEventListener('keyup', keyboardEvent);
 
-        await nextTick();
+            await nextTick();
 
-        wordInput.value?.focus();
-        const selectedWord = wordsStore.words.find(
-            item => item.id === props.wordId
-        );
+            wordInput.value?.focus();
+            const selectedWord = wordsStore.words.find(
+                item => item.id === props.wordId
+            );
 
-        if (selectedWord) {
-            Object.assign(formData, selectedWord);
-            Object.assign(initFormData, selectedWord);
+            if (selectedWord) {
+                Object.assign(formData, selectedWord);
+                Object.assign(initFormData, selectedWord);
+            }
+        } else {
+            Object.assign(formData, initFormData);
+            document.removeEventListener('keyup', keyboardEvent);
         }
-    } else {
-        Object.assign(formData, defaultFormData);
-        Object.assign(initFormData, defaultFormData);
-        document.removeEventListener('keyup', keyboardEvent);
     }
-});
+);
 
 const onSubmit = async () => {
     v$.value.$validate();
@@ -149,18 +149,18 @@ const onSubmit = async () => {
     }
 
     try {
-        if (wordId.value) {
+        if (props.wordId) {
             await wordsStore.editWord(
                 formData.word,
                 formData.translation,
-                wordId.value
+                props.wordId
             );
         } else {
             await wordsStore.addWord(formData.word, formData.translation);
         }
 
         toast(
-            wordId.value ? 'Słówko zaktualizowane' : 'Słówko dodane',
+            props.wordId ? 'Słówko zaktualizowane' : 'Słówko dodane',
             'success'
         );
 

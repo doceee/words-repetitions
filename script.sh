@@ -27,12 +27,24 @@ buildBackend() {
 	npm run build
 }
 
+buildLandingPage() {
+	cd landing-page
+
+	if [ "$1" == "true" ]; then
+			npm install
+	fi
+
+	npm run build
+}
+
 PS3='Please enter your choice: '
 options=(\
 	"build frontend"\
 	"build frontend and install dependencies"\
 	"build backend"\
 	"build backend and install dependencies"\
+	"build landing-page"\
+	"build landing-page and install dependencies"\
 )
 
 select opt in "${options[@]}"
@@ -52,6 +64,14 @@ case "$opt" in
 		;;
 	"build backend and install dependencies")
 		buildBackend "true";
+		break
+		;;
+	"build landing-page")
+		buildLandingPage;
+		break
+		;;
+	"build landing-page and install dependencies")
+		buildLandingPage "true";
 		break
 		;;
 esac
