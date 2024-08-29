@@ -15,9 +15,14 @@ export async function useLucia(prisma: PrismaService, config: ConfigService) {
     );
 
     return new Lucia(adapter, {
+        getSessionAttributes: ({ token }) => {
+            return {
+                token
+            };
+        },
         sessionExpiresIn: new TimeSpan(3, 'h'),
         sessionCookie: {
-            name: 'token',
+            name: 'sid',
             attributes: {
                 secure:
                     config.get('app.isProd') &&
@@ -30,6 +35,10 @@ export async function useLucia(prisma: PrismaService, config: ConfigService) {
 declare module 'lucia' {
     interface Register {
         Lucia: Awaited<ReturnType<typeof useLucia>>;
+        DatabaseSessionAttributes: DatabaseSessionAttributes;
+    }
+    interface DatabaseSessionAttributes {
+        token: string;
     }
 }
 

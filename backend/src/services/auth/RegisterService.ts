@@ -5,6 +5,7 @@ import * as bcrypt from 'bcryptjs';
 import { LuciaFactory } from '../../modules/lucia.module';
 import { type Response, type Request } from 'express';
 import { type ILucia } from '../../plugins/lucia';
+import { generateToken } from '../../helpers/csrf-token';
 
 @Injectable()
 export class RegisterService {
@@ -33,13 +34,16 @@ export class RegisterService {
             data: { email, hash }
         });
 
-        req.user = createdUser;
+        const token = generateToken();
 
-        const session = await this.lucia.createSession(createdUser.id, {});
+        const session = await this.lucia.createSession(createdUser.id, {
+            token
+        });
 
         const sessionCookie = this.lucia.createSessionCookie(session.id);
 
         res.appendHeader('Set-Cookie', sessionCookie.serialize());
+        res.appendHeader('csrf-token', token);
 
         return createdUser;
     }

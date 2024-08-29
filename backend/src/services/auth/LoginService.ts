@@ -8,6 +8,7 @@ import { type Response, type Request } from 'express';
 import { StoreService } from '../user-activities/StoreService';
 import { ActivityType } from '@prisma/client';
 import { UpdateConsecutiveActivityDaysService } from '../user-activities/UpdateConsecutiveActivityDaysService';
+import { generateToken } from '../../helpers/csrf-token';
 
 @Injectable()
 export class LoginService {
@@ -36,12 +37,6 @@ export class LoginService {
             throw new UnauthorizedException();
         }
 
-        const session = await this.lucia.createSession(user.id, {});
-
-        const sessionCookie = this.lucia.createSessionCookie(session.id);
-
-        res.appendHeader('Set-Cookie', sessionCookie.serialize());
-
         await this.storeUserActivityService.handle(
             { activity: ActivityType.Login },
             user.id
@@ -53,7 +48,16 @@ export class LoginService {
             where: { id: user.id }
         });
 
-        req.user = updatedUser;
+        const token = generateToken();
+
+        const session = await this.lucia.createSession(user.id, {
+            token
+        });
+
+        const sessionCookie = this.lucia.createSessionCookie(session.id);
+
+        res.appendHeader('Set-Cookie', sessionCookie.serialize());
+        res.appendHeader('csrf-token', token);
 
         return updatedUser;
     }

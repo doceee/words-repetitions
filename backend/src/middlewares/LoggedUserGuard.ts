@@ -1,11 +1,12 @@
 import {
     CanActivate,
     ExecutionContext,
+    ForbiddenException,
     Inject,
     Injectable,
     UnauthorizedException
 } from '@nestjs/common';
-import { type Request } from 'express';
+import { type Response, type Request } from 'express';
 import { ILucia } from '../plugins/lucia';
 import { LuciaFactory } from '../modules/lucia.module';
 import { PrismaService } from '../services/PrismaService';
@@ -19,6 +20,13 @@ export class LoggedUserGuard implements CanActivate {
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const req = context.switchToHttp().getRequest<Request>();
+        const res = context.switchToHttp().getResponse<Response>();
+        const {
+            headers: { 'csrf-token': token },
+            method,
+            url
+        } = req;
+
         const sessionId = this.lucia.readSessionCookie(
             req.headers.cookie ?? ''
         );
@@ -33,6 +41,11 @@ export class LoggedUserGuard implements CanActivate {
             throw new UnauthorizedException();
         }
 
+        if (session.fresh) {
+            const sessionCookie = this.lucia.createSessionCookie(session.id);
+            res.appendHeader('Set-Cookie', sessionCookie.serialize());
+        }
+
         const user = await this.prisma.user.findUnique({
             where: { id: session.userId }
         });
@@ -42,6 +55,17 @@ export class LoggedUserGuard implements CanActivate {
         }
 
         req.user = user;
+
+        if (
+            !['DELETE', 'PUT', 'POST', 'PATCH'].includes(method) ||
+            url.split('/').some(part => ['login', 'register'].includes(part))
+        ) {
+            return true;
+        }
+
+        if (!token || token !== session.token) {
+            throw new ForbiddenException();
+        }
 
         return true;
     }
