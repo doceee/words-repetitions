@@ -6,7 +6,7 @@
             <h1 class="text-[28px] font-bold leading-[38px] text-gray-800">
                 Dlaczego
                 <span
-                    class="relative inline-block before:absolute before:-inset-1 before:block before:-skew-y-2 before:bg-orange-400"
+                    class="relative inline-block before:absolute before:-inset-1 before:block before:-skew-y-2 before:bg-secondary"
                 >
                     <span class="relative text-white">VocabMaster</span>
                 </span>
@@ -14,7 +14,7 @@
             </h1>
         </header>
         <div class="mt-[38px] flex">
-            <div v-for="item in data" :key="item.header">
+            <div v-for="item in data" :key="item.header" class="mx-2">
                 <p class="text-[14px] font-[600]">{{ item.header }}</p>
                 <p class="text-[12px]">
                     {{ item.content }}
@@ -31,8 +31,9 @@ const data = [
             "Praktyczne zadania pomogą Ci utrwalić wiedzę i rozwinąć umiejętności językowe.",
     },
     {
-        header: "Słownik",
-        content: "Rozszerzaj swoje słownictwo dzięki wbudowanemu słownikowi.",
+        header: "Tłumacz angielskiego",
+        content:
+            "Rozszerzaj swoje słownictwo dzięki wbudowanemu tłumaczowi języka angielskiego.",
     },
     {
         header: "Gry językowe",

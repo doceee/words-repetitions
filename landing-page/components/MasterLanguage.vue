@@ -17,7 +17,7 @@
 
             <a
                 target="_blank"
-                href="https://www.app.vocabmaster.pl"
+                :href="`${config.public.appUrl}sign-up`"
                 class="mx-auto flex h-fit w-[250px] justify-center rounded-[10px] border-[2px] border-primary px-[8px] py-[4px] text-[16px] font-bold text-primary hover:bg-primary hover:text-white"
             >
                 Rozpocznij teraz
@@ -33,3 +33,6 @@
         />
     </section>
 </template>
+<script lang="ts" setup>
+const config = useRuntimeConfig()
+</script>

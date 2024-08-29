@@ -10,6 +10,7 @@ export default {
         extend: {
             colors: {
                 primary: colors.gray[600],
+                secondary: colors.orange[400]
             },
         },
         fontFamily: {
