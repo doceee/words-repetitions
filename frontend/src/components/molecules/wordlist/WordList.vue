@@ -9,6 +9,7 @@
             Dodaj
         </v-button>
         <ul
+            v-if="words.length"
             class="w-full rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-900"
         >
             <li
@@ -29,6 +30,9 @@
                 />
             </li>
         </ul>
+        <div v-else class="text-md mx-auto px-8 text-left text-gray-700">
+            Brak słówek
+        </div>
     </div>
 </template>
 

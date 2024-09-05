@@ -1,7 +1,7 @@
 <template>
     <li>
         <component
-            :is="componentType"
+            :is="props.to ? 'router-link' : 'button'"
             :to="props.to"
             class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100"
             :class="[props.to ? 'nav-item' : 'block w-full text-start']"
@@ -14,8 +14,6 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
-
 const props = withDefaults(
     defineProps<{
         to?: string;
@@ -25,6 +23,4 @@ const props = withDefaults(
         to: ''
     }
 );
-
-const componentType = computed(() => (props.to ? 'router-link' : 'button'));
 </script>
