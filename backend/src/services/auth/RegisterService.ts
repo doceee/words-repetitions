@@ -6,12 +6,15 @@ import { LuciaFactory } from '../../modules/lucia.module';
 import { type Response, type Request } from 'express';
 import { type ILucia } from '../../plugins/lucia';
 import { generateToken } from '../../helpers/csrf-token';
+import { ActivityType } from '@prisma/client';
+import { StoreService } from '../user-activities/StoreService';
 
 @Injectable()
 export class RegisterService {
     constructor(
         @Inject(LuciaFactory) private readonly lucia: ILucia,
-        private readonly prisma: PrismaService
+        private readonly prisma: PrismaService,
+        private readonly storeUserActivityService: StoreService
     ) {}
 
     async handle(data: RegisterDto, req: Request, res: Response) {
@@ -33,6 +36,11 @@ export class RegisterService {
         const createdUser = await this.prisma.user.create({
             data: { email, hash }
         });
+
+        await this.storeUserActivityService.handle(
+            { activity: ActivityType.Login },
+            createdUser.id
+        );
 
         const token = generateToken();
 

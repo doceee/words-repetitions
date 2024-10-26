@@ -3,6 +3,13 @@
     <div v-else>
         <page-header title="Gry językowe" />
 
+        <no-words-alert
+            v-if="!words.length"
+            header="Nie posiadasz zapisanych słówek"
+            subheader="Dodaj słówka aby rozpocząć"
+            to="word-list"
+        />
+
         <ul class="my-3 flex w-full flex-wrap justify-center">
             <li
                 v-for="(com, name, index) in components"
@@ -50,6 +57,7 @@ import { ref, onMounted, defineAsyncComponent } from 'vue';
 import VSpinner from '@/components/atoms/VSpinner.vue';
 import TheContainer from '@/components/molecules/TheContainer.vue';
 import PageHeader from '@/components/atoms/PageHeader.vue';
+import NoWordsAlert from '@/components/atoms/NoWordsAlert.vue';
 import TrueFalse from '@/components/molecules/games/TrueFalse.vue';
 import { storeToRefs } from 'pinia';
 import { useWordsStore } from '@/store/modules/words';

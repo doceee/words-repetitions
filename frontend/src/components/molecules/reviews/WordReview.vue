@@ -78,7 +78,7 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import VInput from '@/components/atoms/VInput.vue';
 import { useWordsStore } from '@/store/modules/words';
 import { shuffleArray } from '@/helpers/shuffleArray';
