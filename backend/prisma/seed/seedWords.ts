@@ -1,19 +1,33 @@
 import { PrismaClient } from '@prisma/client';
-import { words } from './seedData';
+import {
+    easyWords,
+    advancedWords,
+    intermediateWords,
+    words as wordList
+} from './seed';
 
 export const seedWords = async (prisma: PrismaClient, userIds: string[]) => {
     const connectedUsers = userIds.map(item => ({ id: item }));
 
+    await prisma.word.createMany({
+        data: [
+            ...wordList,
+            ...easyWords,
+            ...intermediateWords,
+            ...advancedWords
+        ],
+        skipDuplicates: true
+    });
+
+    const words = await prisma.word.findMany({
+        take: 10, // assign 10 words to user
+        select: { id: true }
+    });
+
     for (let i = 0; i < words.length; i++) {
-        const wordItem = await prisma.word.create({
-            data: {
-                word: words[i].word,
-                translation: words[i].translation
-            }
-        });
         await prisma.word.update({
             where: {
-                id: wordItem.id
+                id: words[i].id
             },
             data: {
                 users: {

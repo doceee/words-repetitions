@@ -6,6 +6,8 @@ import { AppModule } from './modules/app.module';
 import { useValidationPipe } from './plugins/validationPipe';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { useHelmet } from './plugins/helmet';
+import { loadGetPortModule } from './helpers/modules-load';
+import { closeAppWithGrace } from './helpers/close-app';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -16,17 +18,23 @@ async function bootstrap() {
 
     app.setGlobalPrefix('api');
 
-    const port = app.get(ConfigService).get('app.port');
+    const isDevelopment = app.get(ConfigService).get('app.isDevelopment');
+    const portToUse = app.get(ConfigService).get('app.port');
+
+    const getPort = (await loadGetPortModule()).default;
+    const port = await getPort({
+        port: portToUse
+    });
+    const isPortAvailable = port === portToUse;
+
+    if (!isPortAvailable && !isDevelopment) {
+        console.log(`Port ${port} is not available.`);
+        process.exit(1);
+    }
+
+    closeAppWithGrace(app);
 
     await app.listen(port);
-
-    process.on('SIGTERM', async () => {
-        await app.close();
-    });
-
-    process.on('SIGINT', async () => {
-        await app.close();
-    });
 }
 
 bootstrap();

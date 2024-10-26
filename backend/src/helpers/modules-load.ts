@@ -13,3 +13,11 @@ export async function loadPrismaAdapterModule() {
 
     return module;
 }
+
+export async function loadGetPortModule() {
+    const module = importDynamic('get-port') as Promise<
+        typeof import('get-port')
+    >;
+
+    return module;
+}
