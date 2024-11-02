@@ -19,6 +19,6 @@ import PageHeader from '@/components/atoms/PageHeader.vue';
 const wordsStore = useWordsStore();
 
 onMounted(() => {
-    wordsStore.getWords();
+    wordsStore.getUserWords();
 });
 </script>

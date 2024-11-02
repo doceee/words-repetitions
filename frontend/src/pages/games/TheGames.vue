@@ -1,8 +1,6 @@
 <template>
     <v-spinner v-if="wordsStore.isProcessing" />
     <div v-else>
-        <page-header title="Gry językowe" />
-
         <no-words-alert
             v-if="!words.length"
             header="Nie posiadasz zapisanych słówek"
@@ -56,7 +54,6 @@
 import { ref, onMounted, defineAsyncComponent } from 'vue';
 import VSpinner from '@/components/atoms/VSpinner.vue';
 import TheContainer from '@/components/molecules/TheContainer.vue';
-import PageHeader from '@/components/atoms/PageHeader.vue';
 import NoWordsAlert from '@/components/atoms/NoWordsAlert.vue';
 import TrueFalse from '@/components/molecules/games/TrueFalse.vue';
 import { storeToRefs } from 'pinia';
@@ -76,6 +73,15 @@ const components = {
             () => import('../../components/molecules/games/FillWord.vue')
         ),
         label: 'Uzupełnianie słówek'
+    },
+    MemoryCards: {
+        component: defineAsyncComponent(
+            () =>
+                import(
+                    '../../components/molecules/games/memory-cards/MemoryCards.vue'
+                )
+        ),
+        label: 'Dopasowywanie par'
     }
 };
 
@@ -90,6 +96,6 @@ const setPill = (pill: keyof typeof components, pillIndex: number) => {
 };
 
 onMounted(() => {
-    wordsStore.getWords();
+    wordsStore.getUserWords();
 });
 </script>

@@ -17,7 +17,7 @@ export const seedUserActivities = async (
             if (shouldAddLoginActivity) {
                 seedData.push({
                     userId: userId,
-                    activity: ActivityType.Login,
+                    activity: ActivityType.login,
                     activity_time: new Date(date)
                 });
 
@@ -25,7 +25,7 @@ export const seedUserActivities = async (
                     reviewsCount++;
                     seedData.push({
                         userId: userId,
-                        activity: ActivityType.Review,
+                        activity: ActivityType.review,
                         activity_time: new Date(date)
                     });
                 }

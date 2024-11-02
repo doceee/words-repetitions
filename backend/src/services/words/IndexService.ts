@@ -5,9 +5,13 @@ import { PrismaService } from '../PrismaService';
 export class IndexService {
     constructor(private prisma: PrismaService) {}
 
-    async handle(userId: string) {
+    async handle(limit: number | string, level = '') {
+        const wordLlimit =
+            typeof limit === 'string' ? parseInt(limit, 10) : limit;
+
         return this.prisma.word.findMany({
-            where: { users: { some: { id: userId } } }
+            take: wordLlimit || 10,
+            where: level ? { level } : {}
         });
     }
 }

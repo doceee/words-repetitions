@@ -7,11 +7,13 @@ import { RemoveService } from '../services/words/RemoveService';
 import { IndexService } from '../services/words/IndexService';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
 import { AuthModule } from './auth.module';
+import { GetUserWordsService } from '../services/words/GetUserWords';
 
 @Module({
     imports: [AuthModule],
     controllers: [WordsController],
     providers: [
+        GetUserWordsService,
         AssignService,
         RemoveService,
         IndexService,

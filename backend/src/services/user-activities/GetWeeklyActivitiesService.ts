@@ -17,7 +17,7 @@ export class GetWeeklyActivitiesService {
             where: {
                 userId: userId,
                 activity: {
-                    in: [ActivityType.Login, ActivityType.Review]
+                    in: [ActivityType.login, ActivityType.review]
                 },
                 activity_time: {
                     gte: new Date(startDate),
@@ -37,9 +37,9 @@ export class GetWeeklyActivitiesService {
             const day = dayjs(activity_time).format('YYYY-MM-DD');
 
             if (activityMap.has(day)) {
-                if (activity === ActivityType.Login) {
+                if (activity === ActivityType.login) {
                     activityMap.get(day).signin = true;
-                } else if (activity === ActivityType.Review) {
+                } else if (activity === ActivityType.review) {
                     activityMap.get(day).review = true;
                 }
             }

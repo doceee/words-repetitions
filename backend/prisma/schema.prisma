@@ -38,13 +38,11 @@ model Session {
 }
 
 model Word {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          String  @id @default(uuid())
   word        String
   translation String
-
-  users User[]
+  level       String?
+  users       User[]
 
   @@unique([word, translation])
 }
@@ -59,6 +57,6 @@ model UserActivity {
 }
 
 enum ActivityType {
-  Login
-  Review
+  login
+  review
 }

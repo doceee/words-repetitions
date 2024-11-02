@@ -84,7 +84,7 @@ const handleInput = (e: Event) => {
         inputClass.value = [];
 
         if (currentIndex.value === wordList.value.length) {
-            userActivitiesStore.storeActivity(ActivityType.Review);
+            userActivitiesStore.storeActivity(ActivityType.review);
             updateStat('reviewsDone', 1);
         }
     }

@@ -62,7 +62,7 @@ const handleIncrement = () => {
         if (item === answerArray.value[index]) score.value++;
     });
 
-    userActivitiesStore.storeActivity(ActivityType.Review);
+    userActivitiesStore.storeActivity(ActivityType.review);
     updateStat('reviewsDone', 1);
 };
 

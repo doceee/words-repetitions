@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { defineStore } from 'pinia';
 import type { IWord, IWordState } from '@/types/word';
+import { getSavedState } from '@/helpers/storage';
 
 export const useWordsStore = defineStore('words', {
     state: (): IWordState => {
@@ -14,7 +15,7 @@ export const useWordsStore = defineStore('words', {
     },
 
     actions: {
-        async getWords(): Promise<IWord[]> {
+        async getUserWords(): Promise<IWord[]> {
             if (this.isFetched) {
                 return this.words;
             }
@@ -22,7 +23,9 @@ export const useWordsStore = defineStore('words', {
             this.isProcessing = true;
 
             try {
-                this.words = await axios.get(`/words`);
+                const loggedUser = getSavedState('user');
+
+                this.words = await axios.get(`/words/user/${loggedUser?.id}`);
 
                 this.isFetched = true;
             } catch (error) {
@@ -32,6 +35,18 @@ export const useWordsStore = defineStore('words', {
             }
 
             return this.words;
+        },
+
+        async getWords(limit = 10, level = ''): Promise<IWord[]> {
+            const params: Record<string, string | number> = { limit };
+
+            if (level) {
+                params.level = level;
+            }
+
+            const data: IWord[] = await axios.get(`/words`, { params });
+
+            return data;
         },
 
         async remove(wordId: string) {

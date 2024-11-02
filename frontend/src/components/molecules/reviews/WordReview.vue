@@ -37,7 +37,6 @@
                 v-else
                 id="answer-input"
                 v-model="currentValue"
-                non-static-error
                 class="mx-auto my-[18px] w-full max-w-[400px] sm:my-[38px]"
                 @keyup.enter="handleCheck"
             />
@@ -133,7 +132,7 @@ const handleGoodResponse = async () => {
 
         if (currentIndex.value === wordList.value.length - 1) {
             wordList.value.length = 0;
-            await userActivitiesStore.storeActivity(ActivityType.Review);
+            await userActivitiesStore.storeActivity(ActivityType.review);
             await updateStat('reviewsDone', 1);
 
             return;

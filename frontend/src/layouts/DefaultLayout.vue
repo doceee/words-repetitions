@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-primary flex h-full">
+    <div class="flex h-full bg-primary">
         <div class="flex flex-1 flex-col overflow-hidden">
             <the-header />
 

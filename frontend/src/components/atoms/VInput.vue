@@ -1,7 +1,7 @@
 <template>
     <div
         :class="{
-            'pb-[20px]': !props.error && !nonStaticError
+            'pb-[20px]': !props.error
         }"
     >
         <div>
@@ -22,6 +22,7 @@
                 :type="props.type"
                 :disabled="props.disabled"
                 :required="props.required"
+                :spellcheck="props.spellcheck"
                 :placeholder="props.placeholder"
                 @input="onInput"
             />
@@ -46,7 +47,7 @@ const props = withDefaults(
         disabled?: boolean;
         label?: string;
         redBorder?: boolean;
-        nonStaticError?: boolean;
+        spellcheck?: boolean;
     }>(),
     {
         modelValue: '',
@@ -57,6 +58,7 @@ const props = withDefaults(
         required: false,
         disabled: false,
         label: '',
+        spellcheck: true,
         redBorder: false
     }
 );

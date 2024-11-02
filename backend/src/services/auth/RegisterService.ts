@@ -38,7 +38,7 @@ export class RegisterService {
         });
 
         await this.storeUserActivityService.handle(
-            { activity: ActivityType.Login },
+            { activity: ActivityType.login },
             createdUser.id
         );
 

@@ -2,6 +2,7 @@ export interface IWord {
     id: string;
     word: string;
     translation: string;
+    level: string | null;
     userId: string;
 }
 

@@ -10,7 +10,8 @@ import {
     UseGuards,
     ClassSerializerInterceptor,
     UseInterceptors,
-    Delete
+    Delete,
+    Query
 } from '@nestjs/common';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
 import { GoogleSearchWordService } from '../services/words/GoogleSearchWordService';
@@ -19,6 +20,7 @@ import { IndexService } from '../services/words/IndexService';
 import { CreateEditDto } from '../dto/word/CreateEdit.dto';
 import { RemoveService } from '../services/words/RemoveService';
 import { AssignService } from '../services/words/AssignService';
+import { GetUserWordsService } from '../services/words/GetUserWords';
 
 @Controller('words')
 @UseGuards(LoggedUserGuard)
@@ -28,12 +30,18 @@ export class WordsController {
         private indexService: IndexService,
         private removeService: RemoveService,
         private assignService: AssignService,
+        private getUserWordsService: GetUserWordsService,
         private googleSearchWordService: GoogleSearchWordService
     ) {}
 
-    @Get()
-    getWords(@GetUser('id') userId: string) {
-        return this.indexService.handle(userId);
+    @Get('')
+    getWords(@Query('limit') limit = 10, @Query('level') level = '') {
+        return this.indexService.handle(limit, level);
+    }
+
+    @Get('user/:id')
+    getUserWords(@Param('id') userId: string) {
+        return this.getUserWordsService.handle(userId);
     }
 
     @Get('search/:text')

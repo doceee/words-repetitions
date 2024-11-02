@@ -34,6 +34,7 @@
                                 v-model="formData.word"
                                 required
                                 label="Słówko"
+                                :spellcheck="false"
                                 :error="getError('word')"
                                 @input="clearError('word')"
                             />
@@ -42,6 +43,7 @@
                                 v-model="formData.translation"
                                 required
                                 label="Tłumaczenie"
+                                :spellcheck="false"
                                 :error="getError('translation')"
                                 @input="clearError('translation')"
                             />
@@ -134,7 +136,8 @@ watch(
                 Object.assign(initFormData, selectedWord);
             }
         } else {
-            Object.assign(formData, initFormData);
+            Object.assign(formData, { word: '', translation: '' });
+            Object.assign(initFormData, { word: '', translation: '' });
             document.removeEventListener('keyup', keyboardEvent);
         }
     }

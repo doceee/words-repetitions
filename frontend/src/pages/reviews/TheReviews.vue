@@ -22,6 +22,6 @@ import NoWordsAlert from '@/components/atoms/NoWordsAlert.vue';
 const wordsStore = useWordsStore();
 
 onMounted(() => {
-    wordsStore.getWords();
+    wordsStore.getUserWords();
 });
 </script>

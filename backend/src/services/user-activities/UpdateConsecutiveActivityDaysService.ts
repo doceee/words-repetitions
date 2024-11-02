@@ -11,7 +11,7 @@ export class UpdateConsecutiveActivityDaysService {
         const activities = await this.prisma.$queryRaw<UserActivity[]>`
             SELECT DISTINCT ON (DATE("activity_time")) *
             FROM "UserActivity"
-            WHERE "userId" = ${userId} AND "activity" = 'Login'
+            WHERE "userId" = ${userId} AND "activity" = 'login'
             ORDER BY DATE("activity_time"), "activity_time" ASC;
         `;
 
