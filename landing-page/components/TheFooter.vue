@@ -1,6 +1,6 @@
 <template>
     <footer
-        class="flex w-full flex-col items-center justify-center bg-gray-200 px-[10px] py-[20px]"
+        class="flex w-full flex-col items-center justify-center bg-gray-200 px-2 py-5"
     >
         <p class="text-[12px] text-gray-500">
             © {{ new Date().getFullYear() }} VocabMaster

@@ -1,7 +1,7 @@
 <template>
     <div
         :class="{
-            'pb-[20px]': !props.error
+            'pb-5': !props.error
         }"
     >
         <div>

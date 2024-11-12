@@ -1,6 +1,6 @@
 <template>
     <section
-        class="mx-auto my-[20px] w-full max-w-4xl items-center justify-center px-[12px] py-[60px] text-center"
+        class="mx-auto my-5 w-full max-w-4xl items-center justify-center px-3 py-16 text-center"
     >
         <header>
             <h1 class="text-[28px] font-bold leading-[38px] text-gray-800">
@@ -13,7 +13,7 @@
                 ?
             </h1>
         </header>
-        <div class="mt-[38px] flex">
+        <div class="mt-9 flex">
             <div v-for="item in data" :key="item.header" class="mx-2">
                 <p class="text-[14px] font-[600]">{{ item.header }}</p>
                 <p class="text-[12px]">

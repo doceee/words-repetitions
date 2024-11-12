@@ -12,7 +12,7 @@ export const seedUserActivities = async (
         const seedData: Omit<UserActivity, 'id'>[] = [];
         for (let i = 0; i <= count; i++) {
             const shouldAddLoginActivity = Math.random() < 0.7;
-            let date = dayjs().subtract(i, 'd').format();
+            const date = dayjs().subtract(i, 'd').format();
 
             if (shouldAddLoginActivity) {
                 seedData.push({

@@ -1,7 +1,7 @@
 <template>
     <div
         :class="{
-            'pb-[20px]': !props.error && !props.noError
+            'pb-5': !props.error && !props.noError
         }"
         class="relative w-full"
     >

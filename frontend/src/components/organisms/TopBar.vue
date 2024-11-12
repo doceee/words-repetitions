@@ -6,7 +6,7 @@
             <div />
 
             <div
-                class="relative mx-[10px] flex flex-1 items-center justify-center py-[7px] sm:ml-0"
+                class="relative mx-2 flex flex-1 items-center justify-center py-2 sm:ml-0"
             >
                 <form
                     class="w-[212px] sm:w-[260px]"
@@ -16,16 +16,16 @@
                         v-model="text"
                         type="text"
                         placeholder="Wyszukaj po angielsku..."
-                        class="h-[35px] w-full rounded border border-gray-300 focus:outline-none focus:ring-sky-500"
+                        class="h-9 w-full rounded border border-gray-300 focus:outline-none focus:ring-sky-500"
                     />
                     <magnifying-glass-icon
-                        class="absolute right-0 top-[6px] mr-[8px] h-[20px] hover:cursor-pointer"
+                        class="absolute right-0 top-[6px] mr-2 h-5 hover:cursor-pointer"
                         @click="submitSearch"
                     />
                 </form>
             </div>
 
-            <div class="mr-[18px] grid self-center">
+            <div class="mr-4 grid self-center">
                 <button
                     type="button"
                     data-drawer-hide="drawer-navigation"
@@ -33,7 +33,7 @@
                     class="ml-auto inline-flex w-min items-center rounded-lg bg-transparent p-1.5 text-sm hover:bg-gray-200"
                     @click="isSidebarOpen = !isSidebarOpen"
                 >
-                    <bars3-icon class="ml-auto h-[25px]" />
+                    <bars3-icon class="ml-auto h-6" />
                 </button>
             </div>
 

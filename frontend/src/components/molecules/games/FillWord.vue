@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="currentIndex < wordList.length" class="my-[8px]">
+        <div v-if="currentIndex < wordList.length" class="my-2">
             <displayed-word
                 :current-index="currentIndex"
                 :displayed-text="displayedText"

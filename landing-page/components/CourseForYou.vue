@@ -1,6 +1,6 @@
 <template>
     <section
-        class="mx-auto my-[20px] flex w-full items-center justify-center bg-primary px-[12px] py-[60px] text-center"
+        class="mx-auto my-6 flex w-full items-center justify-center bg-primary px-3 py-16 text-center"
     >
         <div class="mx-auto w-full max-w-4xl">
             <header>
@@ -8,7 +8,7 @@
                     Twoja podróż do biegłości językowej!
                 </h1>
 
-                <h2 class="my-[28px] px-[25px] text-gray-200">
+                <h2 class="my-7 px-6 text-gray-200">
                     Chcesz opanować język angielski w prosty, efektywny i
                     przyjemny sposób? VocabMaster to idealna aplikacja dla
                     Ciebie! Niezależnie od tego, czy dopiero zaczynasz swoją
@@ -20,7 +20,7 @@
             <a
                 target="_blank"
                 :href="`${config.public.appUrl}sign-up`"
-                class="mx-auto h-fit w-[250px] rounded-[10px] border-[2px] border-white px-[8px] py-[4px] text-[14px] font-bold text-white hover:bg-white hover:text-primary"
+                class="mx-auto h-fit w-[250px] rounded-[10px] border-[2px] border-white px-6 py-4 text-[16px] font-bold text-white transition-colors hover:bg-white hover:text-primary"
             >
                 Rozpocznij
             </a>

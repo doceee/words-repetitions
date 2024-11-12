@@ -4,7 +4,7 @@ import {
     advancedWords,
     intermediateWords,
     words as wordList
-} from './seed';
+} from './data';
 
 export const seedWords = async (prisma: PrismaClient, userIds: string[]) => {
     const connectedUsers = userIds.map(item => ({ id: item }));

@@ -6,13 +6,13 @@
             to="/"
         >
             <arrow-left-icon
-                class="mr-[8px] h-[18px] text-gray-800 transition group-hover:translate-x-[-5px]"
+                class="mr-2 h-4 text-gray-800 transition group-hover:translate-x-[-5px]"
             />
             powrót
         </router-link>
 
         <ul class="my-3 flex w-full flex-col">
-            <h5 class="mb-[44px] ml-[10px] mt-[12px]">
+            <h5 class="mb-12 ml-2 mt-3">
                 Wyniki wyszukiwania dla:
                 <i>
                     {{ searchText }}
@@ -21,17 +21,17 @@
             <li
                 v-for="result in searchResults"
                 :key="result.translation"
-                class="my-[8px] mr-3 flex items-center"
+                class="my-2 mr-3 flex items-center"
             >
                 <span>{{ result.translation }}</span>
                 <minus-circle-icon
                     v-if="result.id"
-                    class="h-[30px] w-[25px] rounded-lg p-[4px] text-red-600 hover:cursor-pointer hover:bg-gray-200"
+                    class="h-7 w-7 rounded-lg p-1 text-red-600 hover:cursor-pointer hover:bg-gray-200"
                     @click="handleRemoveWord(result.id)"
                 />
                 <plus-circle-icon
                     v-else
-                    class="h-[30px] w-[25px] rounded-lg p-[4px] text-green-600 hover:cursor-pointer hover:bg-gray-200"
+                    class="h-7 w-7 rounded-lg p-1 text-green-600 hover:cursor-pointer hover:bg-gray-200"
                     @click="handleAddWord(result)"
                 />
             </li>

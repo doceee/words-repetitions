@@ -5,7 +5,7 @@
     >
         <template v-if="!props.answerRevealed">
             <v-button
-                class="mx-[12px] w-[200px]"
+                class="mx-3 w-[200px]"
                 button-type="gray"
                 rounded
                 :is-disabled="isLoading"
@@ -14,7 +14,7 @@
                 Podpowiedź
             </v-button>
             <v-button
-                class="mx-[12px] w-[200px]"
+                class="mx-3 w-[200px]"
                 rounded
                 :is-disabled="isLoading"
                 @click="emit('check')"
@@ -24,7 +24,7 @@
         </template>
         <template v-else>
             <v-button
-                class="mx-[12px] w-[200px]"
+                class="mx-3 w-[200px]"
                 button-type="danger"
                 rounded
                 :is-disabled="isLoading"
@@ -33,7 +33,7 @@
                 Źle
             </v-button>
             <v-button
-                class="mx-[12px] w-[200px]"
+                class="mx-3 w-[200px]"
                 button-type="success"
                 rounded
                 :is-disabled="isLoading"

@@ -21,11 +21,11 @@
                     {{ word + ' - ' + translation }}
                 </span>
                 <pencil-icon
-                    class="ml-auto mr-[8px] h-[25px] w-[25px] rounded-lg p-[4px] text-gray-600 hover:cursor-pointer hover:bg-gray-200"
+                    class="ml-auto mr-2 h-6 w-6 rounded-lg p-[4px] text-gray-600 hover:cursor-pointer hover:bg-gray-200"
                     @click="handleModalOpen(id)"
                 />
                 <trash-icon
-                    class="h-[25px] w-[25px] rounded-lg p-[4px] text-red-600 hover:cursor-pointer hover:bg-gray-200"
+                    class="h-6 w-6 rounded-lg p-1 text-red-600 hover:cursor-pointer hover:bg-gray-200"
                     @click="handleRemoveWord(id)"
                 />
             </li>
