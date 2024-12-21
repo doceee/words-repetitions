@@ -7,13 +7,13 @@ export class MeService {
     constructor(private readonly prisma: PrismaService) {}
 
     async handle(req: Request) {
-        const id = req.session.user;
+        const id = req.session?.user;
 
         if (!id) {
             throw new UnauthorizedException();
         }
 
-        const user = this.prisma.user.findUnique({
+        const user = await this.prisma.user.findUnique({
             where: { id }
         });
 
