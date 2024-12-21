@@ -29,6 +29,8 @@ export class GoogleSearchWordService {
                 }
             );
 
+            if (res.translation) parsedTranslations = [res.translation];
+
             for (const property in res.translations) {
                 parsedTranslations = [
                     ...parsedTranslations,
