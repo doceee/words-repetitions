@@ -4,9 +4,7 @@ import { PrismaModule } from './prisma.module';
 import { AuthModule } from './auth.module';
 import { WordModule } from './word.module';
 import { config } from '../config/index';
-import { LuciaModule } from './lucia.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { CronModule } from './cron.module';
 import { UserModule } from './user.module';
 
 @Module({
@@ -17,11 +15,9 @@ import { UserModule } from './user.module';
             isGlobal: true,
             load: [config]
         }),
-        LuciaModule,
         AuthModule,
         WordModule,
-        UserModule,
-        CronModule
+        UserModule
     ],
     controllers: [],
     providers: []

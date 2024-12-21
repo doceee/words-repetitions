@@ -6,8 +6,9 @@ import { AppModule } from './modules/app.module';
 import { useValidationPipe } from './plugins/validationPipe';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { useHelmet } from './plugins/helmet';
-import { loadGetPortModule } from './helpers/modules-load';
 import { closeAppWithGrace } from './helpers/close-app';
+import { useSession } from './plugins/session';
+import { ExceptionsFilter } from './filters/http-exception.filter';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -18,19 +19,11 @@ async function bootstrap() {
 
     app.setGlobalPrefix('api');
 
-    const isDevelopment = app.get(ConfigService).get('app.isDevelopment');
-    const portToUse = app.get(ConfigService).get('app.port');
+    app.useGlobalFilters(new ExceptionsFilter());
 
-    const getPort = (await loadGetPortModule()).default;
-    const port = await getPort({
-        port: portToUse
-    });
-    const isPortAvailable = port === portToUse;
+    await useSession(app);
 
-    if (!isPortAvailable && !isDevelopment) {
-        console.log(`Port ${port} is not available.`);
-        process.exit(1);
-    }
+    const port = app.get(ConfigService).get('app.port');
 
     closeAppWithGrace(app);
 

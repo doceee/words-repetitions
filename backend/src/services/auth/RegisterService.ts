@@ -1,18 +1,16 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { RegisterDto } from '../../dto/auth/RegisterDto';
 import { PrismaService } from '../PrismaService';
 import * as bcrypt from 'bcryptjs';
-import { LuciaFactory } from '../../modules/lucia.module';
-import { type Response, type Request } from 'express';
-import { type ILucia } from '../../plugins/lucia';
+import { Request, Response } from 'express';
 import { generateToken } from '../../helpers/csrf-token';
 import { ActivityType } from '@prisma/client';
 import { StoreService } from '../user-activities/StoreService';
+import { Session } from 'express-session';
 
 @Injectable()
 export class RegisterService {
     constructor(
-        @Inject(LuciaFactory) private readonly lucia: ILucia,
         private readonly prisma: PrismaService,
         private readonly storeUserActivityService: StoreService
     ) {}
@@ -42,16 +40,24 @@ export class RegisterService {
             createdUser.id
         );
 
-        const token = generateToken();
-
-        const session = await this.lucia.createSession(createdUser.id, {
-            token
+        const userItem = await this.prisma.user.findUnique({
+            where: { id: createdUser.id }
         });
 
-        const sessionCookie = this.lucia.createSessionCookie(session.id);
+        const token = generateToken();
 
-        res.appendHeader('Set-Cookie', sessionCookie.serialize());
-        res.appendHeader('csrf-token', token);
+        req.user = userItem;
+        req.session =
+            req.session || ({} as Session & { user?: string; token?: string });
+        req.session.user = userItem.id;
+
+        if (!req.session.tokens || !req.session.tokens.length) {
+            req.session.tokens = [token];
+        } else if (!req.session.tokens.includes(token)) {
+            req.session.tokens.push(token);
+        }
+
+        res.setHeader('csrf-token', token);
 
         return createdUser;
     }

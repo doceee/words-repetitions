@@ -6,13 +6,12 @@ import { MeService } from '../services/auth/MeService';
 import { LoginService } from '../services/auth/LoginService';
 import { RegisterService } from '../services/auth/RegisterService';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
-import { LuciaModule } from './lucia.module';
 import { UserActivityModule } from './user-activity.module';
 import { StoreService } from '../services/user-activities/StoreService';
 import { UpdateConsecutiveActivityDaysService } from '../services/user-activities/UpdateConsecutiveActivityDaysService';
 
 @Module({
-    imports: [LuciaModule, forwardRef(() => UserActivityModule)],
+    imports: [forwardRef(() => UserActivityModule)],
     controllers: [AuthController],
     providers: [
         LogoutService,
