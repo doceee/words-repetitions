@@ -4,13 +4,11 @@ import { PrismaModule } from './prisma.module';
 import { AuthModule } from './auth.module';
 import { WordModule } from './word.module';
 import { config } from '../config/index';
-import { ScheduleModule } from '@nestjs/schedule';
 import { UserModule } from './user.module';
 
 @Module({
     imports: [
         PrismaModule,
-        ScheduleModule.forRoot(),
         ConfigModule.forRoot({
             isGlobal: true,
             load: [config]
