@@ -27,5 +27,13 @@ export const config = () => ({
         password: env('DB_PASSWORD'),
         database: env('DB_NAME', 'postgres'),
         synchronize: mode === 'test'
+    },
+    redisSession: {
+        host: env('REDIS_SESSION_HOST', 'localhost'),
+        port: +env('REDIS_SESSION_PORT', '6379'),
+        password: env('REDIS_SESSION_PASS')
+    },
+    session: {
+        secret: env('SESSION_SECRET')
     }
 });
