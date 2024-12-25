@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { GoogleSearchWordService } from '../services/words/GoogleSearchWordService';
+import { TranslateService } from '../services/words/TranslateService';
 import { WordsController } from '../controllers/word.controller';
 import { AssignService } from '../services/words/AssignService';
 import { RemoveService } from '../services/words/RemoveService';
@@ -18,7 +18,7 @@ import { GetUserWordsService } from '../services/words/GetUserWords';
         RemoveService,
         IndexService,
         LoggedUserGuard,
-        GoogleSearchWordService
+        TranslateService
     ]
 })
 export class WordModule {}

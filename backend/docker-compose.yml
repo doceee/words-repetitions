@@ -1,4 +1,5 @@
 volumes:
+    libretranslate_models:
     postgresql.data:
     redis_session.data:
 
@@ -34,6 +35,24 @@ services:
             - redis_session.data:/data
         ports:
             - 127.0.0.1:${REDIS_SESSION_PORT}:6379
+        networks:
+            - global
+
+    translator:
+        image: libretranslate/libretranslate:v1.6.2
+        container_name: translator.docker
+        environment:
+            - LT_LOAD_ONLY=pl,en
+            - LT_UPDATE_MODELS=true
+            - LT_PORT=${TRANSLATE_APP_PORT}
+        restart: unless-stopped
+        tty: true
+        entrypoint: ["/bin/sh", "-c", "./venv/bin/python scripts/install_models.py --load_only_lang_codes 'pl,en' && ./venv/bin/libretranslate --host '*'"]
+        ports:
+            - 127.0.0.1:${TRANSLATE_APP_PORT}:5000
+        volumes:
+            # Keep the models in a docker volume, to avoid re-downloading on startup
+            - libretranslate_models:/home/libretranslate/.local:rw
         networks:
             - global
 

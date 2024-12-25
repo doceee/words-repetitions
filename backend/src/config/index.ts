@@ -35,5 +35,10 @@ export const config = () => ({
     },
     session: {
         secret: env('SESSION_SECRET')
+    },
+    translateApp: {
+        host: env('TRANSLATE_APP_HOST', 'localhost'),
+        port: +env('TRANSLATE_APP_PORT', '5000'),
+        url: env('TRANSLATE_APP_URL', 'http://localhost:5000')
     }
 });

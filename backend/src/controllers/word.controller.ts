@@ -14,7 +14,7 @@ import {
     Query
 } from '@nestjs/common';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
-import { GoogleSearchWordService } from '../services/words/GoogleSearchWordService';
+import { TranslateService } from '../services/words/TranslateService';
 import { GetUser } from '../decorators/GetUser.decorator';
 import { IndexService } from '../services/words/IndexService';
 import { CreateEditDto } from '../dto/word/CreateEdit.dto';
@@ -31,7 +31,7 @@ export class WordsController {
         private removeService: RemoveService,
         private assignService: AssignService,
         private getUserWordsService: GetUserWordsService,
-        private googleSearchWordService: GoogleSearchWordService
+        private translateService: TranslateService
     ) {}
 
     @Get('')
@@ -46,7 +46,7 @@ export class WordsController {
 
     @Get('search/:text')
     searchWord(@GetUser('id') userId: string, @Param('text') text: string) {
-        return this.googleSearchWordService.handle(text, userId);
+        return this.translateService.handle(text, userId);
     }
 
     @HttpCode(HttpStatus.CREATED)

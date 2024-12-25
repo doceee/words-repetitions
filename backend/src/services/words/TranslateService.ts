@@ -1,16 +1,22 @@
+import axios from 'axios';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../PrismaService';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const translate = require('google-translate-extended-api');
 
 import type { TranslationResponse } from '../../types/general';
 
 @Injectable()
-export class GoogleSearchWordService {
-    constructor(private prisma: PrismaService) {}
+export class TranslateService {
+    constructor(
+        private prisma: PrismaService,
+        private configService: ConfigService
+    ) {}
 
     async handle(searchText: string, userId: string) {
+        const translateApiUrl =
+            (this.configService.get<string>('translateApp.url') ||
+                'http://localhost:5000') + '/translate';
+
         try {
             let parsedTranslations: string[] = [];
 
@@ -20,23 +26,22 @@ export class GoogleSearchWordService {
                 }
             });
 
-            const res: TranslationResponse = await translate(
-                searchText,
-                'en',
-                'pl',
+            const { data } = await axios.post<TranslationResponse>(
+                `${translateApiUrl}`,
                 {
-                    examples: false
+                    q: `${searchText}`,
+                    source: 'auto',
+                    target: 'pl',
+                    format: 'text',
+                    alternatives: 10
                 }
             );
 
-            if (res.translation) parsedTranslations = [res.translation];
-
-            for (const property in res.translations) {
-                parsedTranslations = [
-                    ...parsedTranslations,
-                    ...res.translations[property]
-                ];
+            if (data.detectedLanguage.confidence < 45) {
+                return [];
             }
+
+            parsedTranslations = [data.translatedText, ...data.alternatives];
 
             const translations = parsedTranslations.map(item => {
                 const assignedWord = userWords.find(
@@ -64,7 +69,7 @@ export class GoogleSearchWordService {
 
             return translations;
         } catch (error) {
-            console.error('Error in GoogleSearchWordService:', error);
+            console.error('Error in Translation Service:', error);
             throw error;
         }
     }
