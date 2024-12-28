@@ -18,8 +18,6 @@ export class TranslateService {
                 'http://localhost:5000') + '/translate';
 
         try {
-            let parsedTranslations: string[] = [];
-
             const userWords = await this.prisma.word.findMany({
                 where: {
                     users: { some: { id: userId } }
@@ -41,9 +39,7 @@ export class TranslateService {
                 return [];
             }
 
-            parsedTranslations = [data.translatedText, ...data.alternatives];
-
-            const translations = parsedTranslations.map(item => {
+            return [data.translatedText, ...data.alternatives].map(item => {
                 const assignedWord = userWords.find(
                     userWord =>
                         (userWord.word === item ||
@@ -52,22 +48,13 @@ export class TranslateService {
                             userWord.translation === searchText)
                 );
 
-                return assignedWord
-                    ? {
-                          id: assignedWord.id,
-                          word: searchText,
-                          translation: item,
-                          userId
-                      }
-                    : {
-                          word: searchText,
-                          translation: item,
-                          userId: '',
-                          id: ''
-                      };
+                return {
+                    id: assignedWord ? assignedWord.id : '',
+                    word: searchText,
+                    translation: item,
+                    userId: assignedWord ? userId : ''
+                };
             });
-
-            return translations;
         } catch (error) {
             console.error('Error in Translation Service:', error);
             throw error;
