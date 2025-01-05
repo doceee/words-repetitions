@@ -13,6 +13,7 @@ import {
     Delete,
     Query
 } from '@nestjs/common';
+import { MoveDto } from '../dto/word/Move.dto';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
 import { TranslateService } from '../services/words/TranslateService';
 import { GetUser } from '../decorators/GetUser.decorator';
@@ -20,13 +21,16 @@ import { IndexService } from '../services/words/IndexService';
 import { CreateEditDto } from '../dto/word/CreateEdit.dto';
 import { RemoveService } from '../services/words/RemoveService';
 import { AssignService } from '../services/words/AssignService';
+import { MoveService } from '../services/words/MoveService';
 import { GetUserWordsService } from '../services/words/GetUserWords';
+import { WordListType } from '../config/constants';
 
 @Controller('words')
 @UseGuards(LoggedUserGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 export class WordsController {
     constructor(
+        private moveService: MoveService,
         private indexService: IndexService,
         private removeService: RemoveService,
         private assignService: AssignService,
@@ -40,8 +44,11 @@ export class WordsController {
     }
 
     @Get('user/:id')
-    getUserWords(@Param('id') userId: string) {
-        return this.getUserWordsService.handle(userId);
+    getUserWords(
+        @Param('id') userId: string,
+        @Query('wordList') wordList = `${WordListType.current}`
+    ) {
+        return this.getUserWordsService.handle(userId, wordList);
     }
 
     @Get('search/:text')
@@ -57,6 +64,15 @@ export class WordsController {
         dto: CreateEditDto
     ) {
         return this.assignService.handle(dto, userId);
+    }
+
+    @Post('move')
+    moveWord(
+        @GetUser('id') userId: string,
+        @Body()
+        dto: MoveDto
+    ) {
+        return this.moveService.handle(dto, userId);
     }
 
     @Put(':id')

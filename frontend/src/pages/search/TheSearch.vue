@@ -23,12 +23,16 @@
                 :key="result.translation"
                 class="my-2 mr-3 flex items-center"
             >
-                <span>{{ result.translation }}</span>
+                <span>
+                    {{ result.translation }}
+                </span>
+
                 <minus-circle-icon
                     v-if="result.id"
                     class="h-7 w-7 rounded-lg p-1 text-red-600 hover:cursor-pointer hover:bg-gray-200"
                     @click="handleRemoveWord(result.id)"
                 />
+
                 <plus-circle-icon
                     v-else
                     class="h-7 w-7 rounded-lg p-1 text-green-600 hover:cursor-pointer hover:bg-gray-200"

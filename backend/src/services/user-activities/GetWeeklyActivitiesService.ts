@@ -9,8 +9,8 @@ export class GetWeeklyActivitiesService {
     constructor(private prisma: PrismaService) {}
 
     async handle(userId: string, date = '') {
-        const week = getWeekDates(date);
-        const startDate = new Date(week[0]),
+        const week = getWeekDates(date),
+            startDate = new Date(week[0]),
             endDate = new Date(dayjs(week[6]).add(1, 'd').format('YYYY-MM-DD'));
 
         const activities = await this.prisma.userActivity.findMany({

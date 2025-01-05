@@ -25,16 +25,29 @@ model User {
 
   words          Word[]
   userActivities UserActivity[]
+
+  @@index([email])
+}
+
+model WordList {
+  id    String @id @default(uuid())
+  name  String @unique
+  label String
+  words Word[]
 }
 
 model Word {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   word        String
   translation String
+  wordListId  String?
   level       String?
+
   users       User[]
+  wordList    WordList? @relation(fields: [wordListId], references: [id])
 
   @@unique([word, translation])
+  @@index([word])
 }
 
 model UserActivity {

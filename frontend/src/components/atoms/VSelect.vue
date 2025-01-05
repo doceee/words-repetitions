@@ -12,14 +12,12 @@
         <select
             v-model="selectedValue"
             :id="props.id"
-            class="w-full appearance-none rounded-md border px-3 py-2 text-sm focus-within:z-10 focus:outline-none disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 lg:text-base"
+            class="w-full appearance-none rounded-md px-3 py-2 text-sm text-gray-900 outline-none focus-within:z-10 focus:outline-none disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500"
             :class="inputClass"
             :disabled="props.disabled"
             :required="props.required"
             @change="handleChange"
         >
-            <option disabled value="">Wybierz</option>
-
             <option
                 v-for="(option, index) in props.options"
                 :key="index"
@@ -27,7 +25,12 @@
             >
                 {{ option.label }}
             </option>
+
+            <option v-if="!props.options.length" disabled>
+                Brak dostępnych opcji
+            </option>
         </select>
+
         <p v-if="props.error" class="text-xs leading-5 text-red-400">
             {{ props.error }}
         </p>
@@ -39,7 +42,7 @@ import { computed, watch, ref } from 'vue';
 
 const props = withDefaults(
     defineProps<{
-        modelValue?: string;
+        modelValue?: string | null;
         options?: { label: string; value: string }[];
         error?: string;
         id?: string;
@@ -62,11 +65,11 @@ const props = withDefaults(
 
 const emit = defineEmits(['update:modelValue', 'change']);
 const isRedBorder = computed(() => !!props.error);
-const selectedValue = ref(props.modelValue || '');
+const selectedValue = ref(props.modelValue);
 
 watch(
     () => props.modelValue,
-    (newValue: string) => {
+    (newValue: string | null) => {
         selectedValue.value = newValue;
     }
 );

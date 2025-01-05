@@ -7,17 +7,24 @@ export const useWordsStore = defineStore('words', {
     state: (): IWordState => {
         return {
             words: [],
-            isProcessing: false,
+            isProcessing: true,
             isFetched: false,
             searchResults: [],
-            searchText: ''
+            searchText: '',
+            wordList: ''
         };
     },
 
     actions: {
-        async getUserWords(): Promise<IWord[]> {
-            if (this.isFetched) {
+        async getUserWords(wordList = ''): Promise<IWord[]> {
+            if (this.isFetched && this.wordList === wordList) {
                 return this.words;
+            }
+
+            const params: Record<string, string | number> = {};
+
+            if (wordList) {
+                params.wordList = wordList;
             }
 
             this.isProcessing = true;
@@ -25,8 +32,11 @@ export const useWordsStore = defineStore('words', {
             try {
                 const loggedUser = getSavedState('user');
 
-                this.words = await axios.get(`/words/user/${loggedUser?.id}`);
+                this.words = await axios.get(`/words/user/${loggedUser?.id}`, {
+                    params
+                });
 
+                this.wordList = wordList;
                 this.isFetched = true;
             } catch (error) {
                 console.error(error);
@@ -57,7 +67,24 @@ export const useWordsStore = defineStore('words', {
 
                 await axios.delete(`/words/${wordId}`);
 
-                this.words.splice(wordIndex, 1);
+                if (~wordIndex) this.words.splice(wordIndex, 1);
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        async move(wordList: string, wordId: string) {
+            try {
+                const wordIndex = this.words.findIndex(
+                    item => item.id === wordId
+                );
+
+                await axios.post('/words/move', {
+                    wordList,
+                    wordIds: [wordId]
+                });
+
+                if (~wordIndex) this.words.splice(wordIndex, 1);
             } catch (error) {
                 console.error(error);
             }
@@ -87,7 +114,7 @@ export const useWordsStore = defineStore('words', {
 
                 const wordId = this.words.findIndex(item => item.id === id);
 
-                this.words.splice(wordId, 1, data);
+                if (~wordId) this.words.splice(wordId, 1, data);
             } catch (error) {
                 console.error(error);
             }

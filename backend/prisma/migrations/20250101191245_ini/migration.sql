@@ -16,10 +16,20 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
+CREATE TABLE "WordList" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "label" TEXT NOT NULL,
+
+    CONSTRAINT "WordList_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Word" (
     "id" TEXT NOT NULL,
     "word" TEXT NOT NULL,
     "translation" TEXT NOT NULL,
+    "wordListId" TEXT,
     "level" TEXT,
 
     CONSTRAINT "Word_pkey" PRIMARY KEY ("id")
@@ -38,20 +48,31 @@ CREATE TABLE "UserActivity" (
 -- CreateTable
 CREATE TABLE "_UserToWord" (
     "A" TEXT NOT NULL,
-    "B" TEXT NOT NULL
+    "B" TEXT NOT NULL,
+
+    CONSTRAINT "_UserToWord_AB_pkey" PRIMARY KEY ("A","B")
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
+CREATE INDEX "User_email_idx" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "WordList_name_key" ON "WordList"("name");
+
+-- CreateIndex
+CREATE INDEX "Word_word_idx" ON "Word"("word");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Word_word_translation_key" ON "Word"("word", "translation");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_UserToWord_AB_unique" ON "_UserToWord"("A", "B");
-
--- CreateIndex
 CREATE INDEX "_UserToWord_B_index" ON "_UserToWord"("B");
+
+-- AddForeignKey
+ALTER TABLE "Word" ADD CONSTRAINT "Word_wordListId_fkey" FOREIGN KEY ("wordListId") REFERENCES "WordList"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UserActivity" ADD CONSTRAINT "UserActivity_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

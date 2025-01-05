@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateEditDto } from '../../dto/word/CreateEdit.dto';
 import { PrismaService } from '../PrismaService';
+import { WordListType } from '../../config/constants';
 
 @Injectable()
 export class AssignService {
@@ -16,7 +17,14 @@ export class AssignService {
             });
         }
 
-        const wordItem = await this.findOrCreate(data);
+        const [wordItem, wordList] = await Promise.all([
+            this.findOrCreate(data),
+            this.prisma.wordList.findFirst({
+                where: {
+                    name: `${WordListType.current}`
+                }
+            })
+        ]);
 
         await this.prisma.user.update({
             where: {
@@ -26,6 +34,16 @@ export class AssignService {
                 words: {
                     connect: { id: wordItem.id },
                     disconnect: { id: wordId }
+                }
+            }
+        });
+        await this.prisma.wordList.update({
+            where: {
+                id: wordList.id
+            },
+            data: {
+                words: {
+                    connect: wordItem
                 }
             }
         });

@@ -1,21 +1,18 @@
 import { PrismaClient } from '@prisma/client';
-import {
-    easyWords,
-    advancedWords,
-    intermediateWords,
-    words as wordList
-} from './data';
+import { easyWords, advancedWords, intermediateWords } from './data';
+import { wordLists as wordListsData } from '../../src/config/constants';
 
 export const seedWords = async (prisma: PrismaClient, userIds: string[]) => {
     const connectedUsers = userIds.map(item => ({ id: item }));
 
+    await prisma.wordList.createMany({
+        data: [...wordListsData]
+    });
+
+    const wordLists = await prisma.wordList.findMany({ select: { id: true } });
+
     await prisma.word.createMany({
-        data: [
-            ...wordList,
-            ...easyWords,
-            ...intermediateWords,
-            ...advancedWords
-        ],
+        data: [...easyWords, ...intermediateWords, ...advancedWords],
         skipDuplicates: true
     });
 
@@ -24,16 +21,25 @@ export const seedWords = async (prisma: PrismaClient, userIds: string[]) => {
         select: { id: true }
     });
 
-    for (let i = 0; i < words.length; i++) {
-        await prisma.word.update({
-            where: {
-                id: words[i].id
-            },
-            data: {
-                users: {
-                    connect: connectedUsers
-                }
-            }
-        });
-    }
+    const wordListUpdates = [
+        prisma.wordList.update({
+            where: { id: wordLists[0].id },
+            data: { words: { connect: words.slice(0, 5) } }
+        }),
+        prisma.wordList.update({
+            where: { id: wordLists[1].id },
+            data: { words: { connect: words.slice(5, 10) } }
+        })
+    ];
+
+    await prisma.$transaction(wordListUpdates);
+
+    const wordUpdates = words.map(word =>
+        prisma.word.update({
+            where: { id: word.id },
+            data: { users: { connect: connectedUsers } }
+        })
+    );
+
+    await prisma.$transaction(wordUpdates);
 };

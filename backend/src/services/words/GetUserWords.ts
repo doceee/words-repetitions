@@ -5,9 +5,14 @@ import { PrismaService } from '../PrismaService';
 export class GetUserWordsService {
     constructor(private prisma: PrismaService) {}
 
-    async handle(userId: string) {
+    handle(userId: string, listName: string) {
         return this.prisma.word.findMany({
-            where: { users: { some: { id: userId } } }
+            where: {
+                users: {
+                    some: { id: userId }
+                },
+                wordList: { name: listName }
+            }
         });
     }
 }

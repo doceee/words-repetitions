@@ -1,3 +1,14 @@
+export enum WordListType {
+    current = 'current',
+    learned = 'learned'
+}
+
+export interface IWordList {
+    id: string;
+    name: string;
+    label: string;
+}
+
 export interface IWord {
     id: string;
     word: string;
@@ -12,4 +23,5 @@ export interface IWordState {
     isFetched: boolean;
     searchResults: IWord[];
     searchText: string;
+    wordList: string;
 }

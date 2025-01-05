@@ -1,11 +1,3 @@
-export const words = [
-    { word: 'add', translation: 'dodawać', level: 'easy' },
-    { word: 'work', translation: 'praca', level: 'easy' },
-    { word: 'word', translation: 'słowo', level: 'easy' },
-    { word: 'way', translation: 'droga', level: 'easy' },
-    { word: 'world', translation: 'świat', level: 'easy' }
-];
-
 export const easyWords = [
     {
         word: 'hello',

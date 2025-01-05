@@ -5,6 +5,7 @@ import { AuthModule } from './auth.module';
 import { WordModule } from './word.module';
 import { config } from '../config/index';
 import { UserModule } from './user.module';
+import { WordListModule } from './word-list.module';
 
 @Module({
     imports: [
@@ -15,9 +16,8 @@ import { UserModule } from './user.module';
         }),
         AuthModule,
         WordModule,
-        UserModule
-    ],
-    controllers: [],
-    providers: []
+        UserModule,
+        WordListModule
+    ]
 })
 export class AppModule {}
