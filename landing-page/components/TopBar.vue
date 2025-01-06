@@ -1,7 +1,7 @@
 <template>
     <nav class="w-full bg-primary">
         <div
-            class="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-2 text-center"
+            class="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 text-center"
         >
             <p
                 class="relative inline-block font-rowdies font-extrabold before:absolute before:-inset-1 before:block before:-skew-y-2 before:bg-secondary"
