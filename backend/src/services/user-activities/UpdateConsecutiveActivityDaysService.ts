@@ -49,9 +49,16 @@ export class UpdateConsecutiveActivityDaysService {
 
         maxConsecutiveDays = Math.max(maxConsecutiveDays, currentStreak);
 
-        await this.prisma.user.update({
+        const user = await this.prisma.user.findUnique({
             where: { id: userId },
-            data: { consecutiveActivity: maxConsecutiveDays }
+            select: { consecutiveActivity: true }
         });
+
+        if (user) {
+            await this.prisma.user.update({
+                where: { id: userId },
+                data: { consecutiveActivity: maxConsecutiveDays }
+            });
+        }
     }
 }

@@ -17,14 +17,25 @@ export class AssignService {
             });
         }
 
-        const [wordItem, wordList] = await Promise.all([
-            this.findOrCreate(data),
-            this.prisma.wordList.findFirst({
-                where: {
-                    name: `${WordListType.current}`
-                }
-            })
-        ]);
+        const wordItem = await this.findOrCreate(data);
+        const wordList = await this.prisma.wordList.findFirst({
+            where: {
+                name: `${WordListType.current}`
+            }
+        });
+
+        if (!wordList) {
+            throw new BadRequestException({
+                param: 'wordList',
+                msg: 'Lista nie znaleziona'
+            });
+        }
+
+        if (!wordItem) {
+            throw new BadRequestException({
+                param: 'word'
+            });
+        }
 
         await this.prisma.user.update({
             where: {
@@ -33,7 +44,7 @@ export class AssignService {
             data: {
                 words: {
                     connect: { id: wordItem.id },
-                    disconnect: { id: wordId }
+                    ...(wordId && { disconnect: { id: wordId } })
                 }
             }
         });
@@ -51,10 +62,8 @@ export class AssignService {
         return wordItem;
     }
 
-    async findOrCreate(data: CreateEditDto) {
-        const { word, translation } = data;
-
-        const isCreated = await this.prisma.word.findFirst({
+    async findOrCreate({ word, translation }: CreateEditDto) {
+        const existingWord = await this.prisma.word.findFirst({
             where: {
                 OR: [
                     {
@@ -69,16 +78,17 @@ export class AssignService {
             }
         });
 
-        if (isCreated) return isCreated;
+        if (existingWord) return existingWord;
 
         return this.prisma.word.create({
-            data
+            data: { word, translation }
         });
     }
 
-    async isAlreadyAssigned(data: CreateEditDto, userId: string) {
-        const { word, translation } = data;
-
+    async isAlreadyAssigned(
+        { word, translation }: CreateEditDto,
+        userId: string
+    ) {
         const existingWord = await this.prisma.word.findFirst({
             where: {
                 OR: [

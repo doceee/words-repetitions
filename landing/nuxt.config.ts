@@ -1,12 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    compatibilityDate: "2024-04-03",
+    compatibilityDate: "2024-11-01",
     devtools: { enabled: true },
     modules: [
-        "@nuxtjs/seo",
         "@nuxtjs/tailwindcss",
-        "@nuxt/eslint",
+        "@nuxtjs/seo",
         "@nuxt/image",
+        "@nuxt/eslint",
     ],
     css: ["@/assets/styles/main.css"],
     image: {
@@ -27,5 +27,8 @@ export default defineNuxtConfig({
         public: {
             appUrl: process.env.APP_URL,
         },
+    },
+    typescript: {
+        typeCheck: true,
     },
 })

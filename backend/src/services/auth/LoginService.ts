@@ -1,13 +1,15 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ActivityType, type User } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
-import { LoginDto } from '../../dto/auth/LoginDto';
-import { PrismaService } from '../PrismaService';
 import { Request, Response } from 'express';
-import { StoreService } from '../user-activities/StoreService';
-import { ActivityType } from '@prisma/client';
-import { UpdateConsecutiveActivityDaysService } from '../user-activities/UpdateConsecutiveActivityDaysService';
-import { generateToken } from '../../helpers/csrf-token';
 import { Session } from 'express-session';
+
+import { LoginDto } from '../../dto/auth/LoginDto';
+import { generateToken } from '../../helpers/csrf-token';
+import { PrismaService } from '../PrismaService';
+import { StoreService } from '../user-activities/StoreService';
+import { UpdateConsecutiveActivityDaysService } from '../user-activities/UpdateConsecutiveActivityDaysService';
+import { CSRF_TOKEN_HEADER } from '../../config/constants';
 
 @Injectable()
 export class LoginService {
@@ -21,15 +23,14 @@ export class LoginService {
         const { email, password } = data;
 
         const user = await this.prisma.user.findUnique({
-            where: { email },
-            select: { hash: true, id: true }
+            where: { email }
         });
 
         if (!user) {
             throw new UnauthorizedException();
         }
 
-        const isValid = bcrypt.compareSync(password, user.hash);
+        const isValid = await bcrypt.compare(password, user.hash);
 
         if (!isValid) {
             throw new UnauthorizedException();
@@ -49,9 +50,12 @@ export class LoginService {
         const token = generateToken();
 
         req.user = updatedUser;
-        req.session =
-            req.session || ({} as Session & { user?: string; token?: string });
-        req.session.user = user.id;
+
+        if (!req.session) {
+            req.session = {} as Session & { user?: User; token?: string };
+        }
+
+        req.session.user = user;
 
         if (!req.session.tokens || !req.session.tokens.length) {
             req.session.tokens = [token];
@@ -59,7 +63,7 @@ export class LoginService {
             req.session.tokens.push(token);
         }
 
-        res.setHeader('csrf-token', token);
+        res.setHeader(CSRF_TOKEN_HEADER, token);
 
         return updatedUser;
     }

@@ -1,3 +1,5 @@
+export const CSRF_TOKEN_HEADER = 'csrf-token';
+
 export enum WordListType {
     current = 'current',
     learned = 'learned'

@@ -4,12 +4,12 @@
 
 @font-face {
     font-family: "Roboto", sans-serif;
-    src: url("../fonts/Roboto.ttf") format("truetype");
+    src: url("../fonts/Roboto.woff") format("woff");
 }
 
 @font-face {
     font-family: "Rowdies", sans-serif;
-    src: url("../fonts/Rowdies.ttf") format("truetype");
+    src: url("../fonts/Rowdies.woff") format("woff");
 }
 
 html {

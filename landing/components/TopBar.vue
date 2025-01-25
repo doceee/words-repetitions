@@ -11,7 +11,7 @@
 
             <a
                 target="_blank"
-                :href="`${config.public.appUrl}sign-up`"
+                :href="`${config.public.appUrl}/sign-up`"
                 class="flex h-fit justify-center rounded-[10px] border-[2px] border-white bg-primary px-4 py-2 text-[16px] font-bold text-white transition-colors hover:bg-white hover:text-primary"
             >
                 Rozpocznij naukę
