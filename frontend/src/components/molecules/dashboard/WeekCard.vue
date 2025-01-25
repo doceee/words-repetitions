@@ -16,12 +16,12 @@
             <div class="flex w-fit">
                 <arrow-left-icon
                     @click="onClick('subtract')"
-                    class="h-[25px] rounded-full p-[5px] hover:cursor-pointer hover:bg-gray-500"
+                    class="h-[25px] rounded-full p-[5px] hover:cursor-pointer hover:bg-gray-200"
                     aria-label="Poprzedni tydzień"
                 />
                 <arrow-right-icon
                     @click="onClick('add')"
-                    class="ml-[8px] h-[25px] rounded-full p-[5px] hover:cursor-pointer hover:bg-gray-400"
+                    class="ml-[8px] h-[25px] rounded-full p-[5px] hover:cursor-pointer hover:bg-gray-200"
                     aria-label="Kolejny tydzień"
                 />
             </div>

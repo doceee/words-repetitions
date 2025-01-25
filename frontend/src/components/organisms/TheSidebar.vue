@@ -14,7 +14,7 @@
 
         <button
             type="button"
-            class="ml-auto block items-center rounded-lg bg-transparent p-1.5 text-sm hover:bg-gray-200"
+            class="ml-auto block items-center rounded-lg border-[1px] border-transparent bg-transparent p-1.5 text-sm hover:border-black"
             @click="onClose"
         >
             <x-mark-icon class="ml-auto grid h-6 hover:cursor-pointer" />

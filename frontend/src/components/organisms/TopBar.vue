@@ -30,7 +30,7 @@
                     type="button"
                     data-drawer-hide="drawer-navigation"
                     aria-controls="drawer-navigation"
-                    class="ml-auto inline-flex w-min items-center rounded-lg bg-transparent p-1.5 text-sm hover:bg-gray-200"
+                    class="ml-auto inline-flex w-min items-center rounded-lg border-[1px] border-transparent bg-transparent p-1.5 text-sm hover:border-black"
                     @click="isSidebarOpen = !isSidebarOpen"
                 >
                     <bars3-icon class="ml-auto h-6" />
