@@ -11,7 +11,7 @@
         <ul class="my-3 flex w-full flex-wrap justify-center">
             <li
                 v-for="(com, name, index) in components"
-                :key="name"
+                :key="index"
                 class="mr-3"
             >
                 <button
@@ -43,7 +43,11 @@
             >
                 <component
                     :key="currentPillIndex"
-                    :is="components[currentPill].component"
+                    :is="
+                        components[currentPill]
+                            ? components[currentPill].component
+                            : null
+                    "
                 />
             </transition>
         </the-container>

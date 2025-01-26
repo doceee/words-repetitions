@@ -31,7 +31,13 @@ const checkLayout = () => {
         meta: { layout = 'default', authRequired = false }
     } = route;
 
-    if (!isValidated.value || (authRequired && !isLoggedIn.value)) {
+    if (!isValidated.value) {
+        return;
+    }
+
+    if (authRequired && !isLoggedIn.value) {
+        layoutName.value = 'auth';
+
         return;
     }
 
@@ -48,11 +54,7 @@ watch(
 watch(
     () => isLoggedIn.value,
     val => {
-        if (val) {
-            return;
-        }
-
-        if (layoutName.value === 'default') {
+        if (!val && layoutName.value === 'default') {
             layoutName.value = 'loader';
         }
     }
