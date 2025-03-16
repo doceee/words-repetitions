@@ -1,7 +1,7 @@
 <template>
     <div
         class="mx-auto mt-8 w-full max-w-[768px]"
-        :class="[isProcessing ? '' : 'overflow-x-auto']"
+        :class="{ 'overflow-x-auto': !isProcessing }"
     >
         <div
             class="mb-4 flex w-full items-center justify-between rounded-xl bg-white px-4 py-2"
@@ -103,9 +103,16 @@ export default defineComponent({
             )
                 return;
 
-            const foundItem = this.shuffledArray.find(
-                i => i.id === cardItem.id && cardItem.word === i.word
-            );
+            let foundItem = null;
+            for (let i = 0; i < this.shuffledArray.length; i++) {
+                if (
+                    this.shuffledArray[i].id === cardItem.id &&
+                    cardItem.word === this.shuffledArray[i].word
+                ) {
+                    foundItem = this.shuffledArray[i];
+                    break;
+                }
+            }
 
             if (!foundItem) return;
 
@@ -155,7 +162,7 @@ export default defineComponent({
                 fixed: false,
                 clicked: false
             }));
-            this.shuffledArray.length = 0;
+            this.shuffledArray.splice(0, this.shuffledArray.length);
 
             await this.$nextTick();
 

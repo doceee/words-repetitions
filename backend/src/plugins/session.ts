@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as connectRedis from 'connect-redis';
@@ -6,6 +7,7 @@ import { createClient } from 'redis';
 
 export const useSession = async (app: NestExpressApplication) => {
     const configService = app.get(ConfigService);
+    const logger = new Logger('Session');
     const oneHour = 3600 * 1000 * 1;
     const redisClient = createClient({
         url: `redis://default:${configService.get(
@@ -17,17 +19,18 @@ export const useSession = async (app: NestExpressApplication) => {
     });
 
     redisClient.on('connect', () => {
-        console.info('Redis Client connected');
+        logger.log('Redis Client connected');
     });
 
     redisClient.on('error', err => {
-        console.info('Redis Client Error: ' + err.message);
+        logger.error('Redis Client Error: ' + err.message);
     });
 
     try {
         await redisClient.connect();
     } catch (error) {
-        throw Error(error);
+        logger.error('Failed to connect to Redis: ' + error.message);
+        throw error;
     }
 
     const RedisStore = connectRedis(expressSession);
@@ -43,9 +46,9 @@ export const useSession = async (app: NestExpressApplication) => {
             rolling: true,
             cookie: {
                 maxAge: oneHour,
-                secure:
-                    configService.get('app.isProduction') &&
-                    configService.get('app.appUrl').startsWith('https')
+                secure: configService.get('app.isProduction')
+                    ? configService.get('app.appUrl').startsWith('https')
+                    : false
             }
         })
     );

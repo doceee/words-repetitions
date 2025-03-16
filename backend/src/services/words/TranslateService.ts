@@ -29,15 +29,15 @@ export class TranslateService {
                 `${translateApiUrl}`,
                 {
                     q: `${searchText}`,
-                    source: 'auto',
+                    source: 'en',
                     target: 'pl',
                     format: 'text',
                     alternatives: 10
                 }
             );
 
-            if (data.detectedLanguage.confidence < 45) {
-                return [];
+            if (!data || !data.translatedText) {
+                throw new Error('Translation failed, no data returned.');
             }
 
             const translations = [

@@ -7,8 +7,8 @@ const { apiUrl, publicPath } = config;
 axios.defaults.baseURL = apiUrl;
 axios.defaults.withCredentials = true;
 
-axios.interceptors.request.use(config => {
-    const { url, method, headers } = config;
+axios.interceptors.request.use(requestConfig => {
+    const { url, method, headers } = requestConfig;
 
     if (
         url &&
@@ -17,10 +17,10 @@ axios.interceptors.request.use(config => {
         ['post', 'put', 'patch', 'delete'].includes(method) &&
         !url.split('/').some(part => ['login', 'register'].includes(part))
     ) {
-        headers['csrf-token'] = getSavedState('csrfToken') || '';
+        headers['csrf-token'] = getSavedState('csrfToken') ?? '';
     }
 
-    return config;
+    return requestConfig;
 });
 
 axios.interceptors.response.use(

@@ -1,17 +1,18 @@
 <template>
     <div class="mx-auto w-full rounded-lg bg-yellow-200 px-6 py-3 text-left">
-        <h1 class="text-md">{{ props.header }}</h1>
+        <h1 class="text-md">{{ header }}</h1>
         <component
-            :is="props.to ? 'router-link' : 'p'"
-            to="word-list"
+            :is="to ? 'router-link' : 'p'"
+            :to="to"
             class="text-sm text-gray-700"
         >
-            {{ props.subheader }}
+            {{ subheader }}
         </component>
     </div>
 </template>
+
 <script setup lang="ts">
-const props = withDefaults(
+withDefaults(
     defineProps<{
         to?: string;
         header: string;

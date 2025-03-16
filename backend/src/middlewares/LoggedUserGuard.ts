@@ -24,7 +24,7 @@ export class LoggedUserGuard implements CanActivate {
         }
 
         const { user, tokens } = session;
-        let userData = request.user;
+        const userData = request.user;
 
         if (!userData) {
             const userItem = await this.prisma.user.findUnique({

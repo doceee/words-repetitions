@@ -30,6 +30,7 @@
         />
     </section>
 </template>
+
 <script lang="ts" setup>
 const config = useRuntimeConfig()
 </script>

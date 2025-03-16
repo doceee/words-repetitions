@@ -7,11 +7,10 @@
             subheader="Dodaj słówka aby rozpocząć"
             to="word-list"
         />
-
         <ul class="my-3 flex w-full flex-wrap justify-center">
             <li
                 v-for="(com, name, index) in components"
-                :key="index"
+                :key="com.label"
                 class="mr-3"
             >
                 <button
@@ -19,7 +18,6 @@
                     :class="{
                         underline: name === currentPill
                     }"
-                    :disabled="!words.length"
                     @click="setPill(name, index)"
                 >
                     {{ com.label }}
@@ -27,10 +25,8 @@
             </li>
         </ul>
 
-        <the-container>
+        <the-container v-if="words.length">
             <transition
-                v-if="words.length"
-                enter-active-class="transition duration-300"
                 :enter-from-class="
                     forward
                         ? 'translate-x-[40px] opacity-0'
@@ -43,11 +39,7 @@
             >
                 <component
                     :key="currentPillIndex"
-                    :is="
-                        components[currentPill]
-                            ? components[currentPill].component
-                            : null
-                    "
+                    :is="components[currentPill]?.component || 'div'"
                 />
             </transition>
         </the-container>
@@ -55,17 +47,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, defineAsyncComponent } from 'vue';
+import { ref, onMounted, computed, defineAsyncComponent } from 'vue';
+
 import VSpinner from '@/components/atoms/VSpinner.vue';
-import TheContainer from '@/components/molecules/TheContainer.vue';
-import NoWordsAlert from '@/components/atoms/NoWordsAlert.vue';
-import TrueFalse from '@/components/molecules/games/TrueFalse.vue';
-import { storeToRefs } from 'pinia';
 import { useWordsStore } from '@/store/modules/words';
+import NoWordsAlert from '@/components/atoms/NoWordsAlert.vue';
+import TheContainer from '@/components/molecules/TheContainer.vue';
+import TrueFalse from '@/components/molecules/games/TrueFalse.vue';
 
 const wordsStore = useWordsStore();
-
-const { words } = storeToRefs(wordsStore);
+const words = computed(() => wordsStore.words);
 
 const components = {
     TrueFalse: {
