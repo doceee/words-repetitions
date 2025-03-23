@@ -1,0 +1,9 @@
+node_modules
+public
+.vscode
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist

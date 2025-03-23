@@ -25,9 +25,9 @@ async function bootstrap() {
 
     const port = app.get(ConfigService).get('app.port');
 
-    closeAppWithGrace(app);
-
     await app.listen(port);
+
+    closeAppWithGrace(app);
 }
 
 bootstrap();
