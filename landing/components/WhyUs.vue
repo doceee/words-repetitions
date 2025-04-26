@@ -3,7 +3,7 @@
         class="mx-auto my-5 w-full max-w-4xl items-center justify-center py-16 text-center"
     >
         <header>
-            <h1 class="mb-8 px-2 text-3xl/10 font-bold text-gray-800 sm:mb-16">
+            <h1 class="mb-8 px-2 text-4xl/10 font-bold text-gray-800 sm:mb-16">
                 Dlaczego
                 <span
                     class="relative inline-block before:absolute before:-inset-1 before:block before:-skew-y-2 before:bg-secondary"
@@ -19,7 +19,7 @@
                 :key="index"
                 class="mx-2 mt-6 sm:mt-0"
             >
-                <p class="text-lg font-[600]">{{ item.header }}</p>
+                <p class="mb-2 text-xl font-[600]">{{ item.header }}</p>
                 <p class="text-base">
                     {{ item.content }}
                 </p>

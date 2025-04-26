@@ -31,7 +31,6 @@ export default defineNuxtConfig({
             link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
         },
     },
-
     compatibilityDate: "2024-11-01",
     devtools: { enabled: true },
     modules: [
@@ -40,7 +39,8 @@ export default defineNuxtConfig({
         "@nuxtjs/tailwindcss",
         "@nuxtjs/seo",
     ],
-    css: ["@/assets/styles/main.css"],
+    css: ["@splidejs/splide/css", "@/assets/styles/main.css"],
+    plugins: [{ src: "@/plugins/splide.client.ts", mode: "client" }],
     image: {
         quality: 80,
     },

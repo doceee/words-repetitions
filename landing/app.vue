@@ -3,8 +3,9 @@
 
     <main class="w-full">
         <master-language />
-        <course-for-you />
+        <the-testimonials />
         <why-us />
+        <course-for-you />
     </main>
 
     <the-footer />

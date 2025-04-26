@@ -1,6 +1,6 @@
 <template>
     <section
-        class="my-6 flex w-full flex-col items-center justify-center bg-primary text-center"
+        class="mt-6 flex w-full flex-col items-center justify-center bg-primary text-center"
     >
         <header class="px-1 sm:px-0">
             <h1 class="mb-6 mt-8 text-2xl/9 font-bold text-white">
