@@ -28,7 +28,7 @@ buildBackend() {
 }
 
 buildLandingPage() {
-	cd landing-page
+	cd landing
 
 	if [ "$1" == "true" ]; then
 			npm install
