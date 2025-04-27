@@ -17,3 +17,9 @@ declare module 'axios' {
         uid?: string;
     }
 }
+
+declare module '@vue/runtime-core' {
+    interface ComponentCustomProperties {
+        $refs: Record<string, HTMLElement>;
+    }
+}

@@ -1,7 +1,7 @@
 <template>
     <div
         id="drawer-navigation"
-        class="absolute right-0 top-0 z-40 h-screen w-64 overflow-y-auto bg-white px-[18px] pt-[6px]"
+        class="absolute right-0 top-0 z-40 h-screen w-64 overflow-y-auto bg-white px-4 pt-[6px]"
         tabindex="-1"
         aria-labelledby="drawer-navigation-label"
     >
@@ -14,10 +14,10 @@
 
         <button
             type="button"
-            class="ml-auto block items-center rounded-lg bg-transparent p-1.5 text-sm hover:bg-gray-200"
+            class="ml-auto block items-center rounded-lg border-[1px] border-transparent bg-transparent p-1.5 text-sm hover:border-black"
             @click="onClose"
         >
-            <x-mark-icon class="ml-auto grid h-[25px] hover:cursor-pointer" />
+            <x-mark-icon class="ml-auto grid h-6 hover:cursor-pointer" />
             <span class="sr-only">Close menu</span>
         </button>
 

@@ -1,12 +1,12 @@
 <template>
     <li>
         <component
-            :is="componentType"
+            :is="props.to ? 'router-link' : 'button'"
             :to="props.to"
-            class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100"
+            class="group flex items-center rounded-lg border-[1px] border-transparent p-2 text-gray-900 hover:border-black"
             :class="[props.to ? 'nav-item' : 'block w-full text-start']"
         >
-            <span class="flex-1 whitespace-nowrap group-hover:underline">
+            <span class="flex-1 whitespace-nowrap">
                 {{ text }}
             </span>
         </component>
@@ -14,8 +14,6 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
-
 const props = withDefaults(
     defineProps<{
         to?: string;
@@ -25,6 +23,4 @@ const props = withDefaults(
         to: ''
     }
 );
-
-const componentType = computed(() => (props.to ? 'router-link' : 'button'));
 </script>

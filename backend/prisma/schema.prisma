@@ -23,30 +23,31 @@ model User {
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
-  sessions       Session[]
   words          Word[]
   userActivities UserActivity[]
+
+  @@index([email])
 }
 
-model Session {
-  id        String   @id @default(uuid())
-  userId    String
-  token     String
-  expiresAt DateTime
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+model WordList {
+  id    String @id @default(uuid())
+  name  String @unique
+  label String
+  words Word[]
 }
 
 model Word {
   id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
   word        String
   translation String
+  wordListId  String?
+  level       String?
 
-  users User[]
+  users       User[]
+  wordList    WordList? @relation(fields: [wordListId], references: [id])
 
   @@unique([word, translation])
+  @@index([word])
 }
 
 model UserActivity {
@@ -59,6 +60,6 @@ model UserActivity {
 }
 
 enum ActivityType {
-  Login
-  Review
+  login
+  review
 }

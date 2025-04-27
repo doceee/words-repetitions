@@ -11,7 +11,7 @@ export class UpdateConsecutiveActivityDaysService {
         const activities = await this.prisma.$queryRaw<UserActivity[]>`
             SELECT DISTINCT ON (DATE("activity_time")) *
             FROM "UserActivity"
-            WHERE "userId" = ${userId} AND "activity" = 'Login'
+            WHERE "userId" = ${userId} AND "activity" = 'login'
             ORDER BY DATE("activity_time"), "activity_time" ASC;
         `;
 
@@ -49,9 +49,16 @@ export class UpdateConsecutiveActivityDaysService {
 
         maxConsecutiveDays = Math.max(maxConsecutiveDays, currentStreak);
 
-        await this.prisma.user.update({
+        const user = await this.prisma.user.findUnique({
             where: { id: userId },
-            data: { consecutiveActivity: maxConsecutiveDays }
+            select: { consecutiveActivity: true }
         });
+
+        if (user) {
+            await this.prisma.user.update({
+                where: { id: userId },
+                data: { consecutiveActivity: maxConsecutiveDays }
+            });
+        }
     }
 }

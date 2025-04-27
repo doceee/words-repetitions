@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../fonts/Roboto.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Rowdies";
+    src: url("../fonts/Rowdies.woff") format("woff");
+}
+
+html {
+    font-family: "Roboto", sans-serif;
+}
+
+.splide__arrow {
+    @apply -translate-y-3/4 bg-transparent text-primary;
+}
+
+.splide__pagination__page {
+    @apply bg-primary opacity-90;
+}
+
+.splide__pagination__page.is-active {
+    @apply bg-primary;
+}
+
+.testimonial-card {
+    @apply mx-4 mb-4 mt-8 transition-all duration-300 ease-in-out;
+}
+
+.testimonial-card:hover {
+    @apply scale-[1.01] transform;
+}
+
+.splide__track {
+    @apply pb-8 pt-4;
+}
+
+.splide__slide {
+    @apply mr-1 pt-2;
+}

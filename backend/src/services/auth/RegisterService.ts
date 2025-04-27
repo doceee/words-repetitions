@@ -1,17 +1,19 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { RegisterDto } from '../../dto/auth/RegisterDto';
 import { PrismaService } from '../PrismaService';
+import { ActivityType, type User } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
-import { LuciaFactory } from '../../modules/lucia.module';
-import { type Response, type Request } from 'express';
-import { type ILucia } from '../../plugins/lucia';
+import { Request, Response } from 'express';
 import { generateToken } from '../../helpers/csrf-token';
+import { StoreService } from '../user-activities/StoreService';
+import { Session } from 'express-session';
+import { CSRF_TOKEN_HEADER } from '../../config/constants';
 
 @Injectable()
 export class RegisterService {
     constructor(
-        @Inject(LuciaFactory) private readonly lucia: ILucia,
-        private readonly prisma: PrismaService
+        private readonly prisma: PrismaService,
+        private readonly storeUserActivityService: StoreService
     ) {}
 
     async handle(data: RegisterDto, req: Request, res: Response) {
@@ -28,22 +30,38 @@ export class RegisterService {
             });
         }
 
-        const hash = bcrypt.hashSync(password, 12);
+        const hash = await bcrypt.hash(password, 12);
 
         const createdUser = await this.prisma.user.create({
             data: { email, hash }
         });
 
-        const token = generateToken();
+        await this.storeUserActivityService.handle(
+            { activity: ActivityType.login },
+            createdUser.id
+        );
 
-        const session = await this.lucia.createSession(createdUser.id, {
-            token
+        const userItem = await this.prisma.user.findUnique({
+            where: { id: createdUser.id }
         });
 
-        const sessionCookie = this.lucia.createSessionCookie(session.id);
+        const token = generateToken();
 
-        res.appendHeader('Set-Cookie', sessionCookie.serialize());
-        res.appendHeader('csrf-token', token);
+        req.user = userItem;
+
+        if (!req.session) {
+            req.session = {} as Session & { user?: User; token?: string };
+        }
+
+        req.session.user = userItem;
+
+        if (!req.session.tokens || !req.session.tokens.length) {
+            req.session.tokens = [token];
+        } else if (!req.session.tokens.includes(token)) {
+            req.session.tokens.push(token);
+        }
+
+        res.setHeader(CSRF_TOKEN_HEADER, token);
 
         return createdUser;
     }

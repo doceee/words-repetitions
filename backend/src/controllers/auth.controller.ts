@@ -18,7 +18,7 @@ import { LogoutService } from '../services/auth/LogoutService';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
 import { RegisterDto } from '../dto/auth/RegisterDto';
 import { RegisterService } from '../services/auth/RegisterService';
-import { type Response, type Request } from 'express';
+import { Response, Request } from 'express';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -59,7 +59,7 @@ export class AuthController {
 
     @HttpCode(HttpStatus.NO_CONTENT)
     @Post('/logout')
-    logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-        return this.logoutService.handle(req, res);
+    logout(@Req() req: Request) {
+        return this.logoutService.handle(req);
     }
 }

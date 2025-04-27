@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { CSRF_TOKEN_HEADER } from '../config/constants';
 
 export const useCors = (app: NestExpressApplication) => {
     const configService = app.get(ConfigService);
@@ -14,6 +15,6 @@ export const useCors = (app: NestExpressApplication) => {
             }
         },
         credentials: true,
-        exposedHeaders: ['csrf-token']
+        exposedHeaders: [CSRF_TOKEN_HEADER]
     });
 };

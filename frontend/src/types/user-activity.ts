@@ -9,6 +9,6 @@ export interface IWeeklyActivity {
 }
 
 export enum ActivityType {
-    Login = 'Login',
-    Review = 'Review'
+    login = 'login',
+    review = 'review'
 }

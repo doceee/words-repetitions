@@ -3,7 +3,7 @@
         <div class="grid grid-flow-row-dense grid-cols-2 gap-2 md:flex">
             <profile-card
                 class="justify-self-center"
-                :email="loggedUser?.email"
+                :email="loggedUser?.email || ''"
             />
             <week-card
                 class="order-first col-span-2 justify-self-center md:order-none"
@@ -36,7 +36,7 @@ import { type IWeeklyActivity } from '@/types/user-activity';
 const { loggedUser } = storeToRefs(useAuthStore());
 const userActivitiesStore = useUserActivitiesStore();
 const isFetchingActivities = ref(false);
-const activityList = ref<IWeeklyActivity[]>();
+const activityList = ref<IWeeklyActivity[]>([]);
 
 const fetchActivities = async (date: string) => {
     isFetchingActivities.value = true;
@@ -50,6 +50,6 @@ const fetchActivities = async (date: string) => {
 };
 
 onMounted(() => {
-    fetchActivities(dayjs().format());
+    fetchActivities(dayjs().format('YYYY-MM-DD'));
 });
 </script>

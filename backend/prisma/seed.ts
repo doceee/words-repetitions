@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-
 import * as bcrypt from 'bcryptjs';
 import { seedUserActivities } from './seed/seedUserActivities';
 import { seedWords } from './seed/seedWords';
@@ -22,8 +21,7 @@ const seedDb = async () => {
 
         await seedWords(prisma, [user.id, user2.id]);
 
-        await seedUserActivities(prisma, user);
-        await seedUserActivities(prisma, user2);
+        await seedUserActivities(prisma, [user.id, user2.id]);
     } catch (error) {
         console.error(error);
     }

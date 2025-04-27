@@ -7,7 +7,7 @@
                 :value="progress"
             />
             <div
-                class="mx-auto mt-[12px] flex w-full max-w-[650px] flex-col items-center justify-center rounded-xl border-[1px] border-gray-700"
+                class="mx-auto mt-3 flex w-full max-w-[650px] flex-col items-center justify-center rounded-xl border-[1px] border-gray-700"
             >
                 <h1
                     class="mx-auto my-5 max-w-fit rounded-lg p-5 text-xl font-bold text-gray-800"
@@ -17,10 +17,10 @@
             </div>
             <div
                 v-if="isAnswerDisplayed"
-                class="mx-auto mt-[12px] flex w-full max-w-[650px] flex-col rounded-xl bg-white p-[8px] shadow-md"
+                class="mx-auto mt-3 flex w-full max-w-[650px] flex-col rounded-xl bg-white p-2 shadow-md"
             >
                 <p
-                    class="my-[5px] w-full rounded-lg px-[12px] text-lg font-[500]"
+                    class="my-1 w-full rounded-lg px-3 text-lg font-[500]"
                     :class="[
                         isCorrect
                             ? 'bg-green-200 text-green-600'
@@ -29,7 +29,7 @@
                 >
                     {{ currentValue }}
                 </p>
-                <p class="my-[5px] w-full px-[12px] text-lg font-[500]">
+                <p class="my-1 w-full px-3 text-lg font-[500]">
                     {{ wordList[currentIndex].word }}
                 </p>
             </div>
@@ -37,12 +37,11 @@
                 v-else
                 id="answer-input"
                 v-model="currentValue"
-                non-static-error
-                class="mx-auto my-[18px] w-full max-w-[400px] sm:my-[38px]"
+                class="mx-auto my-4 w-full max-w-[400px] sm:my-10"
                 @keyup.enter="handleCheck"
             />
             <review-footer
-                class="my-[18px]"
+                class="my-4"
                 :answer-revealed="isAnswerDisplayed"
                 :is-loading="isLoading"
                 @check="handleCheck"
@@ -68,7 +67,7 @@
             />
             <v-button class="group mt-6 flex items-center" to="/">
                 <arrow-left-icon
-                    class="mr-[8px] h-[18px] text-gray-800 transition group-hover:translate-x-[-5px]"
+                    class="mr-2 h-4 text-gray-800 transition group-hover:translate-x-[-5px]"
                 />
                 powrót na stronę główną
             </v-button>
@@ -78,7 +77,7 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import VInput from '@/components/atoms/VInput.vue';
 import { useWordsStore } from '@/store/modules/words';
 import { shuffleArray } from '@/helpers/shuffleArray';
@@ -133,7 +132,7 @@ const handleGoodResponse = async () => {
 
         if (currentIndex.value === wordList.value.length - 1) {
             wordList.value.length = 0;
-            await userActivitiesStore.storeActivity(ActivityType.Review);
+            await userActivitiesStore.storeActivity(ActivityType.review);
             await updateStat('reviewsDone', 1);
 
             return;

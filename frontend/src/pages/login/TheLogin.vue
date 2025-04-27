@@ -1,9 +1,7 @@
 <template>
-    <div
-        class="mx-auto mb-[24px] mt-[30px] max-w-[267px] sm:mt-[32px] sm:w-full sm:max-w-full"
-    >
+    <div class="mx-auto mb-6 mt-8 max-w-[267px] sm:w-full sm:max-w-full">
         <h2
-            class="mt-[16px] text-center text-2xl font-semibold leading-8 text-gray-700 sm:mt-5 sm:text-4xl sm:font-medium"
+            class="mt-4 text-center text-2xl font-semibold leading-8 text-gray-700 sm:mt-5 sm:text-4xl sm:font-medium"
         >
             Logowanie
         </h2>
@@ -12,7 +10,7 @@
         class="mx-auto flex max-w-[400px] flex-col gap-4"
         @submit.prevent="onSubmit"
     >
-        <div class="mt-[4px]">
+        <div class="mt-1">
             <v-input
                 id="email"
                 v-model="email"
@@ -51,7 +49,7 @@
         </v-button>
     </form>
 
-    <p class="mb-8 mt-[16px] text-right text-sm text-gray-600">
+    <p class="mb-8 mt-4 text-right text-sm text-gray-600">
         Nie masz konta?
         <v-button to="/sign-up" link>Rejestracja</v-button>
     </p>
@@ -120,7 +118,7 @@ const onSubmit = async () => {
                 const { status, data } = response;
 
                 if (status === 400 && data) {
-                    serverErrors.value = [response.data];
+                    serverErrors.value = [response.data.message];
 
                     return;
                 }

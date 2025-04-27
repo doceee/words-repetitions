@@ -1,19 +1,19 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ActivityType, type User } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
+import { Request, Response } from 'express';
+import { Session } from 'express-session';
+
 import { LoginDto } from '../../dto/auth/LoginDto';
-import { PrismaService } from '../PrismaService';
-import { LuciaFactory } from '../../modules/lucia.module';
-import { type ILucia } from '../../plugins/lucia';
-import { type Response, type Request } from 'express';
-import { StoreService } from '../user-activities/StoreService';
-import { ActivityType } from '@prisma/client';
-import { UpdateConsecutiveActivityDaysService } from '../user-activities/UpdateConsecutiveActivityDaysService';
 import { generateToken } from '../../helpers/csrf-token';
+import { PrismaService } from '../PrismaService';
+import { StoreService } from '../user-activities/StoreService';
+import { UpdateConsecutiveActivityDaysService } from '../user-activities/UpdateConsecutiveActivityDaysService';
+import { CSRF_TOKEN_HEADER } from '../../config/constants';
 
 @Injectable()
 export class LoginService {
     constructor(
-        @Inject(LuciaFactory) private readonly lucia: ILucia,
         private readonly prisma: PrismaService,
         private readonly storeUserActivityService: StoreService,
         private readonly updateConsecutiveActivityDaysService: UpdateConsecutiveActivityDaysService
@@ -23,22 +23,21 @@ export class LoginService {
         const { email, password } = data;
 
         const user = await this.prisma.user.findUnique({
-            where: { email },
-            select: { hash: true, id: true }
+            where: { email }
         });
 
         if (!user) {
             throw new UnauthorizedException();
         }
 
-        const isValid = bcrypt.compareSync(password, user.hash);
+        const isValid = await bcrypt.compare(password, user.hash);
 
         if (!isValid) {
             throw new UnauthorizedException();
         }
 
         await this.storeUserActivityService.handle(
-            { activity: ActivityType.Login },
+            { activity: ActivityType.login },
             user.id
         );
 
@@ -50,14 +49,21 @@ export class LoginService {
 
         const token = generateToken();
 
-        const session = await this.lucia.createSession(user.id, {
-            token
-        });
+        req.user = updatedUser;
 
-        const sessionCookie = this.lucia.createSessionCookie(session.id);
+        if (!req.session) {
+            req.session = {} as Session & { user?: User; token?: string };
+        }
 
-        res.appendHeader('Set-Cookie', sessionCookie.serialize());
-        res.appendHeader('csrf-token', token);
+        req.session.user = user;
+
+        if (!req.session.tokens || !req.session.tokens.length) {
+            req.session.tokens = [token];
+        } else if (!req.session.tokens.includes(token)) {
+            req.session.tokens.push(token);
+        }
+
+        res.setHeader(CSRF_TOKEN_HEADER, token);
 
         return updatedUser;
     }

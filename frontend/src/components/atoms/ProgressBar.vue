@@ -1,7 +1,7 @@
 <template>
-    <div class="h-[14px] w-full rounded-full bg-gray-500">
+    <div class="h-4 w-full rounded-full bg-gray-500">
         <div
-            class="h-[14px] rounded-full bg-green-500 transition-[width] duration-500"
+            class="h-4 rounded-full bg-green-500 transition-[width] duration-500"
             :style="{ width: `${width}%` }"
         ></div>
     </div>

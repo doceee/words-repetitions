@@ -9,15 +9,15 @@ export class GetWeeklyActivitiesService {
     constructor(private prisma: PrismaService) {}
 
     async handle(userId: string, date = '') {
-        const week = getWeekDates(date);
-        const startDate = new Date(week[0]),
+        const week = getWeekDates(date),
+            startDate = new Date(week[0]),
             endDate = new Date(dayjs(week[6]).add(1, 'd').format('YYYY-MM-DD'));
 
         const activities = await this.prisma.userActivity.findMany({
             where: {
                 userId: userId,
                 activity: {
-                    in: [ActivityType.Login, ActivityType.Review]
+                    in: [ActivityType.login, ActivityType.review]
                 },
                 activity_time: {
                     gte: new Date(startDate),
@@ -37,9 +37,9 @@ export class GetWeeklyActivitiesService {
             const day = dayjs(activity_time).format('YYYY-MM-DD');
 
             if (activityMap.has(day)) {
-                if (activity === ActivityType.Login) {
+                if (activity === ActivityType.login) {
                     activityMap.get(day).signin = true;
-                } else if (activity === ActivityType.Review) {
+                } else if (activity === ActivityType.review) {
                     activityMap.get(day).review = true;
                 }
             }

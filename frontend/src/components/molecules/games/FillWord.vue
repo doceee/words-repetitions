@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="currentIndex < wordList.length" class="my-[8px]">
+        <div v-if="currentIndex < wordList.length" class="mb-8 mt-2">
             <displayed-word
                 :current-index="currentIndex"
                 :displayed-text="displayedText"
@@ -10,7 +10,7 @@
             <input
                 id="answer"
                 v-model="currentValue"
-                class="mx-auto block w-full max-w-[400px] rounded-md border border-gray-300 focus:ring-gray-600"
+                class="mx-auto block w-5/6 rounded-md border border-gray-300 focus:ring-gray-600 sm:max-w-[400px]"
                 :class="inputClass"
                 placeholder="Tłumaczenie"
                 @input="handleInput"
@@ -59,7 +59,7 @@ const handleInput = (e: Event) => {
         return;
     }
 
-    for (let i = 0; i < val.length; i++) {
+    for (let i = 0; i < Math.min(val.length, correctWord.length); i++) {
         if (val[i]?.toLowerCase() === correctWord[i]) {
             inputClass.value = [
                 'shadow-[0px_0px_30px_0px_rgba(0,0,0,1)]',
@@ -84,15 +84,19 @@ const handleInput = (e: Event) => {
         inputClass.value = [];
 
         if (currentIndex.value === wordList.value.length) {
-            userActivitiesStore.storeActivity(ActivityType.Review);
+            userActivitiesStore.storeActivity(ActivityType.review);
             updateStat('reviewsDone', 1);
         }
     }
 };
 
-const displayedText = computed(
-    () => wordList.value[currentIndex.value].translation
-);
+const displayedText = computed(() => {
+    if (currentIndex.value < wordList.value.length) {
+        return wordList.value[currentIndex.value].translation;
+    }
+
+    return '';
+});
 
 const reset = () => {
     currentIndex.value = 0;

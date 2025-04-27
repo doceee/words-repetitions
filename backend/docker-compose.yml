@@ -1,22 +1,19 @@
 volumes:
+    libretranslate_models:
     postgresql.data:
+    redis_session.data:
 
 services:
     db:
-        image: postgres:12
+        image: postgres:14-alpine
         container_name: postgres.docker
         restart: unless-stopped
         environment:
-            - POSTGRES_USER=${DB_USER}
-            - POSTGRES_PASSWORD=${DB_PASSWORD}
-            - POSTGRES_DB=${DB_NAME}
-            - POSTGRES_HOST=${DB_HOST}
-            - POSTGRES_PORT=${DB_PORT}
-        healthcheck:
-            test: ['CMD', 'pg_isready', '-U', '${DB_USER}']
-            interval: 5s
-            timeout: 5s
-            retries: 5
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB: ${DB_NAME}
+            POSTGRES_HOST: ${DB_HOST}
+            POSTGRES_PORT: ${DB_PORT}
+            POSTGRES_USER: ${DB_USER}
         ports:
             - 127.0.0.1:${DB_PORT}:5432
         volumes:
@@ -24,5 +21,42 @@ services:
         networks:
             - global
 
+    redis_session:
+        image: redis:7
+        container_name: redis.session.docker
+        restart: unless-stopped
+        command: redis-server --requirepass ${REDIS_SESSION_PASS}
+        volumes:
+            - redis_session.data:/data
+        ports:
+            - 127.0.0.1:${REDIS_SESSION_PORT}:6379
+        networks:
+            - global
+
+    translator:
+        image: libretranslate/libretranslate:v1.6.2
+        container_name: translator.docker
+        environment:
+            LT_LOAD_ONLY: ${TRANSLATE_APP_LOAD_ONLY}
+            LT_UPDATE_MODELS: ${TRANSLATE_APP_UPDATE_MODELS}
+            LT_PORT: ${TRANSLATE_APP_PORT}
+            LT_DISABLE_WEB_UI: ${TRANSLATE_APP_DISABLE_WEB_UI}
+        restart: unless-stopped
+        tty: true
+        entrypoint:
+            [
+                '/bin/sh',
+                '-c',
+                "./venv/bin/python scripts/install_models.py --load_only_lang_codes '${TRANSLATE_APP_LOAD_ONLY}' && ./venv/bin/libretranslate --host '*'"
+            ]
+        ports:
+            - 127.0.0.1:${TRANSLATE_APP_PORT}:5000
+        # Keep the models in a docker volume, to avoid re-downloading on startup
+        volumes:
+            - libretranslate_models:/home/libretranslate/.local:rw
+        networks:
+            - global
+
 networks:
     global:
+        driver: bridge

@@ -1,13 +1,13 @@
 <template>
     <div
-        class="relative mx-[12px] h-[235px] w-full justify-center rounded-md bg-gray-100 pt-[14px] text-center transition-opacity md:max-w-[400px]"
+        class="relative mx-3 h-[235px] w-full justify-center rounded-md bg-gray-100 pt-4 text-center transition-opacity md:max-w-[400px]"
     >
         <v-spinner
             v-if="props.isFetching"
             class="absolute left-0 right-0 z-20 m-auto"
         />
         <div
-            class="flex items-center justify-between border-b-[2px] px-[18px] pb-[10px]"
+            class="flex items-center justify-between border-b-[2px] px-5 pb-2"
             :class="{ 'opacity-10': props.isFetching }"
         >
             <h1 class="text-left text-sm">
@@ -16,25 +16,25 @@
             <div class="flex w-fit">
                 <arrow-left-icon
                     @click="onClick('subtract')"
-                    class="h-[25px] rounded-full p-[5px] hover:cursor-pointer hover:bg-gray-500"
+                    class="h-[25px] rounded-full p-[5px] hover:cursor-pointer hover:bg-gray-200"
                     aria-label="Poprzedni tydzień"
                 />
                 <arrow-right-icon
                     @click="onClick('add')"
-                    class="ml-[8px] h-[25px] rounded-full p-[5px] hover:cursor-pointer hover:bg-gray-400"
+                    class="ml-[8px] h-[25px] rounded-full p-[5px] hover:cursor-pointer hover:bg-gray-200"
                     aria-label="Kolejny tydzień"
                 />
             </div>
         </div>
 
         <div
-            class="flex h-[150px] justify-between px-[22px] py-[12px] text-sm sm:text-lg"
+            class="flex h-[150px] justify-between px-2 py-3 text-sm sm:px-5 sm:text-lg"
             :class="{ 'opacity-10': props.isFetching }"
         >
             <div
                 v-for="(activity, index) in props.activities"
                 :key="index"
-                class="mx-[2px] flex flex-col justify-around rounded-xl px-[2px] py-[8px] sm:mx-[5px] sm:px-[8px]"
+                class="mx-1 flex flex-col justify-around rounded-xl px-1 py-2 sm:mx-1 sm:px-2"
                 :class="{ 'bg-gray-200': isToday(activity) }"
             >
                 <p>
@@ -44,21 +44,21 @@
                     {{ formatDate(activity) }}
                 </p>
                 <fire-icon
-                    class="my-[2px] h-[22px] text-gray-300 sm:my-[5px]"
+                    class="my-1 h-5 text-gray-300 sm:my-2"
                     :class="{ 'text-red-500': getReview(activity) }"
                 />
                 <cloud-icon
-                    class="h-[22px] text-gray-300"
+                    class="h-5 text-gray-300"
                     :class="{ 'text-green-500': getSignin(activity) }"
                 />
             </div>
         </div>
         <div
-            class="flex items-center justify-end border-t-[2px] px-[18px] py-[6px] text-sm"
+            class="flex items-center justify-end border-t-[2px] px-4 py-[6px] text-sm"
             :class="{ 'opacity-10': props.isFetching }"
         >
-            <fire-icon class="mr-[4px] h-[18px] text-red-500" /> POWTÓRKI
-            <cloud-icon class="ml-[12px] mr-[4px] h-[18px] text-green-500" />
+            <fire-icon class="mr-1 h-4 text-red-500" /> POWTÓRKI
+            <cloud-icon class="ml-3 mr-1 h-4 text-green-500" />
             LOGOWANIE
         </div>
     </div>

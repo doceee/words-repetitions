@@ -2,71 +2,62 @@ import {
     CanActivate,
     ExecutionContext,
     ForbiddenException,
-    Inject,
     Injectable,
     UnauthorizedException
 } from '@nestjs/common';
-import { type Response, type Request } from 'express';
-import { ILucia } from '../plugins/lucia';
-import { LuciaFactory } from '../modules/lucia.module';
+import { Request } from 'express';
 import { PrismaService } from '../services/PrismaService';
+import { CSRF_TOKEN_HEADER } from '../config/constants';
 
 @Injectable()
 export class LoggedUserGuard implements CanActivate {
-    constructor(
-        @Inject(LuciaFactory) private readonly lucia: ILucia,
-        private readonly prisma: PrismaService
-    ) {}
+    constructor(private readonly prisma: PrismaService) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
-        const req = context.switchToHttp().getRequest<Request>();
-        const res = context.switchToHttp().getResponse<Response>();
-        const {
-            headers: { 'csrf-token': token },
-            method,
-            url
-        } = req;
+        const request = context.switchToHttp().getRequest<Request>();
+        const { headers } = request;
+        const csrfToken = headers[CSRF_TOKEN_HEADER];
 
-        const sessionId = this.lucia.readSessionCookie(
-            req.headers.cookie ?? ''
-        );
-
-        if (!sessionId) {
+        const { session } = request;
+        if (!session || !session.user || !session.tokens) {
             throw new UnauthorizedException();
         }
 
-        const { session } = await this.lucia.validateSession(sessionId);
+        const { user, tokens } = session;
+        const userData = request.user;
 
-        if (!session) {
-            throw new UnauthorizedException();
+        if (!userData) {
+            const userItem = await this.prisma.user.findUnique({
+                where: { id: user.id }
+            });
+
+            if (!userItem) {
+                throw new UnauthorizedException();
+            }
+
+            request.user = userItem;
         }
 
-        if (session.fresh) {
-            const sessionCookie = this.lucia.createSessionCookie(session.id);
-            res.appendHeader('Set-Cookie', sessionCookie.serialize());
-        }
+        const { method, url } = request;
 
-        const user = await this.prisma.user.findUnique({
-            where: { id: session.userId }
-        });
-
-        if (!user) {
-            throw new UnauthorizedException();
-        }
-
-        req.user = user;
-
-        if (
-            !['DELETE', 'PUT', 'POST', 'PATCH'].includes(method) ||
-            url.split('/').some(part => ['login', 'register'].includes(part))
-        ) {
+        if (this.isNotRestrictedMethod(method, url)) {
             return true;
         }
 
-        if (!token || token !== session.token) {
-            throw new ForbiddenException();
+        if (!csrfToken || !tokens.includes(csrfToken as string)) {
+            throw new ForbiddenException('Invalid CSRF token');
         }
 
         return true;
+    }
+
+    private isNotRestrictedMethod(method: string, url: string) {
+        const restrictedMethods = ['DELETE', 'PUT', 'POST', 'PATCH'];
+        const publicUrls = ['login', 'register'];
+
+        return (
+            !restrictedMethods.includes(method) ||
+            url.split('/').some(part => publicUrls.includes(part))
+        );
     }
 }
