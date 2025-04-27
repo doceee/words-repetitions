@@ -3,7 +3,7 @@
         class="testimonial-card mx-auto flex max-w-md flex-col items-center rounded-xl bg-white p-8 text-center shadow-[-4px_0px_40px_-18px_rgba(0,0,0,0.1)]"
     >
         <div
-            class="border-primary-100 relative mb-6 h-24 w-24 overflow-hidden rounded-full border-4 md:h-28 md:w-28"
+            class="relative mb-6 h-24 w-24 overflow-hidden rounded-full border-4 border-primary md:h-28 md:w-28"
         >
             <nuxt-img
                 :src="testimonial.image"
@@ -12,7 +12,7 @@
             />
         </div>
 
-        <div class="text-primary-300 font-serif text-5xl leading-none">"</div>
+        <div class="text-5xl leading-none text-primary">"</div>
 
         <p class="mb-2 italic leading-relaxed text-gray-700">
             {{ testimonial.quote }}
