@@ -13,22 +13,22 @@
         "type-check": "vue-tsc --noEmit"
     },
     "dependencies": {
-        "@nuxt/eslint": "^1.2.0",
-        "@nuxt/image": "^1.10.0",
-        "@nuxtjs/seo": "^3.0.1",
-        "@nuxtjs/tailwindcss": "^6.13.2",
-        "@splidejs/vue-splide": "^0.6.12",
-        "eslint": "^9.23.0",
-        "nuxt": "^3.16.1",
-        "vue": "^3.5.13",
-        "vue-router": "^4.5.0"
+        "@nuxt/eslint": "1.2.0",
+        "@nuxt/image": "1.10.0",
+        "@nuxtjs/seo": "3.0.1",
+        "@nuxtjs/tailwindcss": "6.11.4",
+        "@splidejs/vue-splide": "0.6.12",
+        "eslint": "9.23.0",
+        "nuxt": "3.16.1",
+        "vue": "3.5.13",
+        "vue-router": "4.5.0"
     },
     "devDependencies": {
-        "eslint-config-prettier": "^10.1.1",
-        "eslint-plugin-prettier": "^5.2.3",
-        "prettier": "^3.5.3",
-        "prettier-plugin-tailwindcss": "^0.6.11",
-        "typescript": "^5.8.2",
-        "vue-tsc": "^2.2.8"
+        "eslint-config-prettier": "10.1.1",
+        "eslint-plugin-prettier": "5.2.3",
+        "prettier": "3.5.3",
+        "prettier-plugin-tailwindcss": "0.6.11",
+        "typescript": "5.8.2",
+        "vue-tsc": "2.2.8"
     }
 }
