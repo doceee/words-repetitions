@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: 'api',
-            script: 'dist/src/main',
+            script: 'dist/src/main.js',
             max_restarts: 5,
             watch: false,
             ignore_watch: ['node_modules', 'logs'],
