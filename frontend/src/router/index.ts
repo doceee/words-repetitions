@@ -8,15 +8,18 @@ const router = createRouter({
     routes
 });
 
-router.beforeEach(async (routeTo, routeFrom, next) => {
+router.beforeEach(async (routeTo, _routeFrom, next) => {
     const authRequired = routeTo.matched.some(route => route.meta.authRequired);
     const guestOnly = routeTo.matched.some(route => route.meta.guestOnly);
+    const { isLoggedIn } = useAuthStore();
+
+    if (!routeTo.matched.length) {
+        return isLoggedIn ? redirectToDashboard() : redirectToLogin();
+    }
 
     if (!authRequired && !guestOnly) {
         return next();
     }
-
-    const { isLoggedIn } = useAuthStore();
 
     if (authRequired && !isLoggedIn) {
         return redirectToLogin();

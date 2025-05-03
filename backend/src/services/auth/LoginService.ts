@@ -1,8 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { ActivityType, type User } from '@prisma/client';
+import { ActivityType } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
-import { Session } from 'express-session';
 
 import { LoginDto } from '../../dto/auth/LoginDto';
 import { generateToken } from '../../helpers/csrf-token';
@@ -10,6 +9,7 @@ import { PrismaService } from '../PrismaService';
 import { StoreService } from '../user-activities/StoreService';
 import { UpdateConsecutiveActivityDaysService } from '../user-activities/UpdateConsecutiveActivityDaysService';
 import { CSRF_TOKEN_HEADER } from '../../config/constants';
+import { type SessionData } from '../../types/common';
 
 @Injectable()
 export class LoginService {
@@ -52,7 +52,7 @@ export class LoginService {
         req.user = updatedUser;
 
         if (!req.session) {
-            req.session = {} as Session & { user?: User; token?: string };
+            req.session = {} as SessionData;
         }
 
         req.session.user = user;

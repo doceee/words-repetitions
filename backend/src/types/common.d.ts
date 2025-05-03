@@ -5,10 +5,7 @@ import { CSRF_TOKEN_HEADER } from '../config/constants';
 declare module 'express' {
     export interface Request {
         user?: User;
-        session: Session & {
-            user?: User;
-            tokens?: string[];
-        };
+        session: SessionData;
     }
 }
 
@@ -16,4 +13,9 @@ declare module 'http' {
     interface IncomingHttpHeaders {
         [CSRF_TOKEN_HEADER]?: string;
     }
+}
+
+export interface SessionData extends Session {
+    user?: User;
+    tokens?: string[];
 }

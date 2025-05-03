@@ -4,7 +4,10 @@ import { CSRF_TOKEN_HEADER } from '../config/constants';
 
 export const useCors = (app: NestExpressApplication) => {
     const configService = app.get(ConfigService);
-    const whitelist = [configService.get('app.frontendUrl')];
+    const whitelist = [
+        configService.get('app.frontendUrl'),
+        'http://localhost:8080'
+    ];
 
     app.enableCors({
         origin: function (origin, callback) {
