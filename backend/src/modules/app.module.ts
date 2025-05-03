@@ -6,6 +6,7 @@ import { WordModule } from './word.module';
 import { config } from '../config/index';
 import { UserModule } from './user.module';
 import { WordListModule } from './word-list.module';
+import { DefaultModule } from './default.module';
 
 @Module({
     imports: [
@@ -17,7 +18,8 @@ import { WordListModule } from './word-list.module';
         AuthModule,
         WordModule,
         UserModule,
-        WordListModule
+        WordListModule,
+        DefaultModule
     ]
 })
 export class AppModule {}

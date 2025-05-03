@@ -1,13 +1,13 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { RegisterDto } from '../../dto/auth/RegisterDto';
 import { PrismaService } from '../PrismaService';
-import { ActivityType, type User } from '@prisma/client';
+import { ActivityType } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 import { generateToken } from '../../helpers/csrf-token';
 import { StoreService } from '../user-activities/StoreService';
-import { Session } from 'express-session';
 import { CSRF_TOKEN_HEADER } from '../../config/constants';
+import { type SessionData } from '../../types/common';
 
 @Injectable()
 export class RegisterService {
@@ -50,7 +50,7 @@ export class RegisterService {
         req.user = userItem;
 
         if (!req.session) {
-            req.session = {} as Session & { user?: User; token?: string };
+            req.session = {} as SessionData;
         }
 
         req.session.user = userItem;

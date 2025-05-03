@@ -36,6 +36,7 @@ export class AuthController {
         return this.meService.handle(req);
     }
 
+    @HttpCode(HttpStatus.OK)
     @Post('/login')
     login(
         @Body()

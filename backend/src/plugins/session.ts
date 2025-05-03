@@ -47,8 +47,6 @@ export const useSession = async (app: NestExpressApplication) => {
             cookie: {
                 maxAge: oneHour,
                 secure: configService.get('app.isProduction')
-                    ? configService.get('app.appUrl').startsWith('https')
-                    : false
             }
         })
     );

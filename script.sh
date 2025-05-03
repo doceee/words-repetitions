@@ -4,7 +4,7 @@ git pull
 
 buildFrontend() {
 	FRONTEND_BUILD="/home/deploy/apps/words-repetitions/frontend/dist/*"
-	TARGET="/var/www/words-repetitions"
+	TARGET="/var/www/vocabmaster"
 
 	cd frontend
 
