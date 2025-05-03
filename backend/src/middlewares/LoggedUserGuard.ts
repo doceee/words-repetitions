@@ -17,9 +17,19 @@ export class LoggedUserGuard implements CanActivate {
         const request = context.switchToHttp().getRequest<Request>();
         const { headers } = request;
         const csrfToken = headers[CSRF_TOKEN_HEADER];
+        console.log('x-csrf-token: ', csrfToken);
 
         const { session } = request;
         if (!session || !session.user || !session.tokens) {
+            console.log(
+                'session user: ',
+                session.user ? session.user : 'undefined'
+            );
+            console.log(
+                'session tokens: ',
+                session.tokens ? session.tokens : 'undefined'
+            );
+            console.log('Session not found');
             throw new UnauthorizedException();
         }
 
@@ -32,6 +42,7 @@ export class LoggedUserGuard implements CanActivate {
             });
 
             if (!userItem) {
+                console.log('User not found');
                 throw new UnauthorizedException();
             }
 
@@ -44,7 +55,7 @@ export class LoggedUserGuard implements CanActivate {
             return true;
         }
 
-        if (!csrfToken || !tokens.includes(csrfToken as string)) {
+        if (!csrfToken || !tokens.includes(csrfToken)) {
             throw new ForbiddenException('Invalid CSRF token');
         }
 
