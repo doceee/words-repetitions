@@ -9,7 +9,7 @@ axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use(requestConfig => {
     const { url, method, headers } = requestConfig;
-
+    console.log('Request headers:', { headers });
     if (
         url &&
         method &&
@@ -26,7 +26,7 @@ axios.interceptors.request.use(requestConfig => {
 axios.interceptors.response.use(
     response => {
         const { headers, request } = response;
-
+        console.log('Response headers:', { headers });
         const responseURL =
             typeof request.responseURL === 'string'
                 ? request.responseURL
