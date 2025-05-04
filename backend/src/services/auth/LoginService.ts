@@ -55,7 +55,7 @@ export class LoginService {
             req.session = {} as SessionData;
         }
 
-        req.session.user = user;
+        req.session.user = user.id;
 
         if (!req.session.tokens || !req.session.tokens.length) {
             req.session.tokens = [token];

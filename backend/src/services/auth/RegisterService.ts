@@ -53,7 +53,7 @@ export class RegisterService {
             req.session = {} as SessionData;
         }
 
-        req.session.user = userItem;
+        req.session.user = userItem.id;
 
         if (!req.session.tokens || !req.session.tokens.length) {
             req.session.tokens = [token];
