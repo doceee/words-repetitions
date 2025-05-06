@@ -16,12 +16,13 @@ async function bootstrap() {
     useCors(app);
     useHelmet(app);
     useValidationPipe(app);
+    
+    await useSession(app);
 
     app.setGlobalPrefix('api');
 
     app.useGlobalFilters(new ExceptionsFilter());
 
-    await useSession(app);
 
     const port = app.get(ConfigService).get('app.port');
 

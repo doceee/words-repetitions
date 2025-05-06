@@ -16,6 +16,6 @@ declare module 'http' {
 }
 
 export interface SessionData extends Session {
-    user?: User;
+    user?: string;
     tokens?: string[];
 }

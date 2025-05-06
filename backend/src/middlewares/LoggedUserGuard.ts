@@ -28,7 +28,7 @@ export class LoggedUserGuard implements CanActivate {
 
         if (!userData) {
             const userItem = await this.prisma.user.findUnique({
-                where: { id: user.id }
+                where: { id: user }
             });
 
             if (!userItem) {
@@ -44,7 +44,7 @@ export class LoggedUserGuard implements CanActivate {
             return true;
         }
 
-        if (!csrfToken || !tokens.includes(csrfToken as string)) {
+        if (!csrfToken || !tokens.includes(csrfToken)) {
             throw new ForbiddenException('Invalid CSRF token');
         }
 
