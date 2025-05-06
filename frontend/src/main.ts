@@ -1,7 +1,7 @@
+import '@/helpers/api.ts';
 import 'vue-toastification/dist/index.css';
 import '@/assets/styles/tailwind.css';
 import '@/assets/styles/main.scss';
-import '@/helpers/api.ts';
 
 import App from '@/App.vue';
 import router from '@/router';

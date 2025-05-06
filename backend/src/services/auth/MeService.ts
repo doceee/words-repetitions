@@ -12,7 +12,7 @@ export class MeService {
         }
 
         const user = await this.prisma.user.findUnique({
-            where: { id: req.session.user.id }
+            where: { id: req.session.user }
         });
 
         if (!user) {

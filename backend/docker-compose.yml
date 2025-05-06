@@ -25,7 +25,9 @@ services:
         image: redis:7
         container_name: redis.session.docker
         restart: unless-stopped
-        command: redis-server --requirepass ${REDIS_SESSION_PASS}
+        environment:
+            REDIS_PASS: ${REDIS_SESSION_PASS}
+            REDIS_PORT: ${REDIS_SESSION_PORT}
         volumes:
             - redis_session.data:/data
         ports:
