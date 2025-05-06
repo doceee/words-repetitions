@@ -9,7 +9,7 @@ axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use(requestConfig => {
     const { url, method, headers } = requestConfig;
-    console.log('Request headers:', { headers });
+
     if (
         url &&
         method &&
@@ -26,7 +26,7 @@ axios.interceptors.request.use(requestConfig => {
 axios.interceptors.response.use(
     response => {
         const { headers, request } = response;
-        console.log('Response headers:', { headers });
+
         const responseURL =
             typeof request.responseURL === 'string'
                 ? request.responseURL
@@ -60,10 +60,9 @@ axios.interceptors.response.use(
 
             if (responseURL.slice(config.apiUrl.length + 1).includes('login')) {
                 throw error;
+            } else {
+                window.location.href = `${publicPath}login`;
             }
-            //  else {
-            //     window.location.href = `${publicPath}login`;
-            // }
         }
 
         throw error;

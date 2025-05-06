@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as connectRedis from 'connect-redis';
 import * as expressSession from 'express-session';
@@ -6,6 +7,7 @@ import { createClient } from 'redis';
 export const useSession = async app => {
     const configService = app.get(ConfigService);
     const oneHour = 3600 * 1000 * 1;
+    const logger = new Logger('Session');
 
     const redisClient = createClient({
         socket: {
@@ -15,16 +17,17 @@ export const useSession = async app => {
         legacyMode: true
     });
     redisClient.on('connect', () => {
-        console.info('Redis Client connected');
+        logger.log('Redis Client connected');
     });
 
     redisClient.on('error', err => {
-        console.info('Redis Client Error: ' + err.message);
+        logger.error('Redis Client Error: ' + err.message);
     });
 
     try {
         await redisClient.connect();
     } catch (error) {
+        logger.error('Failed to connect to Redis: ' + error.message);
         throw Error(error);
     }
 

@@ -44,18 +44,6 @@ export class AuthController {
         @Req() req: Request,
         @Res({ passthrough: true }) res: Response
     ) {
-        res.cookie('test-cookie', '1234567890', {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'strict',
-            maxAge: 60 * 60 * 1000
-        });
-        res.cookie('test-cookie-unsafe', '1234567890', {
-            httpOnly: true,
-            secure: false,
-            sameSite: 'strict',
-            maxAge: 60 * 60 * 1000
-        });
         return this.loginService.handle(dto, req, res);
     }
 
