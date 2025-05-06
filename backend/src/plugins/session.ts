@@ -4,7 +4,9 @@ import * as connectRedis from 'connect-redis';
 import * as expressSession from 'express-session';
 import { createClient } from 'redis';
 
-export const useSession = async app => {
+import { type NestExpressApplication } from '@nestjs/platform-express';
+
+export const useSession = async (app: NestExpressApplication) => {
     const configService = app.get(ConfigService);
     const oneHour = 3600 * 1000 * 1;
     const logger = new Logger('Session');
