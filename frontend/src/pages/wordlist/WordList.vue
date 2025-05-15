@@ -6,7 +6,7 @@
                 :word-id="selectedWordId"
                 @close="handleModalClose"
             />
-            <div class="m-1 flex items-end justify-between">
+            <div class="mx-1 flex items-end justify-between pt-1 sm:mb-6">
                 <v-select
                     v-model="selectedList"
                     :options="wordLists"

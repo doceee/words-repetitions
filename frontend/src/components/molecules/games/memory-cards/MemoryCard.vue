@@ -10,7 +10,7 @@
         />
 
         <div
-            class="absolute flex h-full w-full items-center justify-center rounded-lg border-[3px] border-blue-500 bg-slate-400 transition duration-300 [backface-visibility:hidden]"
+            class="absolute flex h-full w-full items-center justify-center rounded-lg border-[3px] border-blue-500 bg-slate-100 transition duration-300 [backface-visibility:hidden]"
             :class="{ 'opacity-70': props.item.fixed }"
         >
             {{ props.item.word }}
