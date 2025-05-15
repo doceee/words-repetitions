@@ -152,14 +152,13 @@ const onSubmit = async () => {
     }
 
     try {
+        const word = formData.word.trim();
+        const translation = formData.translation.trim();
+
         if (props.wordId) {
-            await wordsStore.editWord(
-                formData.word,
-                formData.translation,
-                props.wordId
-            );
+            await wordsStore.editWord(word, translation, props.wordId);
         } else {
-            await wordsStore.addWord(formData.word, formData.translation);
+            await wordsStore.addWord(word, translation);
         }
 
         toast(

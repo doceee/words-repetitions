@@ -43,15 +43,15 @@
             />
         </div>
 
-        <v-button type="submit" class="mt-1" :is-disabled="isProcessing"
-            >Zarejestruj</v-button
-        >
-    </form>
+        <v-button type="submit" class="mt-1" :is-disabled="isProcessing">
+            Zarejestruj
+        </v-button>
 
-    <p class="mb-8 mt-4 text-right text-sm text-gray-600">
-        Masz konto?
-        <v-button to="/login" link>Logowanie</v-button>
-    </p>
+        <p class="mb-8 mt-4 text-right text-sm text-gray-600">
+            Masz konto?
+            <v-button to="/login" link>Logowanie</v-button>
+        </p>
+    </form>
 </template>
 
 <script lang="ts" setup>

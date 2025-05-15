@@ -26,22 +26,10 @@
         </ul>
 
         <the-container v-if="words.length">
-            <transition
-                :enter-from-class="
-                    forward
-                        ? 'translate-x-[40px] opacity-0'
-                        : '-translate-x-[40px] opacity-0'
-                "
-                enter-to-class="translate-x-0 opacity-100"
-                leave-from-class="opacity-100"
-                leave-to-class="opacity-0"
-                mode="out-in"
-            >
-                <component
-                    :key="currentPillIndex"
-                    :is="components[currentPill]?.component || 'div'"
-                />
-            </transition>
+            <component
+                :key="currentPillIndex"
+                :is="components[currentPill]?.component || 'div'"
+            />
         </the-container>
     </div>
 </template>
@@ -81,11 +69,9 @@ const components = {
 };
 
 const currentPill = ref<keyof typeof components>('TrueFalse');
-const forward = ref(true);
 const currentPillIndex = ref(0);
 
 const setPill = (pill: keyof typeof components, pillIndex: number) => {
-    forward.value = pillIndex > currentPillIndex.value;
     currentPillIndex.value = pillIndex;
     currentPill.value = pill;
 };

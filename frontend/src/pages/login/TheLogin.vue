@@ -47,12 +47,12 @@
         <v-button type="submit" :is-disabled="isProcessing" class="mt-1">
             Zaloguj
         </v-button>
-    </form>
 
-    <p class="mb-8 mt-4 text-right text-sm text-gray-600">
-        Nie masz konta?
-        <v-button to="/sign-up" link>Rejestracja</v-button>
-    </p>
+        <p class="mb-8 mt-4 text-right text-sm text-gray-600">
+            Nie masz konta?
+            <v-button to="/sign-up" link>Rejestracja</v-button>
+        </p>
+    </form>
 </template>
 
 <script lang="ts" setup>
