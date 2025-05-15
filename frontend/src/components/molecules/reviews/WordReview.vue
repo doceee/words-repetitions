@@ -186,7 +186,8 @@ const handleHint = () => {
 const handleCheck = () => {
     isAnswerDisplayed.value = true;
     isCorrect.value =
-        wordList.value[currentIndex.value].word === currentValue.value;
+        wordList.value[currentIndex.value].word.toLocaleLowerCase() ===
+        currentValue.value.toLocaleLowerCase();
 };
 
 const displayedText = computed(
