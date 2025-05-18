@@ -15,7 +15,7 @@ export class StoreService {
         if (!type) {
             throw new BadRequestException({
                 param: 'activity',
-                msg: 'Nieprawidłowy typ'
+                msg: 'Nieprawidłowy typ.'
             });
         }
 

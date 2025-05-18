@@ -177,7 +177,7 @@ const onSubmit = async () => {
                 const { status, data } = response;
 
                 if (status === 400 && data) {
-                    serverErrors.value = [response.data.message];
+                    serverErrors.value = [data];
 
                     return;
                 }

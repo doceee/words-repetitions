@@ -8,9 +8,9 @@ export class AssignService {
     constructor(private prisma: PrismaService) {}
 
     async handle(data: CreateEditDto, userId: string, wordId = '') {
-        const assignedWord = await this.isAlreadyAssigned(data, userId);
+        const isAssigned = await this.isAlreadyAssigned(data, userId);
 
-        if (assignedWord) {
+        if (isAssigned) {
             throw new BadRequestException({
                 param: 'word',
                 msg: 'Słówko jest już na liście'
@@ -33,7 +33,8 @@ export class AssignService {
 
         if (!wordItem) {
             throw new BadRequestException({
-                param: 'word'
+                param: 'word',
+                msg: 'Słówko nie znalezione'
             });
         }
 

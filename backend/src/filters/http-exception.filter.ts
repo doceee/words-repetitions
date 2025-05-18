@@ -9,33 +9,40 @@ import {
 import { Request, Response } from 'express';
 
 @Catch(HttpException)
-export class ExceptionsFilter implements ExceptionFilter {
-    catch(exception: HttpException | Error, host: ArgumentsHost) {
-        const logger = new Logger('ExceptionsFilter');
+export class CatchEverythingFilter implements ExceptionFilter {
+    catch(exception: HttpException, host: ArgumentsHost) {
+        const logger = new Logger('CatchEverythingFilter');
+
         const ctx = host.switchToHttp();
-        const response = ctx.getResponse<Response>();
-        const request = ctx.getRequest<Request>();
-        const status =
+
+        const httpStatus =
             exception instanceof HttpException
                 ? exception.getStatus()
                 : HttpStatus.INTERNAL_SERVER_ERROR;
 
+        const response = ctx.getResponse<Response>();
+        const request = ctx.getRequest<Request>();
+
         const message =
-            exception instanceof HttpException
-                ? typeof exception.getResponse() === 'string'
-                    ? exception.getResponse()
-                    : JSON.stringify(exception.getResponse())
-                : exception.message;
+            typeof exception.getResponse() === 'string'
+                ? exception.getResponse()
+                : JSON.stringify(exception.getResponse());
 
         const errorMessage =
             typeof message === 'string' ? message : JSON.stringify(message);
+        const isBadRequest = httpStatus === HttpStatus.BAD_REQUEST;
 
         logger.error(
-            `Method: ${request.method} | URL: ${request.url} | Status: ${status} | Message: ${errorMessage}`
+            `Method: ${request.method} | URL: ${request.url} | Status: ${httpStatus} | Message: ${errorMessage}`
         );
 
-        response.status(status).json({
-            statusCode: status,
+        if (isBadRequest && exception instanceof HttpException) {
+            const res = exception.getResponse();
+
+            return response.status(httpStatus).send(res);
+        }
+
+        return response.status(httpStatus).send({
             message
         });
     }

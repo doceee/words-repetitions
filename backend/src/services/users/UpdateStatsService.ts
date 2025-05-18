@@ -13,8 +13,8 @@ export class UpdateStatsService {
 
         if (!(prop in user) || typeof user[prop] !== typeof value) {
             throw new BadRequestException({
-                param: 'prop',
-                msg: 'Nieprawidwa wartość'
+                param: 'activity',
+                msg: 'Nieprawidłowy typ.'
             });
         }
 
