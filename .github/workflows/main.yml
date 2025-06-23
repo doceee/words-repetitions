@@ -1,0 +1,39 @@
+name: Main tests
+
+on: push
+
+jobs:
+  container-job:
+    runs-on: ubuntu-latest
+    container: node:20
+    services:
+      redis:
+        image: redis:7
+      postgres:
+        image: postgres:14-alpine
+        env:
+          POSTGRES_PASSWORD: 'password'
+          POSTGRES_DB: 'database'
+          POSTGRES_USER: 'user'
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare environment
+        run: |
+          apt update
+          apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -y
+      - name: Run frontend tests
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: ./frontend
+          config-file: cypress.config.ts
+          run: |
+            npm install
+            cp .env.example .env.test
+            npm run test:e2e

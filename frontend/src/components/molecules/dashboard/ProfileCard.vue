@@ -4,7 +4,7 @@
     >
         <user-circle-icon class="h-[55px] text-blue-500" />
 
-        <h1 class="mt-3 font-medium">{{ email }}</h1>
+        <h1 class="mt-3 font-medium" data-testid="user-email">{{ email }}</h1>
     </div>
 </template>
 

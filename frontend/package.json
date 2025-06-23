@@ -13,7 +13,10 @@
         "build-only": "vite build",
         "type-check": "vue-tsc --noEmit",
         "eslint": "eslint . --ext .vue,.ts --fix --cache --cache-location ./node_modules/.cache/.eslintcache",
-        "prettier": "prettier . --write --ignore-path=.eslintignore"
+        "prettier": "prettier . --write --ignore-path=.eslintignore",
+        "cy:run:headless": "cypress run --browser chrome --headless --config-file cypress.config.ts",
+        "test": "start-server-and-test dev http://localhost:8080 'cypress run --browser chrome --headless --config-file cypress.config.ts'",
+        "test:e2e": "cd ../backend && npm run db:setup && NODE_ENV=test node dist/src/main.js & pid=$! && cd ../frontend && npm run test && kill -9 $pid"
     },
     "dependencies": {
         "@heroicons/vue": "2.0.18",
@@ -26,6 +29,7 @@
         "pinia": "2.1.4",
         "sass": "1.64.1",
         "sass-loader": "13.3.2",
+        "start-server-and-test": "^2.0.12",
         "vue": "3.3.4",
         "vue-router": "4.2.4",
         "vue-toastification": "2.0.0-rc.5"
@@ -39,6 +43,7 @@
         "@vue/eslint-config-typescript": "13.0.0",
         "@vue/tsconfig": "0.4.0",
         "autoprefixer": "10.4.14",
+        "cypress": "^14.5.0",
         "eslint": "8.57.0",
         "eslint-plugin-vue": "9.27.0",
         "npm-run-all": "4.1.5",
