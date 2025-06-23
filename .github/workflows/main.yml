@@ -38,7 +38,7 @@ jobs:
         with:
           install: true
           start: npm run dev
-          wait-on: 'http://localhost:3000'
+          wait-on: 'http://localhost:3000, http://localhost:8080'
           wait-on-timeout: 120
           browser: chrome
           spec: cypress/e2e/*
