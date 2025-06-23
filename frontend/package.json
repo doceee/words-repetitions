@@ -16,7 +16,7 @@
         "prettier": "prettier . --write --ignore-path=.eslintignore",
         "cy:run:headless": "cypress run --browser chrome --headless --config-file cypress.config.ts",
         "test": "start-server-and-test dev http://localhost:8080 'cypress run --browser chrome --headless --config-file cypress.config.ts'",
-        "test:e2e": "cd ../backend && NODE_ENV=test node dist/src/main.js & pid=$! && npx wait-on http://localhost:3000 && cd ../frontend && npm run test && kill -9 $pid"
+        "test:e2e": "cd ../backend && NODE_ENV=test node dist/src/main.js & pid=$! && npx wait-on http-get://localhost:3000/api && cd ../frontend && npm run test && kill -9 $pid"
     },
     "dependencies": {
         "@heroicons/vue": "2.0.18",
