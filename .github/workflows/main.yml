@@ -25,15 +25,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Prepare environment
+        working-directory: ./backend
         run: |
+          npm install
           apt update
           apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -y
       - name: Run frontend tests
+        working-directory: ./frontend
         uses: cypress-io/github-action@v6
-        with:
-          working-directory: ./frontend
-          config-file: cypress.config.ts
-          run: |
-            npm install
-            cp .env.example .env.test
-            npm run test:e2e
+        run: |
+          npm install
+          cp .env.example .env.test
+          npm run test:e2e
