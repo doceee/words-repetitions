@@ -36,7 +36,6 @@ jobs:
       - name: Run frontend tests
         uses: cypress-io/github-action@v6
         with:
-          install: true
           start: npm install, npm run test:e2e
           wait-on: 'http://localhost:3000, http://localhost:8080'
           wait-on-timeout: 120
