@@ -15,7 +15,7 @@
         "eslint": "eslint . --ext .vue,.ts --fix --cache --cache-location ./node_modules/.cache/.eslintcache",
         "prettier": "prettier . --write --ignore-path=.eslintignore",
         "cy:run:headless": "npx cypress run --browser chrome --headless --config-file cypress.config.ts",
-        "test": "start-server-and-test dev http://localhost:8080 'npx cypress run --browser chrome --headless --config-file cypress.config.ts'",
+        "test": "start-server-and-test dev http-get://localhost:8080 'npx cypress run --browser chrome --headless --config-file cypress.config.ts'",
         "test:e2e": "cd ../backend && NODE_ENV=test node dist/src/main.js & pid=$! && npx wait-on http-get://localhost:3000/api && cd ../frontend && npm run test && kill -9 $pid"
     },
     "dependencies": {

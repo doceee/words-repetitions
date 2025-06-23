@@ -34,8 +34,15 @@ jobs:
           apt update
           apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -y
       - name: Run frontend tests
-        working-directory: ./frontend
+        uses: cypress-io/github-action@v6
+        with:
+          install: true
+          start: npm run dev
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 120
+          browser: chrome
+          spec: cypress/e2e/*
+          config-file: cypress.config.ts
         run: |
-          npm install
           cp .env.example .env
           npm run test:e2e
