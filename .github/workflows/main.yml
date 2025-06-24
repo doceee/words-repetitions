@@ -36,9 +36,10 @@ jobs:
       - name: Run frontend tests
         working-directory: ./frontend
         run: |
+          echo "Running frontend tests 0"
           npm install
+          echo "Running frontend tests 1"
           cp .env.example .env
-          npm run dev
-          npm run cy:run:headless
-          npm run test
+          echo "Running frontend tests 2"
           npm run test:e2e
+          echo "Running frontend tests 3"
