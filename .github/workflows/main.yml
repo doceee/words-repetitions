@@ -38,4 +38,4 @@ jobs:
         run: |
           npm install
           cp .env.example .env
-          npm run test:e2e:ci2
+          npm run test:e2e:ci
