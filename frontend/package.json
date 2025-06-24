@@ -14,9 +14,10 @@
         "type-check": "vue-tsc --noEmit",
         "eslint": "eslint . --ext .vue,.ts --fix --cache --cache-location ./node_modules/.cache/.eslintcache",
         "prettier": "prettier . --write --ignore-path=.eslintignore",
-        "cy:run": "cypress run --browser chrome --headless --config-file cypress.config.ts",
-        "test": "start-server-and-test dev http-get://localhost:8080 cy:run",
-        "test:e2e": "cd ../backend && NODE_ENV=test node dist/src/main.js & pid=$! && npx wait-on http-get://localhost:3000/api && cd ../frontend && npm run dev && npm run cy:run && kill -9 $pid"
+        "cy:run": "cypress run --e2e --browser chrome --headless --config-file cypress.config.ts",
+        "test:e2e": "concurrently -rk -s first \"npm run dev\" \"npm run cy:run\"",
+        "test:": "start-server-and-test dev http-get://localhost:8080 cy:run",
+        "test:e2e:ci": "cd ../backend && NODE_ENV=test node dist/src/main.js & pid=$! && npx wait-on http-get://localhost:3000/api && cd ../frontend && npm run test:e2e && kill -9 $pid"
     },
     "dependencies": {
         "@heroicons/vue": "2.0.18",
@@ -25,6 +26,7 @@
         "@vuelidate/core": "2.0.3",
         "@vuelidate/validators": "2.0.4",
         "axios": "1.6.2",
+        "concurrently": "^9.2.0",
         "dayjs": "1.11.13",
         "pinia": "2.1.4",
         "sass": "1.64.1",
