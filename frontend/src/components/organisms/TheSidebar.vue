@@ -28,6 +28,7 @@
                     :key="item.text"
                     :to="item.to"
                     :text="item.text"
+                    :data-testid="item['data-testid']"
                     @click="item.click"
                 />
             </ul>
@@ -65,6 +66,6 @@ const navItemList = [
     { text: 'Słówka', to: '/word-list', click: onClose },
     { text: 'Powtórki', to: '/reviews', click: onClose },
     { text: 'Gry językowe', to: '/games', click: onClose },
-    { text: 'Wyloguj', click: handleLogout }
+    { text: 'Wyloguj', click: handleLogout, 'data-testid': 'logout' }
 ];
 </script>

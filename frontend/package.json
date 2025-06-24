@@ -13,7 +13,10 @@
         "build-only": "vite build",
         "type-check": "vue-tsc --noEmit",
         "eslint": "eslint . --ext .vue,.ts --fix --cache --cache-location ./node_modules/.cache/.eslintcache",
-        "prettier": "prettier . --write --ignore-path=.eslintignore"
+        "prettier": "prettier . --write --ignore-path=.eslintignore",
+        "cy:run": "cypress run --e2e --headless --config-file cypress.config.ts",
+        "test:e2e": "concurrently -rk -s first \"npm run dev\" \"npm run cy:run\"",
+        "test:e2e:ci": "concurrently -rk -s first \"cd ../backend && NODE_ENV=test node dist/src/main.js\" \"cd ../frontend && npm run test:e2e\""
     },
     "dependencies": {
         "@heroicons/vue": "2.0.18",
@@ -22,6 +25,7 @@
         "@vuelidate/core": "2.0.3",
         "@vuelidate/validators": "2.0.4",
         "axios": "1.6.2",
+        "concurrently": "9.2.0",
         "dayjs": "1.11.13",
         "pinia": "2.1.4",
         "sass": "1.64.1",
@@ -39,6 +43,7 @@
         "@vue/eslint-config-typescript": "13.0.0",
         "@vue/tsconfig": "0.4.0",
         "autoprefixer": "10.4.14",
+        "cypress": "14.5.0",
         "eslint": "8.57.0",
         "eslint-plugin-vue": "9.27.0",
         "npm-run-all": "4.1.5",
