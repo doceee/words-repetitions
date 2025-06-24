@@ -36,10 +36,6 @@ jobs:
       - name: Run frontend tests
         working-directory: ./frontend
         run: |
-          echo "Running frontend tests 0"
           npm install
-          echo "Running frontend tests 1"
           cp .env.example .env
-          echo "Running frontend tests 2"
-          npm run test:e2e:ci
-          echo "Running frontend tests 3"
+          npm run test:e2e:ci2

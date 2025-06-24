@@ -16,8 +16,8 @@
         "prettier": "prettier . --write --ignore-path=.eslintignore",
         "cy:run": "cypress run --e2e --headless --config-file cypress.config.ts",
         "test:e2e": "concurrently -rk -s first \"npm run dev\" \"npm run cy:run\"",
-        "test:": "start-server-and-test dev http-get://localhost:8080 cy:run",
-        "test:e2e:ci": "cd ../backend && NODE_ENV=test node dist/src/main.js & pid=$! && npx wait-on http-get://localhost:3000/api && cd ../frontend && npm run test:e2e && kill -9 $pid"
+        "test:e2e:ci": "cd ../backend && NODE_ENV=test node dist/src/main.js & pid=$! && npx wait-on http-get://localhost:3000/api && cd ../frontend && npm run test:e2e && kill -9 $pid",
+        "test:e2e:ci2": "concurrently -rk -s first \"cd ../backend && NODE_ENV=test node dist/src/main.js\" \"cd ../frontend && npm run test:e2e\""
     },
     "dependencies": {
         "@heroicons/vue": "2.0.18",
@@ -31,7 +31,6 @@
         "pinia": "2.1.4",
         "sass": "1.64.1",
         "sass-loader": "13.3.2",
-        "start-server-and-test": "^2.0.12",
         "vue": "3.3.4",
         "vue-router": "4.2.4",
         "vue-toastification": "2.0.0-rc.5"
