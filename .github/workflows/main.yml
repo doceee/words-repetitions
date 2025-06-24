@@ -40,6 +40,8 @@ jobs:
           npm install
           echo "Running frontend tests 1"
           cp .env.example .env
+          echo "Running frontend tests 2.5"
+          npm run test
           echo "Running frontend tests 2"
           npm run test:e2e
           echo "Running frontend tests 3"
