@@ -14,7 +14,7 @@ export class PrismaService
 {
     constructor(readonly configService: ConfigService) {
         super({
-            errorFormat: configService.get<boolean>('app.isProduction')
+            errorFormat: configService.get<boolean>('app.isProd')
                 ? 'minimal'
                 : 'pretty'
             // log: ['query', 'info', 'warn', 'error']
