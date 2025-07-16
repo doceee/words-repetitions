@@ -13,9 +13,12 @@ export class TranslateService {
     ) {}
 
     async handle(searchText: string, userId: string) {
+        const host = this.configService.get<string>('translateApp.host');
+        const port = this.configService.get<string>('translateApp.port');
         const translateApiUrl =
-            (this.configService.get<string>('translateApp.url') ||
-                'http://localhost:5000') + '/translate';
+            host && port
+                ? `http://${host}:${port}/translate`
+                : 'http://localhost:5000/translate';
 
         try {
             const userWords = await this.prisma.word.findMany({

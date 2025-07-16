@@ -19,6 +19,7 @@ export class LoggedUserGuard implements CanActivate {
         const csrfToken = headers[CSRF_TOKEN_HEADER];
 
         const { session } = request;
+
         if (!session || !session.user || !session.tokens) {
             throw new UnauthorizedException();
         }

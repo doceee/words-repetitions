@@ -50,18 +50,23 @@ export class LoginService {
         const token = generateToken();
 
         req.user = updatedUser;
+        let { session } = req;
 
-        if (!req.session) {
-            req.session = {} as SessionData;
+        if (!session) {
+            session = {} as SessionData;
         }
 
-        req.session.user = user.id;
+        session.user = user.id;
 
-        if (!req.session.tokens || !req.session.tokens.length) {
-            req.session.tokens = [token];
-        } else if (!req.session.tokens.includes(token)) {
-            req.session.tokens.push(token);
+        if (!session.tokens || !session.tokens.length) {
+            session.tokens = [token];
+        } else if (!session.tokens.includes(token)) {
+            session.tokens.push(token);
         }
+
+        await new Promise((resolve, reject) => {
+            session.save(err => (err ? reject(err) : resolve(null)));
+        });
 
         res.setHeader(CSRF_TOKEN_HEADER, token);
 

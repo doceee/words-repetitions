@@ -5,7 +5,7 @@ import { seedWords } from './seed/seedWords';
 
 const prisma = new PrismaClient();
 
-const seedDb = async () => {
+export const seedDb = async () => {
     console.log('Seed script started');
 
     try {
@@ -19,7 +19,16 @@ const seedDb = async () => {
             data: { hash, email: 'user2@gmail.com' }
         });
 
-        await seedWords(prisma, [user.id, user2.id]);
+        const words = await seedWords(prisma);
+
+        const wordUpdates = words.map(word =>
+            prisma.word.update({
+                where: { id: word.id },
+                data: { users: { connect: [user, user2] } }
+            })
+        );
+
+        await prisma.$transaction(wordUpdates);
 
         await seedUserActivities(prisma, [user.id, user2.id]);
     } catch (error) {
@@ -28,5 +37,3 @@ const seedDb = async () => {
 
     console.log('Seed script finished');
 };
-
-seedDb();

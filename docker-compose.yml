@@ -1,0 +1,113 @@
+version: '3.8'
+
+volumes:
+  postgres_data:
+  redis_data:
+  libretranslate_models:
+
+services:
+  db:
+    container_name: db
+    build:
+      context: ./backend
+      dockerfile: ./postgres.Dockerfile
+      args:
+        POSTGRES_PASSWORD: ${DB_PASSWORD}
+        POSTGRES_DB: ${DB_NAME}
+        POSTGRES_HOST: ${DB_HOST}
+        POSTGRES_PORT: ${DB_PORT}
+        POSTGRES_USER: ${DB_USER}
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - global
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: backend.Dockerfile
+      args:
+        API_PORT: ${API_PORT}
+    restart: unless-stopped
+    depends_on:
+      - db
+      - redis
+      - libretranslate
+    networks:
+      - global
+
+  redis:
+    container_name: redis
+    env_file:
+      - ./backend/.env
+    build:
+      context: ./backend
+      dockerfile: redis.Dockerfile
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - global
+
+  libretranslate:
+    container_name: libretranslate
+    build:
+      context: ./backend
+      dockerfile: libretranslate.Dockerfile
+      args:
+        LT_LOAD_ONLY: ${TRANSLATE_APP_LOAD_ONLY}
+        LT_UPDATE_MODELS: ${TRANSLATE_APP_UPDATE_MODELS}
+        LT_DISABLE_WEB_UI: ${TRANSLATE_APP_DISABLE_WEB_UI}
+        LT_PORT: ${TRANSLATE_APP_PORT}
+    restart: unless-stopped
+    # Keep the models in a docker volume, to avoid re-downloading on startup
+    volumes:
+      - libretranslate_models:/home/libretranslate/.local:rw
+    networks:
+      - global
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks:
+      - global
+
+  landing:
+    container_name: landing
+    build:
+      context: ./landing
+      dockerfile: Dockerfile
+      args:
+        NITRO_PORT: ${LANDING_PORT}
+    restart: unless-stopped
+    networks:
+      - global
+
+  nginx:
+    container_name: nginx_proxy
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+      args:
+        NGINX_HOSTNAME: ${NGINX_HOSTNAME}
+        API_PORT: ${API_PORT}
+        LANDING_PORT: ${LANDING_PORT}
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    depends_on:
+      - backend
+      - landing
+      - frontend
+    networks:
+      - global
+
+networks:
+  global:
+    driver: bridge

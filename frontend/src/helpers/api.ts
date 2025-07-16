@@ -61,7 +61,7 @@ axios.interceptors.response.use(
             if (responseURL.slice(config.apiUrl.length + 1).includes('login')) {
                 throw error;
             } else {
-                window.location.href = `${publicPath}login`;
+                // window.location.href = `${publicPath}login`;
             }
         }
 

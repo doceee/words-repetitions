@@ -1,10 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { easyWords, advancedWords, intermediateWords } from './data';
-import { wordLists as wordListsData } from '../../src/config/constants';
+import { wordLists as wordListsData } from '../../../config/constants';
 
-export const seedWords = async (prisma: PrismaClient, userIds: string[]) => {
-    const connectedUsers = userIds.map(item => ({ id: item }));
-
+export const seedWords = async (prisma: PrismaClient) => {
     await prisma.wordList.createMany({
         data: [...wordListsData]
     });
@@ -34,12 +32,5 @@ export const seedWords = async (prisma: PrismaClient, userIds: string[]) => {
 
     await prisma.$transaction(wordListUpdates);
 
-    const wordUpdates = words.map(word =>
-        prisma.word.update({
-            where: { id: word.id },
-            data: { users: { connect: connectedUsers } }
-        })
-    );
-
-    await prisma.$transaction(wordUpdates);
+    return words;
 };

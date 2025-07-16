@@ -1,0 +1,8 @@
+cypress
+.git
+.nuxt
+.output
+**/node_modules
+**/package-lock.json
+**/dist
+**/*.Dockerfile
