@@ -1,5 +1,5 @@
 {
-    "name": "server",
+    "name": "backend",
     "version": "1.0.0",
     "private": true,
     "engines": {
@@ -7,11 +7,11 @@
         "npm": "^10.0.0"
     },
     "prisma": {
-        "seed": "ts-node prisma/seed.ts"
+        "seed": "ts-node src/scripts/seed/seed.ts"
     },
     "scripts": {
-        "db:dev:down": "docker compose down",
-        "db:dev:up": "docker compose up -d",
+        "db:down": "docker compose -f docker-compose.dev.yml down",
+        "db:up": "docker compose -f docker-compose.dev.yml up -d",
         "build": "nest build",
         "prettier": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
         "start": "nest start",
@@ -27,8 +27,8 @@
         "db:generate:migration": "prisma migrate dev --create-only",
         "db:generate:client": "npx prisma generate",
         "db:deploy": "prisma migrate deploy",
-        "db:seed": "npx prisma db seed",
         "db:setup": "npx prisma db push --force-reset && npx prisma db seed",
+        "dc:db:seed": "docker compose exec backend sh -c \"npx prisma db push --force-reset && node dist/scripts/seed/seed.js\"",
         "dev:docker:bash": "ts-node -- src/scripts/dockerBash.ts"
     },
     "dependencies": {

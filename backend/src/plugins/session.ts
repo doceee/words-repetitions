@@ -12,18 +12,25 @@ export const useSession = async (app: NestExpressApplication) => {
     const logger = new Logger('Session');
 
     const redisClient = createClient({
+        password: configService.get('redisSession.password'),
+        username: configService.get('redisSession.user'),
         socket: {
             port: configService.get('redisSession.port'),
             host: configService.get('redisSession.host')
         },
         legacyMode: true
     });
+
+    redisClient.on('reconnecting', () => {
+        logger.warn('Redis Client is trying to reconnect to the server');
+    });
+
     redisClient.on('connect', () => {
         logger.log('Redis Client connected');
     });
 
-    redisClient.on('error', err => {
-        logger.error('Redis Client Error: ' + err.message);
+    redisClient.on('error', error => {
+        logger.error('Redis Client Error: ' + error.message);
     });
 
     try {
@@ -46,9 +53,11 @@ export const useSession = async (app: NestExpressApplication) => {
             rolling: true,
             cookie: {
                 maxAge: oneHour,
-                secure:
-                    configService.get('app.isProd') &&
-                    configService.get('app.appUrl').startsWith('https')
+                sameSite: configService.get('app.appUrl').startsWith('https')
+                    ? 'none'
+                    : 'lax',
+                httpOnly: true,
+                secure: configService.get('app.appUrl').startsWith('https')
             }
         })
     );

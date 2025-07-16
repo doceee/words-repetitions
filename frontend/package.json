@@ -1,5 +1,5 @@
 {
-    "name": "app",
+    "name": "frontend",
     "version": "1.0.0",
     "private": true,
     "engines": {
@@ -16,7 +16,7 @@
         "prettier": "prettier . --write --ignore-path=.eslintignore",
         "cy:run": "cypress run --e2e --headless --config-file cypress.config.ts",
         "test:e2e": "concurrently -rk -s first \"npm run dev\" \"npm run cy:run\"",
-        "test:e2e:ci": "concurrently -rk -s first \"cd ../backend && NODE_ENV=test node dist/src/main.js\" \"cd ../frontend && npm run test:e2e\""
+        "test:e2e:ci": "concurrently -rk -s first \"cd ../backend && NODE_ENV=test node dist/main.js\" \"cd ../frontend && npm run test:e2e\""
     },
     "dependencies": {
         "@heroicons/vue": "2.0.18",
