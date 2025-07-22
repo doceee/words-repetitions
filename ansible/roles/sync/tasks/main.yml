@@ -1,0 +1,16 @@
+- name: Synchronize code via git
+  hosts: vps
+
+  tasks:
+    - name: Clone or update repository
+      git:
+        repo: '{{ repo_url }}'
+        dest: '{{ project_dir }}'
+        version: '{{ repo_version }}'
+        force: yes
+        update: yes
+
+    - name: Restart docker-compose containers
+      shell: docker-compose up -d --build
+      args:
+        chdir: '{{ project_dir }}'

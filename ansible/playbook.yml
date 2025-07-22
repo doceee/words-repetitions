@@ -1,0 +1,14 @@
+- name: VPS Setup
+  hosts: vps
+  vars_files:
+    - inventory.yml
+    - ./.env.yml
+
+  roles:
+    - role: setup
+      tags:
+        - setup
+
+    - role: sync
+      tags:
+        - sync

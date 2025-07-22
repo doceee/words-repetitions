@@ -2,16 +2,16 @@ module.exports = {
     apps: [
         {
             name: 'api',
-            script: 'dist/src/main.js',
+            script: 'dist/main.js',
             max_restarts: 5,
-            watch: false,
             ignore_watch: ['node_modules', 'logs'],
-            instances: 'max',
+            instances: 1,
             exec_mode: 'cluster',
             autorestart: true,
+            watch: false,
             restart_delay: 5000,
-            max_memory_restart: '1G',
-            node_args: '--max-old-space-size=4096'
+            max_memory_restart: '512M',
+            node_args: '--max-old-space-size=512'
         }
     ]
 };

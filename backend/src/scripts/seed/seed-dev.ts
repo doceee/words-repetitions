@@ -3,9 +3,7 @@ import * as bcrypt from 'bcryptjs';
 import { seedUserActivities } from './seed/seedUserActivities';
 import { seedWords } from './seed/seedWords';
 
-const prisma = new PrismaClient();
-
-export const seedDb = async () => {
+export const seedDb = async (prisma: PrismaClient) => {
     console.log('Seed script started');
 
     try {

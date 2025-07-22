@@ -46,12 +46,12 @@ const splideOptions = {
 
 const testimonials = [
     {
-        name: "Ania Strełkow",
+        name: "Ania Adamek",
         quote: "Korzystanie z tej aplikacji do nauki angielskiego było niesamowite! Dzięki niej w końcu mogę swobodnie rozmawiać w pracy i na wakacjach.",
         image: "/images/people/0.webp",
     },
     {
-        name: "Marek Soćko",
+        name: "Marek Piotrowski",
         quote: "Nigdy wcześniej nauka języka nie była tak przyjemna i efektywna. Polecam każdemu, kto chce szybko poprawić swoje umiejętności językowe.",
         image: "/images/people/1.webp",
     },

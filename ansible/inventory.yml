@@ -1,0 +1,45 @@
+all:
+  hosts:
+    vps:
+      ansible_host: '{{ domain }}'
+      ansible_port: '{{ srv_port }}'
+      ansible_user: '{{ root_user }}'
+      ansible_ssh_pass: '{{ root_password }}'
+
+  vars:
+    ssh_key: '{{ ssh_key }}'
+    project_dir: '{{ project_dir }}'
+    repo_url: '{{ repo_url }}'
+    repo_version: '{{ repo_version }}'
+    project:
+      nginx_host: '{{ nginx_host }}'
+      node_env: '{{ node_env }}'
+      api_url: '{{ api_url }}'
+      frontend_url: '{{ frontend_url }}'
+      frontend:
+        public_path: '{{ frontend_public_path }}'
+        title: '{{ frontend_title }}'
+      landing:
+        port: '{{ landing_port }}'
+        host: '{{ landing_host }}'
+      backend:
+        port: '{{ backned_port }}'
+        url: '{{ backned_url }}'
+        session_secret: '{{ session_secret }}'
+        db:
+          port: '{{ db_port }}'
+          user: '{{ db_user }}'
+          host: '{{ db_host }}'
+          name: '{{ db_name }}'
+          password: '{{ db_password }}'
+        redis_session:
+          port: '{{ redis_session_port }}'
+          host: '{{ redis_session_host }}'
+          password: '{{ redis_session_password }}'
+          ttl: '{{ redis_session_ttl }}'
+        libretranslate:
+          port: '{{ libretranslate_port }}'
+          host: '{{ libretranslate_host }}'
+          loadonly: '{{ libretranslate_loadonly }}'
+          update_models: '{{ libretranslate_update_models }}'
+          disable_web_ui: '{{ libretranslate_disable_web_ui }}'
