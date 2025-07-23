@@ -9,14 +9,11 @@ if [ ! -x ./wait-for-db.sh ]; then
 fi
 
 ./wait-for-db.sh
-
-npx prisma migrate status --schema=./prisma/schema.prisma
-
-if npx prisma migrate status --schema=./prisma/schema.prisma | grep -q "Database schema is up to date!"; then
-  echo "No pending migrations. Database schema is up to date!"
-else
+if ! npx prisma migrate status --schema=./prisma/schema.prisma | grep -q "Database schema is up to date!"; then
   echo "Running pending migrations..."
   npx prisma migrate deploy
+else
+  echo "No pending migrations. Database schema is up to date!"
 fi
 
 SEED_MODE=prod node dist/scripts/seed/seed.js
