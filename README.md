@@ -1,50 +1,46 @@
-### Technologies Used
+Aplikacja wspieraja naukę słownictwa w językach obcych poprzez powtarzanie, gry oraz system powtórek oparty na aktywności użytkownika. Umożliwia tworzenie własnych list słówek, śledzenie postępów, korzystanie z różnych trybów nauki (w tym gier pamięciowych i quizów), a także automatyczne tłumaczenie słów.
 
-This repository uses the following main technologies:
+#### Użyte technologie
 
-- **Frontend**: Vue 3, Vite, Pinia, Vue Router, Tailwind CSS, Vuelidate, Cypress (for E2E testing)
-- **Backend**: NestJS, Prisma ORM, PostgreSQL, Redis, Axios, Jest (for testing)
+To repozytorium wykorzystuje następujące technologie:
+
+- **Frontend**: Vue 3, Vite, Pinia, Vue Router, Tailwind CSS, Vuelidate, Cypress (do testów E2E)
+- **Backend**: NestJS, Prisma ORM, PostgreSQL, Redis, Axios, Jest (do testów)
 - **Landing Page**: Nuxt 3, Tailwind CSS, Vue 3, Vue Router
-- **Infrastructure & DevOps**: Docker, Docker Compose, Nginx, Ansible
-- **Other**: LibreTranslate (self-hosted translation service)
-
-See each subdirectory for more details and configuration files.
+- **Infrastruktura i DevOps**: Docker, Docker Compose, Nginx, Ansible
+- **Inne**: LibreTranslate (samodzielnie hostowana usługa tłumaczeń)
 
 <details>
-<summary>How to Run the Ansible Playbook</summary>
+<summary>Jak uruchomić playbook Ansible</summary>
 
-Configure your inventory and variables:
-   - Edit `ansible/inventory.yml` to match your server and project configuration.
-   - Make sure you have a `.env.yml` file with required secrets and variables (see `inventory.yml` for reference).
+Skonfiguruj inventory i zmienne:
 
+- Edytuj `ansible/inventory.yml`, aby dopasować do konfiguracji serwera i projektu.
+- Upewnij się, że masz plik `.env.yml` z wymaganymi sekretami i zmiennymi (zobacz `inventory.yml` jako odniesienie).
 
-Run the playbook:
+Uruchom playbook:
 
-   ```bash
-   cd ansible
-   ansible-playbook -i inventory.yml playbook.yml --tags="setup"
-   ```
+```bash
+cd ansible
+ansible-playbook -i inventory.yml playbook.yml --tags="setup"
+```
+
 </details>
 
 <details>
-<summary>How to run the app locally</summary>
+<summary>Jak uruchomić aplikację lokalnie</summary>
 
 #### Frontend
 
-Install dependencies
+Zainstaluj zależności i skopiuj plik env
 
 ```bash
 cd frontend
 npm install
-```
-
-Copy env file
-
-```bash
 cp .env.example .env
 ```
 
-Start the app
+Uruchom aplikację
 
 ```bash
 npm run dev
@@ -52,20 +48,15 @@ npm run dev
 
 #### Backend
 
-Install dependencies
+Zainstaluj zależności i skopiuj plik env
 
 ```bash
 cd backend
 npm install
-```
-
-Copy env file
-
-```bash
 cp .env.example .env
 ```
 
-Run docker compose services and db migrations
+Uruchom usługi docker compose i migracje bazy danych
 
 ```bash
 npm run db:up
@@ -73,7 +64,7 @@ npm run db:up
 npm run db:setup
 ```
 
-Start the app
+Uruchom aplikację
 
 ```bash
 npm run start:dev
@@ -81,20 +72,15 @@ npm run start:dev
 
 #### Landing page
 
-Install dependencies
+Zainstaluj zależności i skopiuj plik env
 
 ```bash
 cd landing
 npm install
-```
-
-Copy env file
-
-```bash
 cp .env.example .env
 ```
 
-Start the app
+Uruchom aplikację
 
 ```bash
 npm run dev
