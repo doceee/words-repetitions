@@ -23,8 +23,8 @@ all:
         port: '{{ landing_port }}'
         host: '{{ landing_host }}'
       backend:
-        port: '{{ backned_port }}'
-        url: '{{ backned_url }}'
+        port: '{{ backend_port }}'
+        url: '{{ backend_url }}'
         session_secret: '{{ session_secret }}'
         db:
           port: '{{ db_port }}'

@@ -1,15 +1,13 @@
 - name: Setup environment
-  hosts: vps
-
-  tasks:
-    - name: Ensure required packages are installed
+  block:
+    - name: Ensure git package is installed
       apt:
         name:
           - git
-          - docker.io
-          - docker-compose
         state: present
         update_cache: yes
+
+    - import_tasks: docker-install.yml
 
     - name: Copy the private ssh key to the server
       ansible.builtin.copy:
@@ -63,12 +61,12 @@
         mode: '0600'
       no_log: true
 
-    - name: Run docker-compose
+    - name: Run docker compose
       shell: |
-        docker-compose up -d --build
+        docker compose up -d --build
       args:
         chdir: '{{ project_dir }}'
 
-    - name: Show message after running docker-compose
+    - name: Show message after running docker compose
       debug:
         msg: 'Docker Compose has been started successfully!'
