@@ -15,6 +15,3 @@ EXPOSE 5000
 ENTRYPOINT /bin/sh -c "\
   ./venv/bin/python scripts/install_models.py --load_only_lang_codes '${LT_LOAD_ONLY}' && \
   ./venv/bin/libretranslate --host '*'"
-
-HEALTHCHECK --interval=30s --timeout=20s --start-period=30s --retries=3 \
-  CMD wget -qO- http://127.0.0.1:${LT_PORT}/languages || exit 1

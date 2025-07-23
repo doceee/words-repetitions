@@ -8,6 +8,33 @@
         force: yes
         update: yes
 
+    - name: Create frontend .env file
+      template:
+        src: 'frontend.env.j2'
+        dest: '{{ project_dir }}/frontend/.env'
+        mode: '0600'
+
+    - name: Create backend .env file
+      template:
+        src: 'backend.env.j2'
+        dest: '{{ project_dir }}/backend/.env'
+        mode: '0600'
+      no_log: true
+
+    - name: Create landing .env file
+      template:
+        src: 'landing.env.j2'
+        dest: '{{ project_dir }}/landing/.env'
+        mode: '0600'
+      no_log: true
+
+    - name: Create main .env file
+      template:
+        src: 'env.j2'
+        dest: '{{ project_dir }}/.env'
+        mode: '0600'
+      no_log: true
+      
     - name: Restart docker compose containers
       shell: docker compose up -d --build
       args:
