@@ -11,7 +11,8 @@ import {
     ClassSerializerInterceptor,
     UseInterceptors,
     Delete,
-    Query
+    Query,
+    ParseUUIDPipe
 } from '@nestjs/common';
 import { MoveDto } from '../dto/word/Move.dto';
 import { LoggedUserGuard } from '../middlewares/LoggedUserGuard';
@@ -45,7 +46,7 @@ export class WordsController {
 
     @Get('user/:id')
     getUserWords(
-        @Param('id') userId: string,
+        @Param('id', new ParseUUIDPipe({ version: '4' })) userId: string,
         @Query('wordList') wordList = `${WordListType.current}`
     ) {
         return this.getUserWordsService.handle(userId, wordList);
@@ -79,7 +80,7 @@ export class WordsController {
     editWord(
         @Body()
         dto: CreateEditDto,
-        @Param('id') wordId: string,
+        @Param('id', new ParseUUIDPipe({ version: '4' })) wordId: string,
         @GetUser('id') userId: string
     ) {
         return this.assignService.handle(dto, userId, wordId);
@@ -87,7 +88,10 @@ export class WordsController {
 
     @HttpCode(HttpStatus.OK)
     @Delete(':id')
-    removeWordById(@GetUser('id') userId: string, @Param('id') wordId: string) {
+    removeWordById(
+        @GetUser('id') userId: string,
+        @Param('id', new ParseUUIDPipe({ version: '4' })) wordId: string
+    ) {
         return this.removeService.handle(wordId, userId);
     }
 }

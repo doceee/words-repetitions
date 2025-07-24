@@ -30,13 +30,14 @@ export const useSession = async (app: NestExpressApplication) => {
     });
 
     redisClient.on('error', error => {
-        logger.error('Redis Client Error: ' + error.message);
+        logger.error('Redis Client Error: ' + error.message || error);
     });
 
     try {
         await redisClient.connect();
     } catch (error) {
-        logger.error('Failed to connect to Redis: ' + error.message);
+        logger.error('Failed to connect to Redis: ' + error.message || error);
+
         throw Error(error);
     }
 
