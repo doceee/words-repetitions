@@ -1,8 +1,8 @@
-Aplikacja wspieraja naukę słownictwa w językach obcych poprzez powtarzanie, gry oraz system powtórek oparty na aktywności użytkownika. Umożliwia tworzenie własnych list słówek, śledzenie postępów, korzystanie z różnych trybów nauki (w tym gier pamięciowych i quizów), a także automatyczne tłumaczenie słów.
+Aplikacja wspiera naukę słownictwa w języku angielskim poprzez powtarzanie, gry oraz system powtórek. Umożliwia śledzenie postępów, korzystanie z różnych trybów nauki (w tym gier pamięciowych i quizów), a także automatyczne tłumaczenie słów.
 
 #### Użyte technologie
 
-To repozytorium wykorzystuje następujące technologie:
+Repozytorium wykorzystuje następujące technologie:
 
 - **Frontend**: Vue 3, Vite, Pinia, Vue Router, Tailwind CSS, Vuelidate, Cypress (do testów E2E)
 - **Backend**: NestJS, Prisma ORM, PostgreSQL, Redis, Axios, Jest (do testów)
